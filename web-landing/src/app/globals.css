@@ -1,0 +1,78 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  max-width: 100vw;
+}
+
+a {
+  color: inherit;
+}
+
+img,
+svg,
+video {
+  max-width: 100%;
+}
+
+/* Reserve intrinsic ratio so media never shifts layout while loading. */
+img,
+video {
+  height: auto;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 102, 0, 0.4);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 102, 0, 0.7);
+}
+
+/* Visible focus for keyboard users only. Two-tone so the ring stays visible
+   on both the light surfaces and the charcoal bands. */
+:focus-visible {
+  outline: 2px solid #ff6600;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ------------------------------------------------------------------
+   Section surfaces.
+   The page rhythm needs a third surface beyond default/paper — the
+   "contrast" band that carries operating-record content. It must flip
+   with the color scheme, so it is defined per scheme here rather than
+   hardcoded to the brand dark.
+
+   MUI's colorSchemeSelector: 'data' stamps `data-light` / `data-dark`
+   on <html> — not `data-mui-color-scheme`.
+------------------------------------------------------------------- */
+:root,
+[data-light] {
+  --surface-contrast: #e8edf4;
+  --surface-panel: #ffffff;
+  --surface-panel-raised: #f1f4f9;
+  --hairline: rgba(6, 13, 26, 0.14);
+  --grid-line: rgba(6, 13, 26, 0.07);
+}
+
+[data-dark] {
+  --surface-contrast: #060d1a;
+  --surface-panel: #0e141f;
+  --surface-panel-raised: #161e2b;
+  --hairline: rgba(255, 255, 255, 0.14);
+  --grid-line: rgba(255, 255, 255, 0.05);
+}
