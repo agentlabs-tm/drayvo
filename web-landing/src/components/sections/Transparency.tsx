@@ -20,7 +20,7 @@ import { brand } from '@/theme/tokens';
  * company's own verified numbers.
  */
 const SETTLEMENT_LINES = [
-  { label: 'Linehaul — CHI → DAL', detail: '968 mi', amount: '+ 2,140.00', positive: true },
+  { label: 'Linehaul — HOU → DAL', detail: '239 mi', amount: '+ 545.00', positive: true },
   { label: 'Linehaul — DAL → MEM', detail: '452 mi', amount: '+ 1,015.00', positive: true },
   { label: 'Detention — Receiver 2', detail: '2.0 hrs', amount: '+ 100.00', positive: true },
   { label: 'Fuel advance', detail: 'Issued Tue', amount: '− 400.00', positive: false },

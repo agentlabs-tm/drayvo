@@ -10,8 +10,8 @@ export const site = {
   url: 'https://www.drayvologistics.com',
 
   // TODO(verify): confirm the recruiting and dispatch numbers that actually ring a person.
-  phone: '(312) 555-0142',
-  phoneHref: '+13125550142',
+  phone: '(713) 555-0142',
+  phoneHref: '+17135550142',
   email: 'dispatch@drayvologistics.com',
   recruitingEmail: 'drive@drayvologistics.com',
 
@@ -19,8 +19,8 @@ export const site = {
   // Do not display a terminal address the company does not operate from.
   address: {
     street: '',
-    city: 'Chicago',
-    state: 'IL',
+    city: 'Houston',
+    state: 'TX',
     country: 'US',
   },
 

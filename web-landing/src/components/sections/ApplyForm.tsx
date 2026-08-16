@@ -341,7 +341,7 @@ export default function ApplyForm() {
                     {isShipper && (
                       <TextField
                         label="Lanes you need covered"
-                        placeholder="e.g. Chicago → Dallas, weekly"
+                        placeholder="e.g. Houston → Dallas, weekly"
                         sx={{ gridColumn: { sm: 'span 2' } }}
                         {...register('lanes')}
                       />

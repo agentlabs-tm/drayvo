@@ -1,7 +1,7 @@
 'use client';
 
 import { createTheme, alpha } from '@mui/material/styles';
-import { brand, gradients } from './tokens';
+import { brand } from './tokens';
 
 const display = 'var(--font-display)';
 const body = 'var(--font-body)';
@@ -123,12 +123,10 @@ const theme = createTheme({
       variants: [
         {
           props: { variant: 'contained', color: 'primary' },
-          // Dark ink on the brand gradient reaches 6.6:1; white on the same
-          // gradient is only 2.9:1 and fails AA.
           style: {
-            background: gradients.orange,
-            color: brand.ink,
-            '&:hover': { background: brand.orangeDeep },
+            backgroundColor: brand.orangeText,
+            color: '#FFFFFF',
+            '&:hover': { backgroundColor: brand.orangeDeepText },
           },
         },
       ],

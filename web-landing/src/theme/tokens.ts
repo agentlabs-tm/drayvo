@@ -15,6 +15,8 @@ export const brand = {
    * reading as the brand color. Fills and borders use `orange`; text uses this.
    */
   orangeText: '#C23700',
+  /** Hover/pressed step below `orangeText`. */
+  orangeDeepText: '#A82F00',
 
   // Brand dark — the plate color behind the reversed lockup.
   ink: '#060D1A',
@@ -29,7 +31,3 @@ export const brand = {
   paper: '#FFFFFF',
 } as const;
 
-export const gradients = {
-  /** Matches the mark's own gradient direction. */
-  orange: `linear-gradient(135deg, ${brand.orange} 0%, ${brand.orangeDeep} 100%)`,
-} as const;
