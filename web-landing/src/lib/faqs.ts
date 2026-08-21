@@ -27,11 +27,11 @@ export const FAQ_GROUPS: FaqGroup[] = [
       },
       {
         q: 'How is my pay calculated, and when do I get it?',
-        a: 'Your pay structure is set out in writing before you accept an offer, and the pay calendar is explained at the same time. Settlements are itemized: linehaul, accessorials, and every deduction on its own line. We do not publish a headline rate on this page because pay varies by lane and experience, and a number without its conditions is not useful to you.',
+        a: 'Your pay structure and pay calendar are set out in writing before you accept an offer, and every settlement is itemized. We do not publish a headline rate here because pay varies by lane and experience — your recruiter will give you the real number for the work you would be doing.',
       },
       {
         q: 'What gets deducted from my settlement?',
-        a: 'Whatever applies to your agreement — items such as escrow, insurance, or fuel advances — and all of it is disclosed before you start rather than discovered later. Each deduction appears as its own line with a description. If a line does not make sense, call your dispatcher and we will walk through it.',
+        a: 'Only what your agreement sets out, all of it disclosed before you start rather than discovered later, and each item shown as its own line. If a line does not make sense, your dispatcher will walk you through it.',
       },
       {
         q: 'Who do I actually talk to day to day?',
@@ -56,7 +56,7 @@ export const FAQ_GROUPS: FaqGroup[] = [
       },
       {
         q: 'What do you handle, and what stays with me?',
-        a: 'We handle dispatch and load planning, compliance and filings under our operating authority, and the administrative side of running freight. You own and are responsible for your truck. The specific split — including any pass-through costs — is written into your agreement before you start.',
+        a: 'We handle the freight and the administration; you own and are responsible for your truck. The exact split, including any pass-through costs, is written into your agreement before you start.',
       },
       {
         q: 'How quickly do I get paid?',
@@ -69,7 +69,7 @@ export const FAQ_GROUPS: FaqGroup[] = [
     items: [
       {
         q: 'I own trucks but do not want to run a company. How does that work?',
-        a: 'You keep the title. We run the unit under our operating authority and manage the operation around it: driver placement, dispatch, maintenance coordination, fuel strategy, compliance, and reporting. You receive load-level revenue and cost for your truck rather than a monthly summary you have to take on faith.',
+        a: 'You keep the title. We run the unit under our operating authority and take on everything around it — driver, freight, maintenance, compliance, and reporting. You get revenue and cost for your truck rather than a monthly summary you have to take on faith.',
       },
       {
         q: 'Is this an investment product?',
@@ -81,7 +81,7 @@ export const FAQ_GROUPS: FaqGroup[] = [
       },
       {
         q: 'How do I know the numbers you report are complete?',
-        a: 'Reporting is load-level, so revenue and cost tie back to specific movements you can check rather than to a total you cannot. Ask us for the underlying detail on any line at any time — a management relationship where you cannot audit the reporting is not one worth having.',
+        a: 'Because it ties back to specific loads rather than to a monthly total. Ask for the detail behind any line at any time — a management arrangement you cannot audit is not one worth having.',
       },
     ],
   },
@@ -94,7 +94,7 @@ export const FAQ_GROUPS: FaqGroup[] = [
       },
       {
         q: 'What lanes and equipment can you cover?',
-        a: 'Send us the lane and you will get a direct answer on whether we can cover it well, rather than a coverage map that promises more than any carrier delivers on every route. If a lane is not one we run, we will tell you instead of accepting it and sorting it out later.',
+        a: 'Send us the lane and you will get a direct answer. If it is not one we run well, we will say so rather than accept it and sort it out later.',
       },
       {
         q: 'Who do I contact about a load in progress?',

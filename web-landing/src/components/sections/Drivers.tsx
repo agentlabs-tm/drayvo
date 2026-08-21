@@ -66,7 +66,7 @@ export default function Drivers() {
       <SectionHeading
         eyebrow="For drivers"
         title={<>Your truck. Your miles. <Box component="span" sx={{ color: 'primary.main' }}>Your money.</Box></>}
-        subtitle="Two ways to run with Drayvo. Both work the same way underneath: you see the number before you commit, and the settlement shows how it was reached."
+        subtitle="Two ways to run with Drayvo. Both work the same way: you see the number before you commit, and the settlement shows how it was reached."
       />
 
       <Box

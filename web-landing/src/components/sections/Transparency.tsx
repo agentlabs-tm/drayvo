@@ -73,9 +73,8 @@ export default function Transparency() {
         </Reveal>
         <Reveal delay={0.12}>
           <Typography sx={{ color: 'text.secondary', mt: 2.5, fontSize: '1.05rem' }}>
-            Transparency is a claim until you can see the format it arrives in. Here is the shape
-            of the information we share with drivers and truck owners — what is on it, and how
-            plainly it is stated.
+            Transparency is a claim until you can see the format it arrives in. This is what
+            drivers and truck owners get from us, and how plainly it is stated.
           </Typography>
         </Reveal>
       </Box>
@@ -93,7 +92,7 @@ export default function Transparency() {
           <Panel
             kicker="Driver settlement"
             title="A week, itemized"
-            caption="Move the sliders. Every line is named, every deduction explained, and the maths is shown rather than summarised — that is the whole point."
+            caption="Move the sliders. Every line named, every deduction explained, and the arithmetic shown rather than summarised."
           >
             <SettlementEstimator />
           </Panel>
@@ -103,7 +102,7 @@ export default function Transparency() {
           <Panel
             kicker="Owner reporting"
             title="Fleet view — month to date"
-            caption="Revenue and cost per truck, with downtime shown rather than absorbed. A truck in the shop is visible the day it goes in."
+            caption="Revenue and cost per truck, with downtime shown rather than absorbed."
           >
             <Box
               component="table"

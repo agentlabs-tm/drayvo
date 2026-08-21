@@ -50,7 +50,7 @@ export default function Paths() {
       <SectionHeading
         eyebrow="Choose your path"
         title="Where do you fit?"
-        subtitle="Drayvo is built first for the people who drive trucks and the people who own them. Pick the path that matches and we will show you exactly how it works."
+        subtitle="Drayvo is built first for the people who drive trucks and the people who own them. Pick the path that matches you."
       />
 
       <Box

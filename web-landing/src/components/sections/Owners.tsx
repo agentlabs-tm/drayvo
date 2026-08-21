@@ -10,6 +10,11 @@ import { brand } from '@/theme/tokens';
 /**
  * Owner operating system.
  *
+ * Scope only. These name the functions Drayvo takes on and what the owner gets
+ * back from each — deliberately not how any of it is run. The site's promise is
+ * transparency to owners about *their truck*, not a public account of the
+ * company's operating method.
+ *
  * Language is deliberately "fleet owner" / "partner-owned truck" throughout —
  * never "investor" or anything implying a return-generating offering, which
  * would carry securities implications the business has not had reviewed.
@@ -20,13 +25,13 @@ import { brand } from '@/theme/tokens';
  * versus through partners, and say which is which.
  */
 const OPERATIONS = [
-  { title: 'Driver placement', body: 'We recruit, vet, and place the driver, and we tell you who is in your truck.' },
-  { title: 'Dispatch and load planning', body: 'Lane selection and week planning, with the rate on each load visible to you.' },
-  { title: 'Maintenance coordination', body: 'Scheduled service and repairs arranged and documented against the unit.' },
-  { title: 'Fuel strategy', body: 'Routing and fuel purchasing managed to reduce cost per mile, with spend reported.' },
-  { title: 'Compliance support', body: 'Permits, filings, and DOT recordkeeping handled under our operating authority.' },
-  { title: 'Revenue and expense reporting', body: 'Per-load revenue and per-truck cost, available as it happens rather than at month end.' },
-  { title: 'Downtime management', body: 'When a truck is out of service you are told that day, with the reason and the expected return.' },
+  { title: 'Driver placement', body: 'We find and vet the driver, and you know who is in your truck.' },
+  { title: 'Dispatch and load planning', body: 'Your truck stays loaded, and you can see what each load pays.' },
+  { title: 'Maintenance coordination', body: 'Service is arranged and documented against your unit.' },
+  { title: 'Fuel and routing', body: 'Managed against cost per mile, with the spend reported to you.' },
+  { title: 'Compliance', body: 'Handled under our operating authority.' },
+  { title: 'Reporting', body: 'Revenue and cost per truck, without having to ask for it.' },
+  { title: 'Downtime', body: 'If your truck is off the road you hear it the same day.' },
 ];
 
 export default function Owners() {
@@ -54,9 +59,9 @@ export default function Owners() {
           </Reveal>
           <Reveal delay={0.12}>
             <Typography sx={{ color: 'text.secondary', mt: 2.5, fontSize: '1.05rem' }}>
-              Buying a truck is the straightforward part. Authority, insurance, freight, a driver
-              you can rely on, and the recordkeeping behind all of it — that is the work we take
-              on. The title stays in your name and the reporting comes to you unprompted.
+              Buying a truck is the straightforward part. Everything after it is the work we
+              take on. The title stays in your name, and the reporting comes to you without
+              being asked for.
             </Typography>
           </Reveal>
           <Reveal delay={0.18}>
