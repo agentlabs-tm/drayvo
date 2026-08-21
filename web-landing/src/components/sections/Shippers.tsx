@@ -57,9 +57,9 @@ export default function Shippers() {
           </Reveal>
           <Reveal delay={0.12}>
             <Typography sx={{ color: 'text.secondary', mt: 2.5 }}>
-              We are a small, founder-led carrier and we would rather tell you plainly what we
-              can cover than quote you capacity we do not have. Send us a lane and we will give
-              you a straight answer either way.
+              We would rather tell you plainly what we can cover than quote capacity we cannot
+              deliver on. Send us a lane and you will get a straight answer either way — and
+              when we commit to it, it moves.
             </Typography>
           </Reveal>
           <Reveal delay={0.18}>

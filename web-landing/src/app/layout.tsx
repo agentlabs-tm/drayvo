@@ -7,7 +7,7 @@ import { site } from '@/lib/site';
 import './globals.css';
 
 const DESCRIPTION =
-  'Drayvo Logistics is an open-book carrier built for drivers and truck owners. Drivers see what every load pays before they roll. Truck owners see revenue, expenses, maintenance, and downtime without chasing anyone for answers.';
+  'Reliable freight. Transparent pay. A company built around drivers. Drayvo Logistics is an open-book carrier where drivers see what every load pays before they roll, and truck owners see revenue, expenses, maintenance, and downtime without chasing anyone for answers.';
 
 const display = Sora({
   subsets: ['latin'],
@@ -34,7 +34,7 @@ const body = Manrope({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} — Trucking that shows its work`,
+    default: `${site.name} — Every Mile Matters. Every Driver Matters.`,
     template: `%s | ${site.name}`,
   },
   description: DESCRIPTION,
@@ -51,14 +51,14 @@ export const metadata: Metadata = {
     type: 'website',
     url: site.url,
     siteName: site.name,
-    title: `${site.name} — Trucking that shows its work`,
+    title: `${site.name} — Every Mile Matters. Every Driver Matters.`,
     description: DESCRIPTION,
     locale: 'en_US',
     images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: site.name }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: `${site.name} — Trucking that shows its work`,
+    title: `${site.name} — Every Mile Matters. Every Driver Matters.`,
     description: DESCRIPTION,
     images: ['/opengraph-image'],
   },

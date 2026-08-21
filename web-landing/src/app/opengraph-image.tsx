@@ -4,7 +4,7 @@ import { ImageResponse } from 'next/og';
 import { site } from '@/lib/site';
 import { brand } from '@/theme/tokens';
 
-export const alt = `${site.name} — Trucking that shows its work`;
+export const alt = `${site.name} — Every Mile Matters. Every Driver Matters.`;
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -30,20 +30,20 @@ export default function Image() {
         <img src={logo} alt={site.name} width={420} height={189} />
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-          <div style={{ color: '#fff', fontSize: 76, fontWeight: 800, letterSpacing: -3, lineHeight: 1.04 }}>
-            Trucking that
+          <div style={{ color: '#fff', fontSize: 68, fontWeight: 800, letterSpacing: -2.5, lineHeight: 1.06 }}>
+            Every Mile Matters.
           </div>
-          <div style={{ color: brand.orange, fontSize: 76, fontWeight: 800, letterSpacing: -3, lineHeight: 1.04 }}>
-            shows its work.
+          <div style={{ color: brand.orange, fontSize: 68, fontWeight: 800, letterSpacing: -2.5, lineHeight: 1.06 }}>
+            Every Driver Matters.
           </div>
         </div>
 
         <div style={{ display: 'flex', gap: 28, color: '#93A1B8', fontSize: 22 }}>
-          <div>Rates shown before dispatch</div>
+          <div>Reliable freight</div>
           <div>·</div>
-          <div>Itemized settlements</div>
+          <div>Transparent pay</div>
           <div>·</div>
-          <div>Owner reporting</div>
+          <div>Built around drivers</div>
         </div>
       </div>
     ),

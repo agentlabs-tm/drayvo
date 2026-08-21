@@ -94,7 +94,7 @@ export const FAQ_GROUPS: FaqGroup[] = [
       },
       {
         q: 'What lanes and equipment can you cover?',
-        a: 'We are a founder-led carrier in our early operating period, so rather than publish a coverage map we would rather you send us the lane and get a direct answer about whether we can cover it well. If we cannot, we will say so.',
+        a: 'Send us the lane and you will get a direct answer on whether we can cover it well, rather than a coverage map that promises more than any carrier delivers on every route. If a lane is not one we run, we will tell you instead of accepting it and sorting it out later.',
       },
       {
         q: 'Who do I contact about a load in progress?',

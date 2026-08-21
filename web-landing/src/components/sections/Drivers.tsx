@@ -2,11 +2,11 @@
 
 import { Box, Button, Stack, Typography } from '@mui/material';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
-import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { alpha } from '@mui/material/styles';
 import Section from '@/components/ui/Section';
 import SectionHeading from '@/components/ui/SectionHeading';
 import Reveal from '@/components/motion/Reveal';
+import BulletList from '@/components/ui/BulletList';
 import { brand } from '@/theme/tokens';
 
 /**
@@ -95,14 +95,9 @@ export default function Drivers() {
                 {p.lead}
               </Typography>
 
-              <Stack component="ul" spacing={1.5} sx={{ listStyle: 'none', p: 0, m: 0, pt: 1 }}>
-                {p.points.map((pt) => (
-                  <Stack key={pt} component="li" direction="row" spacing={1.5} sx={{ alignItems: 'flex-start' }}>
-                    <CheckRoundedIcon sx={{ fontSize: 19, color: 'primary.main', mt: '3px', flexShrink: 0 }} />
-                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>{pt}</Typography>
-                  </Stack>
-                ))}
-              </Stack>
+              <Box sx={{ pt: 1 }}>
+                <BulletList items={p.points} marker="check" gap={1.5} />
+              </Box>
 
               <Box sx={{ flex: 1 }} />
               <Typography
@@ -133,9 +128,9 @@ export default function Drivers() {
             border: '1px solid',
             borderColor: 'divider',
             display: 'grid',
-            gridTemplateColumns: { xs: '1fr', md: '300px 1fr' },
-            gap: { xs: 2.5, md: 5 },
-            alignItems: 'center',
+            gridTemplateColumns: { xs: '1fr', lg: '300px 1fr' },
+            gap: { xs: 2.5, lg: 5 },
+            alignItems: { lg: 'center' },
           }}
         >
           <Box>
@@ -143,28 +138,11 @@ export default function Drivers() {
             <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }}>
               Close but not exact? Call anyway. A person reads every application.
             </Typography>
+            <Button href="#qualify" endIcon={<ArrowForwardRoundedIcon />} sx={{ mt: 1, px: 0 }}>
+              Check where you stand
+            </Button>
           </Box>
-          <Box
-            component="ul"
-            sx={{
-              display: 'grid',
-              gap: 1.25,
-              gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)' },
-              listStyle: 'none',
-              p: 0,
-              m: 0,
-            }}
-          >
-            {REQUIREMENTS.map((r) => (
-              <Stack key={r} component="li" direction="row" spacing={1.25} sx={{ alignItems: 'flex-start' }}>
-                <Box
-                  aria-hidden
-                  sx={{ width: 5, height: 5, borderRadius: '50%', bgcolor: 'primary.main', mt: '9px', flexShrink: 0 }}
-                />
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>{r}</Typography>
-              </Stack>
-            ))}
-          </Box>
+          <BulletList items={REQUIREMENTS} columns={{ xs: 1, sm: 2 }} />
         </Box>
       </Reveal>
     </Section>

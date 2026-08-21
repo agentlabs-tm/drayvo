@@ -6,6 +6,7 @@ import { alpha } from '@mui/material/styles';
 import Section from '@/components/ui/Section';
 import SectionHeading from '@/components/ui/SectionHeading';
 import Reveal from '@/components/motion/Reveal';
+import BulletList from '@/components/ui/BulletList';
 import { brand } from '@/theme/tokens';
 
 /**
@@ -83,17 +84,9 @@ export default function Paths() {
                 </Typography>
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>{p.body}</Typography>
 
-                <Stack component="ul" spacing={1} sx={{ listStyle: 'none', p: 0, m: 0, pt: 0.5 }}>
-                  {p.points.map((pt) => (
-                    <Stack key={pt} component="li" direction="row" spacing={1.25} sx={{ alignItems: 'flex-start' }}>
-                      <Box
-                        aria-hidden
-                        sx={{ width: 5, height: 5, borderRadius: '50%', bgcolor: 'primary.main', mt: '9px', flexShrink: 0 }}
-                      />
-                      <Typography variant="body2" sx={{ color: 'text.primary' }}>{pt}</Typography>
-                    </Stack>
-                  ))}
-                </Stack>
+                <Box sx={{ pt: 0.5 }}>
+                  <BulletList items={p.points} color="text.primary" />
+                </Box>
 
                 <Box sx={{ flex: 1 }} />
                 <Button

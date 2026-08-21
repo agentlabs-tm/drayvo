@@ -34,7 +34,7 @@ export default function Fleet() {
       <SectionHeading
         eyebrow="Real people, real operations"
         title="No stock photos here"
-        subtitle="We would rather show you an empty frame than a stock image of somebody else's truck. Photographs of our drivers, our dispatchers, and our equipment go here as we build the fleet — real people, named, with their permission."
+        subtitle="We would rather show you an empty frame than a stock image of somebody else's truck. Photographs of our drivers, our dispatchers, and our equipment go here — real people, named, and published with their permission."
       />
 
       <Box

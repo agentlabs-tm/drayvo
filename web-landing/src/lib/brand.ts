@@ -13,10 +13,22 @@
  *   competes on visibility — what a load pays before you accept it, what came
  *   out of the settlement and why, what the truck earned and what it cost.
  *
- * BRAND LINE
- *   "Every mile. Every dollar. Accounted for."
- *   Drivers are paid for every mile. Owners see every dollar the truck earns
- *   and spends. Do not pad it with adjectives.
+ * BRAND LINE — primary
+ *   "Every Mile Matters. Every Driver Matters."
+ *   Two halves that have to stay together: the miles are the work, the driver
+ *   is the person doing it. Always paired with the supporting line below; the
+ *   slogan states the value, the support line says what it buys you.
+ *
+ *   Supporting: "Reliable freight. Transparent pay. A company built around
+ *   drivers."
+ *
+ * BRAND LINE — secondary
+ *   "Transparent miles. Transparent pay. Every dollar accounted for."
+ *   The financial-transparency message, kept for contexts where the subject is
+ *   pay, settlements, or owner reporting. Use it there and nowhere else — it is
+ *   the proof behind the primary line, not a second slogan competing with it.
+ *
+ *   Neither line takes adjectives. Do not run both in the same viewport.
  *
  * AUDIENCE ORDER — this ranking decides layout weight everywhere.
  *   1. Professional drivers
@@ -51,7 +63,12 @@
  */
 
 export const brandVoice = {
-  line: 'Every mile. Every dollar. Accounted for.',
+  /** Primary slogan. Hero, footer, structured data, social cards. */
+  line: 'Every Mile Matters. Every Driver Matters.',
+  /** Always accompanies the primary line. */
+  support: 'Reliable freight. Transparent pay. A company built around drivers.',
+  /** Secondary line, reserved for pay/settlement/reporting contexts. */
+  transparency: 'Transparent miles. Transparent pay. Every dollar accounted for.',
   positioning:
     'The open-book trucking company, built for the people who drive trucks and the people who own them.',
   standard: 'The Drayvo Standard',

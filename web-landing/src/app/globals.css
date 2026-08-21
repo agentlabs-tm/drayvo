@@ -76,3 +76,39 @@ video {
   --hairline: rgba(255, 255, 255, 0.14);
   --grid-line: rgba(255, 255, 255, 0.05);
 }
+
+/* ------------------------------------------------------------------
+   Road graphic.
+   Asphalt reads as a dark surface in both schemes — a light-grey road
+   in light mode looks like a diagram rather than a road — but the
+   values are tuned per scheme so it sits on its band correctly.
+------------------------------------------------------------------- */
+:root,
+[data-light] {
+  --road-edge: #c7d0dd;
+  --road-surface: #39424f;
+  --road-line: #f3f5f8;
+  --truck-body: #ffffff;
+  --truck-panel: #dce3ec;
+  --truck-glass: #7f93ab;
+  --truck-chassis: #3b4551;
+  --truck-tire: #2b333d;
+  --truck-rim: #aab6c4;
+  /* Roadside scenery: desaturated so it stays background, never decoration. */
+  --scenery-canopy: #8ea3a0;
+  --scenery-trunk: #6f7d86;
+}
+
+[data-dark] {
+  --road-edge: #223045;
+  --road-surface: #10161f;
+  --road-line: #7b8ca3;
+  --truck-body: #e7edf5;
+  --truck-panel: #b9c4d3;
+  --truck-glass: #46586f;
+  --truck-chassis: #1b232e;
+  --truck-tire: #12181f;
+  --truck-rim: #6b7889;
+  --scenery-canopy: #2b3d43;
+  --scenery-trunk: #24303c;
+}

@@ -5,6 +5,7 @@ import Commitments from '@/components/sections/Commitments';
 import Standard from '@/components/sections/Standard';
 import Paths from '@/components/sections/Paths';
 import Transparency from '@/components/sections/Transparency';
+import Qualify from '@/components/sections/Qualify';
 import Drivers from '@/components/sections/Drivers';
 import Owners from '@/components/sections/Owners';
 import Shippers from '@/components/sections/Shippers';
@@ -13,6 +14,7 @@ import Faq from '@/components/sections/Faq';
 import FinalCta from '@/components/sections/FinalCta';
 import ApplyForm from '@/components/sections/ApplyForm';
 import Footer from '@/components/sections/Footer';
+import MobileActionBar from '@/components/ui/MobileActionBar';
 import { site } from '@/lib/site';
 import { brandVoice } from '@/lib/brand';
 import { FAQS } from '@/lib/faqs';
@@ -72,6 +74,7 @@ export default function Home() {
         <Paths />
         <Transparency />
         <Drivers />
+        <Qualify />
         <Owners />
         <Shippers />
         <Fleet />
@@ -80,6 +83,7 @@ export default function Home() {
         <ApplyForm />
       </Box>
       <Footer />
+      <MobileActionBar />
     </>
   );
 }

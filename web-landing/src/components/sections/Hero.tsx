@@ -5,7 +5,10 @@ import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 import { alpha } from '@mui/material/styles';
 import Reveal from '@/components/motion/Reveal';
+import RouteGraphic from '@/components/motion/RouteGraphic';
+import BulletList from '@/components/ui/BulletList';
 import { brand } from '@/theme/tokens';
+import { brandVoice } from '@/lib/brand';
 
 /**
  * First viewport. Its one job is to make clear, immediately, that Drayvo is
@@ -45,39 +48,52 @@ export default function Hero() {
             </Reveal>
 
             <Reveal delay={0.06}>
-              <Typography variant="h1" component="h1" sx={{ color: 'text.primary', maxWidth: 840 }}>
-                Trucking that{' '}
-                <Box component="span" sx={{ color: 'primary.main' }}>shows its work.</Box>
+              <Typography
+                variant="h1"
+                component="h1"
+                sx={{
+                  color: 'text.primary',
+                  maxWidth: 900,
+                  fontSize: 'clamp(2rem, 5.2vw, 4.15rem)',
+                  lineHeight: 1.05,
+                }}
+              >
+                <Box component="span" sx={{ display: 'block' }}>Every Mile Matters.</Box>
+                <Box component="span" sx={{ display: 'block', color: 'primary.main' }}>
+                  Every Driver Matters.
+                </Box>
               </Typography>
             </Reveal>
 
             <Reveal delay={0.12}>
               <Typography
                 sx={{
-                  color: 'text.secondary',
-                  mt: 3,
-                  maxWidth: 620,
-                  fontSize: { xs: '1.05rem', md: '1.15rem' },
-                  lineHeight: 1.7,
+                  mt: { xs: 2.5, md: 3 },
+                  maxWidth: 640,
+                  fontFamily: 'var(--font-display)',
+                  fontWeight: 700,
+                  fontSize: { xs: '1.1rem', md: '1.35rem' },
+                  letterSpacing: '-0.015em',
+                  lineHeight: 1.4,
+                  color: 'text.primary',
                 }}
               >
-                Drivers see what every load pays before they roll. Truck owners see revenue,
-                expenses, maintenance, and downtime without chasing anyone for answers.
+                {brandVoice.support}
               </Typography>
             </Reveal>
 
             <Reveal delay={0.18}>
               <Typography
                 sx={{
-                  mt: 3,
-                  fontFamily: 'var(--font-display)',
-                  fontWeight: 800,
-                  fontSize: { xs: '1.05rem', md: '1.2rem' },
-                  letterSpacing: '-0.01em',
-                  color: 'text.primary',
+                  color: 'text.secondary',
+                  mt: 2.5,
+                  maxWidth: 600,
+                  fontSize: { xs: '1rem', md: '1.08rem' },
+                  lineHeight: 1.7,
                 }}
               >
-                Every mile. Every dollar. Accounted for.
+                Drivers see what every load pays before they roll. Truck owners see revenue,
+                expenses, maintenance, and downtime without chasing anyone for answers.
               </Typography>
             </Reveal>
 
@@ -102,6 +118,10 @@ export default function Hero() {
           <Reveal delay={0.2}>
             <AudienceSplit />
           </Reveal>
+        </Box>
+
+        <Box sx={{ mt: { xs: 6, md: 8 }, color: 'text.secondary' }}>
+          <RouteGraphic />
         </Box>
       </Container>
     </Box>
@@ -154,17 +174,7 @@ function AudienceSplit() {
           >
             {c.label}
           </Typography>
-          <Stack component="ul" spacing={1} sx={{ listStyle: 'none', p: 0, m: 0 }}>
-            {c.lines.map((line) => (
-              <Stack key={line} component="li" direction="row" spacing={1.25} sx={{ alignItems: 'flex-start' }}>
-                <Box
-                  aria-hidden
-                  sx={{ width: 5, height: 5, borderRadius: '50%', bgcolor: 'primary.main', mt: '9px', flexShrink: 0 }}
-                />
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>{line}</Typography>
-              </Stack>
-            ))}
-          </Stack>
+          <BulletList items={c.lines} />
           <Button
             href={c.href}
             endIcon={<ArrowForwardRoundedIcon />}

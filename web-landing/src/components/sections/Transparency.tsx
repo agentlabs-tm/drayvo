@@ -1,9 +1,12 @@
 'use client';
 
-import { Box, Chip, Stack, Typography } from '@mui/material';
+import * as React from 'react';
+import { Box, Chip, Slider, Stack, Typography } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import Section from '@/components/ui/Section';
 import Reveal from '@/components/motion/Reveal';
+import AnimatedNumber from '@/components/ui/AnimatedNumber';
+import { brandVoice } from '@/lib/brand';
 import { brand } from '@/theme/tokens';
 
 /**
@@ -19,14 +22,20 @@ import { brand } from '@/theme/tokens';
  * When that happens, keep the "example" labelling unless the figures are the
  * company's own verified numbers.
  */
-const SETTLEMENT_LINES = [
-  { label: 'Linehaul — HOU → DAL', detail: '239 mi', amount: '+ 545.00', positive: true },
-  { label: 'Linehaul — DAL → MEM', detail: '452 mi', amount: '+ 1,015.00', positive: true },
-  { label: 'Detention — Receiver 2', detail: '2.0 hrs', amount: '+ 100.00', positive: true },
-  { label: 'Fuel advance', detail: 'Issued Tue', amount: '− 400.00', positive: false },
-  { label: 'Occupational insurance', detail: 'Weekly', amount: '− 42.00', positive: false },
-  { label: 'Maintenance escrow', detail: 'Weekly', amount: '− 150.00', positive: false },
-];
+/**
+ * Rates driving the interactive settlement below.
+ *
+ * TODO(verify): these are placeholder figures used to demonstrate the *format*
+ * of a Drayvo settlement, not an offer. Replace with the confirmed rate card
+ * before launch, and keep the "Example" labelling until the numbers are real.
+ * Pay figures in driver recruiting are regulated advertising.
+ */
+const RATE_CARD = {
+  perMile: 0.62,
+  detentionPerHour: 25,
+  weeklyInsurance: 42,
+  weeklyEscrow: 150,
+};
 
 const OWNER_ROWS = [
   { truck: 'Unit 104', revenue: '8,420', cost: '3,180', status: 'In service', tone: 'ok' as const },
@@ -46,6 +55,20 @@ export default function Transparency() {
         <Reveal delay={0.06}>
           <Typography variant="h2" sx={{ color: 'text.primary' }}>
             What &ldquo;open book&rdquo; actually looks like
+          </Typography>
+        </Reveal>
+        <Reveal delay={0.09}>
+          <Typography
+            sx={{
+              mt: 2,
+              fontFamily: 'var(--font-display)',
+              fontWeight: 700,
+              fontSize: { xs: '1.05rem', md: '1.2rem' },
+              letterSpacing: '-0.012em',
+              color: 'primary.main',
+            }}
+          >
+            {brandVoice.transparency}
           </Typography>
         </Reveal>
         <Reveal delay={0.12}>
@@ -69,64 +92,10 @@ export default function Transparency() {
         <Reveal>
           <Panel
             kicker="Driver settlement"
-            title="Week 11 — itemized"
-            caption="Every line named, every deduction explained. Nothing appears here that was not disclosed before you started."
+            title="A week, itemized"
+            caption="Move the sliders. Every line is named, every deduction explained, and the maths is shown rather than summarised — that is the whole point."
           >
-            <Stack divider={<Box sx={{ height: '1px', bgcolor: 'var(--hairline)' }} />}>
-              {SETTLEMENT_LINES.map((l) => (
-                <Stack
-                  key={l.label}
-                  direction="row"
-                  sx={{ justifyContent: 'space-between', alignItems: 'baseline', gap: 2, py: 1.35 }}
-                >
-                  <Box sx={{ minWidth: 0 }}>
-                    <Typography variant="body2" sx={{ color: 'text.primary', fontWeight: 600 }}>
-                      {l.label}
-                    </Typography>
-                    <Typography sx={{ color: 'text.secondary', fontFamily: 'var(--font-mono)', fontSize: '0.72rem' }}>
-                      {l.detail}
-                    </Typography>
-                  </Box>
-                  <Typography
-                    sx={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '0.86rem',
-                      fontWeight: 600,
-                      whiteSpace: 'nowrap',
-                      fontVariantNumeric: 'tabular-nums',
-                      color: l.positive ? 'text.primary' : 'text.secondary',
-                    }}
-                  >
-                    {l.amount}
-                  </Typography>
-                </Stack>
-              ))}
-            </Stack>
-
-            <Stack
-              direction="row"
-              sx={{
-                justifyContent: 'space-between',
-                alignItems: 'baseline',
-                mt: 2,
-                pt: 2,
-                borderTop: '2px solid',
-                borderColor: alpha(brand.orange, 0.5),
-              }}
-            >
-              <Typography sx={{ color: 'text.primary', fontWeight: 700 }}>Net to driver</Typography>
-              <Typography
-                sx={{
-                  fontFamily: 'var(--font-mono)',
-                  fontWeight: 700,
-                  fontSize: '1.15rem',
-                  color: 'primary.main',
-                  fontVariantNumeric: 'tabular-nums',
-                }}
-              >
-                2,663.00
-              </Typography>
-            </Stack>
+            <SettlementEstimator />
           </Panel>
         </Reveal>
 
@@ -185,7 +154,7 @@ export default function Transparency() {
                           aria-hidden
                           sx={{
                             width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
-                            bgcolor: r.tone === 'ok' ? '#4ADE80' : brand.orange,
+                            bgcolor: r.tone === 'ok' ? 'success.main' : 'primary.main',
                           }}
                         />
                         <Typography sx={{ color: 'text.secondary', fontSize: '0.82rem' }}>{r.status}</Typography>
@@ -301,6 +270,138 @@ function Panel({
           Illustrative example of report format. Figures are not Drayvo operating results.
         </Typography>
       </Box>
+    </Box>
+  );
+}
+
+/**
+ * Interactive settlement. The driver sets the week; the lines recalculate and
+ * the total counts to its new value.
+ *
+ * This is the section doing the most work on the whole site: "we show our work"
+ * is a claim until someone can move a slider and watch the arithmetic hold.
+ */
+function SettlementEstimator() {
+  const [miles, setMiles] = React.useState(2600);
+  const [detention, setDetention] = React.useState(2);
+  const [advance, setAdvance] = React.useState(400);
+
+  const linehaul = miles * RATE_CARD.perMile;
+  const detentionPay = detention * RATE_CARD.detentionPerHour;
+  const gross = linehaul + detentionPay;
+  const deductions = advance + RATE_CARD.weeklyInsurance + RATE_CARD.weeklyEscrow;
+  const net = gross - deductions;
+
+  const lines = [
+    { label: 'Linehaul', detail: `${miles.toLocaleString('en-US')} mi @ $${RATE_CARD.perMile.toFixed(2)}`, value: linehaul, positive: true },
+    { label: 'Detention', detail: `${detention} hr @ $${RATE_CARD.detentionPerHour}`, value: detentionPay, positive: true },
+    { label: 'Fuel advance', detail: 'Repaid this week', value: -advance, positive: false },
+    { label: 'Occupational insurance', detail: 'Weekly', value: -RATE_CARD.weeklyInsurance, positive: false },
+    { label: 'Maintenance escrow', detail: 'Weekly', value: -RATE_CARD.weeklyEscrow, positive: false },
+  ];
+
+  const CONTROLS = [
+    { label: 'Miles this week', value: miles, set: setMiles, min: 1200, max: 3400, step: 50, format: (v: number) => v.toLocaleString('en-US') },
+    { label: 'Detention hours', value: detention, set: setDetention, min: 0, max: 10, step: 1, format: (v: number) => `${v} hr` },
+    { label: 'Fuel advance taken', value: advance, set: setAdvance, min: 0, max: 900, step: 50, format: (v: number) => `$${v}` },
+  ];
+
+  return (
+    <Box>
+      <Stack spacing={2} sx={{ mb: 3 }}>
+        {CONTROLS.map((c) => (
+          <Box key={c.label}>
+            <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'baseline' }}>
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>{c.label}</Typography>
+              <Typography
+                sx={{ fontFamily: 'var(--font-mono)', fontSize: '0.82rem', fontWeight: 600, color: 'text.primary' }}
+              >
+                {c.format(c.value)}
+              </Typography>
+            </Stack>
+            <Slider
+              value={c.value}
+              min={c.min}
+              max={c.max}
+              step={c.step}
+              onChange={(_, v) => c.set(v as number)}
+              aria-label={c.label}
+              valueLabelDisplay="off"
+              sx={{
+                mt: 0.5,
+                py: 1.25,
+                color: 'primary.main',
+                '& .MuiSlider-rail': { bgcolor: 'var(--hairline)', opacity: 1 },
+                '& .MuiSlider-thumb': {
+                  width: 16,
+                  height: 16,
+                  '&:hover, &.Mui-focusVisible': { boxShadow: `0 0 0 6px ${alpha(brand.orange, 0.18)}` },
+                },
+              }}
+            />
+          </Box>
+        ))}
+      </Stack>
+
+      <Stack divider={<Box sx={{ height: '1px', bgcolor: 'var(--hairline)' }} />}>
+        {lines.map((l) => (
+          <Stack
+            key={l.label}
+            direction="row"
+            sx={{ justifyContent: 'space-between', alignItems: 'baseline', gap: 2, py: 1.2 }}
+          >
+            <Box sx={{ minWidth: 0 }}>
+              <Typography variant="body2" sx={{ color: 'text.primary', fontWeight: 600 }}>
+                {l.label}
+              </Typography>
+              <Typography sx={{ color: 'text.secondary', fontFamily: 'var(--font-mono)', fontSize: '0.72rem' }}>
+                {l.detail}
+              </Typography>
+            </Box>
+            <Typography
+              sx={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.86rem',
+                fontWeight: 600,
+                whiteSpace: 'nowrap',
+                color: l.positive ? 'text.primary' : 'text.secondary',
+              }}
+            >
+              {l.positive ? '+ ' : '− '}
+              <AnimatedNumber value={Math.abs(l.value)} />
+            </Typography>
+          </Stack>
+        ))}
+      </Stack>
+
+      <Stack
+        direction="row"
+        sx={{
+          justifyContent: 'space-between',
+          alignItems: 'baseline',
+          mt: 2,
+          pt: 2,
+          borderTop: '2px solid',
+          borderColor: alpha(brand.orange, 0.5),
+        }}
+      >
+        <Box>
+          <Typography sx={{ color: 'text.primary', fontWeight: 700 }}>Net to driver</Typography>
+          <Typography sx={{ color: 'text.secondary', fontFamily: 'var(--font-mono)', fontSize: '0.72rem' }}>
+            gross {gross.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} − deductions {deductions.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          </Typography>
+        </Box>
+        <Typography
+          sx={{
+            fontFamily: 'var(--font-mono)',
+            fontWeight: 700,
+            fontSize: '1.3rem',
+            color: 'primary.main',
+          }}
+        >
+          <AnimatedNumber value={net} prefix="$" />
+        </Typography>
+      </Stack>
     </Box>
   );
 }

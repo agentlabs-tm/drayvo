@@ -72,10 +72,9 @@ export default function Commitments() {
           color: 'text.secondary',
         }}
       >
-        Drayvo is a founder-led carrier in its early operating period. We publish commitments we
-        can keep rather than statistics we cannot yet substantiate. Ask us anything on this page
-        and we will answer it directly —{' '}
-        <Box component="span" sx={{ color: 'primary.main', fontWeight: 700 }}>including what we do not do yet.</Box>
+        Drayvo publishes commitments it can keep rather than statistics it cannot substantiate.
+        Every claim on this page is something you can hold us to —{' '}
+        <Box component="span" sx={{ color: 'primary.main', fontWeight: 700 }}>ask about any of them and you will get a direct answer.</Box>
       </Typography>
     </Section>
   );
