@@ -8,8 +8,10 @@ export const alt = `${site.name} — Every Mile Matters. Every Driver Matters.`;
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
+export const dynamic = 'force-static';
+
 const logo = `data:image/svg+xml;base64,${readFileSync(
-  join(process.cwd(), 'public/brand/logo-horizontal-dark.svg'),
+  join(process.cwd(), 'public/brand/logo-horizontal-dark.svg')
 ).toString('base64')}`;
 
 export default function Image() {
@@ -30,10 +32,26 @@ export default function Image() {
         <img src={logo} alt={site.name} width={420} height={189} />
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-          <div style={{ color: '#fff', fontSize: 68, fontWeight: 800, letterSpacing: -2.5, lineHeight: 1.06 }}>
+          <div
+            style={{
+              color: '#fff',
+              fontSize: 68,
+              fontWeight: 800,
+              letterSpacing: -2.5,
+              lineHeight: 1.06,
+            }}
+          >
             Every Mile Matters.
           </div>
-          <div style={{ color: brand.orange, fontSize: 68, fontWeight: 800, letterSpacing: -2.5, lineHeight: 1.06 }}>
+          <div
+            style={{
+              color: brand.orange,
+              fontSize: 68,
+              fontWeight: 800,
+              letterSpacing: -2.5,
+              lineHeight: 1.06,
+            }}
+          >
             Every Driver Matters.
           </div>
         </div>
@@ -47,6 +65,6 @@ export default function Image() {
         </div>
       </div>
     ),
-    size,
+    size
   );
 }

@@ -4,13 +4,15 @@ import { ImageResponse } from 'next/og';
 import { site } from '@/lib/site';
 import { brand } from '@/theme/tokens';
 
+export const dynamic = 'force-static';
+
 export const size = { width: 180, height: 180 };
 export const contentType = 'image/png';
 export const alt = site.name;
 
 /** Apple touch icons must be raster, so the SVG mark is rendered to PNG here. */
 const mark = `data:image/svg+xml;base64,${readFileSync(
-  join(process.cwd(), 'public/brand/mark.svg'),
+  join(process.cwd(), 'public/brand/mark.svg')
 ).toString('base64')}`;
 
 export default function AppleIcon() {
@@ -29,6 +31,6 @@ export default function AppleIcon() {
         <img src={mark} alt={site.name} width={180} height={180} />
       </div>
     ),
-    size,
+    size
   );
 }
