@@ -41,6 +41,15 @@ const jsonLd = {
       description: brandVoice.positioning,
       slogan: brandVoice.line,
       email: site.email,
+      // Raster, square and absolute: Google requires a crawlable image it can
+      // rasterize, and an SVG is a weaker signal for the knowledge panel.
+      logo: {
+        '@type': 'ImageObject',
+        url: `${site.url}/brand/icon-512.png`,
+        width: 512,
+        height: 512,
+      },
+      image: `${site.url}/brand/icon-512.png`,
       address: {
         '@type': 'PostalAddress',
         streetAddress: `${site.address.street}, ${site.address.suite}`,

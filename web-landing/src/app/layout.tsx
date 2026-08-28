@@ -6,8 +6,15 @@ import { site } from '@/lib/site';
 
 import './globals.css';
 
+/**
+ * Search-facing title and description. Kept keyword-bearing rather than
+ * slogan-only: the brand line lives in the hero and the OG card, but a search
+ * result has to say what the company does.
+ */
+const TITLE = `${site.name} | Driver-First Trucking & Fleet Management`;
+
 const DESCRIPTION =
-  'Reliable freight. Transparent pay. A company built around drivers. Drayvo Logistics is an open-book carrier where drivers see what every load pays before they roll, and truck owners see revenue, expenses, maintenance, and downtime without chasing anyone for answers.';
+  'Drayvo Logistics is a driver-first trucking company focused on transparent pay, reliable freight, modern fleet operations, and long-term partnerships with professional drivers and owner-operators.';
 
 const display = Sora({
   subsets: ['latin'],
@@ -34,7 +41,7 @@ const body = Manrope({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} — Every Mile Matters. Every Driver Matters.`,
+    default: TITLE,
     template: `%s | ${site.name}`,
   },
   description: DESCRIPTION,
@@ -47,20 +54,35 @@ export const metadata: Metadata = {
   authors: [{ name: site.legalName }],
   creator: site.legalName,
   alternates: { canonical: '/' },
+  /**
+   * Declared explicitly rather than relying on file-convention detection alone.
+   * `/favicon.ico` first and unversioned: Google's favicon crawler looks for it
+   * at the site root and does not follow Next's hashed asset URLs.
+   */
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: '16x16 32x32 48x48' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/brand/icon-96.png', type: 'image/png', sizes: '96x96' },
+      { url: '/brand/icon-192.png', type: 'image/png', sizes: '192x192' },
+    ],
+    apple: [{ url: '/apple-icon.png', type: 'image/png', sizes: '180x180' }],
+    shortcut: ['/favicon.ico'],
+  },
   openGraph: {
     type: 'website',
     url: site.url,
     siteName: site.name,
-    title: `${site.name} — Every Mile Matters. Every Driver Matters.`,
+    title: TITLE,
     description: DESCRIPTION,
     locale: 'en_US',
-    images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: site.name }],
+    images: [{ url: '/brand/og.png', width: 1200, height: 630, alt: TITLE, type: 'image/png' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: `${site.name} — Every Mile Matters. Every Driver Matters.`,
+    title: TITLE,
     description: DESCRIPTION,
-    images: ['/opengraph-image'],
+    images: ['/brand/og.png'],
   },
   robots: {
     index: true,

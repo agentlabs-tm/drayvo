@@ -7,7 +7,7 @@
 export const site = {
   name: 'Drayvo Logistics',
   legalName: 'Drayvo Logistics LLC',
-  url: 'https://www.drayvologistics.com',
+  url: 'https://drayvologistics.com',
 
   // TODO(verify): confirm the recruiting and dispatch numbers that actually ring a person.
   phone: '(713) 555-0142',
