@@ -3,7 +3,7 @@
 import * as React from 'react';
 import {
   Alert, Box, Button, Checkbox, CircularProgress, Container, FormControlLabel, Link,
-  MenuItem, Stack, TextField, ToggleButton, ToggleButtonGroup, Typography,
+  Stack, TextField, ToggleButton, ToggleButtonGroup, Typography,
 } from '@mui/material';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
@@ -20,16 +20,9 @@ export type Audience = 'company-driver' | 'owner-operator' | 'fleet-owner' | 'sh
 
 export type ApplyValues = {
   audience: Audience;
-  firstName: string;
-  lastName: string;
-  email: string;
+  name: string;
   phone: string;
-  state: string;
-  experience: string;
-  cdlClass: string;
-  truckCount: string;
-  company: string;
-  lanes: string;
+  email: string;
   message: string;
   consent: boolean;
 };
@@ -41,9 +34,6 @@ const AUDIENCES: { value: Audience; label: string }[] = [
   { value: 'shipper', label: 'Shipper / broker' },
 ];
 
-const EXPERIENCE = ['Less than 6 months', '6–12 months', '1–3 years', '3–5 years', '5+ years'];
-const CDL_CLASS = ['Class A', 'Class B', 'Not currently licensed'];
-const TRUCK_COUNT = ['1 truck', '2–5 trucks', '6–10 trucks', 'More than 10'];
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const PHONE_RE = /^[\d\s()+.-]{10,20}$/;
@@ -54,16 +44,11 @@ export default function ApplyForm() {
   const { register, handleSubmit, control, watch, reset, formState: { errors } } = useForm<ApplyValues>({
     mode: 'onTouched',
     defaultValues: {
-      audience: 'company-driver',
-      firstName: '', lastName: '', email: '', phone: '', state: '',
-      experience: '', cdlClass: '', truckCount: '', company: '', lanes: '',
-      message: '', consent: false,
+      audience: 'company-driver', name: '', phone: '', email: '', message: '', consent: false,
     },
   });
 
   const audience = watch('audience');
-  const isDriver = audience === 'company-driver' || audience === 'owner-operator';
-  const isOwner = audience === 'fleet-owner' || audience === 'owner-operator';
   const isShipper = audience === 'shipper';
 
   const onSubmit = async (values: ApplyValues) => {
@@ -115,9 +100,9 @@ export default function ApplyForm() {
             </Reveal>
             <Reveal delay={0.12}>
               <Typography sx={{ color: 'text.secondary', mt: 2.5 }}>
-                Tell us which of these you are and we will only ask what is relevant. A person
-                reads every submission and follows up directly. If you would rather skip the form,
-                the number below reaches us.
+                Tell us who you are and how to reach you — that is all we need to start. A person
+                reads every message and follows up directly. If you would rather skip the form
+                entirely, the number below reaches us.
               </Typography>
             </Reveal>
 
@@ -222,134 +207,40 @@ export default function ApplyForm() {
 
                   <Box sx={{ display: 'grid', gap: 2, gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' } }}>
                     <TextField
-                      label="First name"
+                      label="Your name"
                       required
-                      error={!!errors.firstName}
-                      helperText={errors.firstName?.message}
-                      {...register('firstName', { required: 'Enter your first name' })}
-                    />
-                    <TextField
-                      label="Last name"
-                      required
-                      error={!!errors.lastName}
-                      helperText={errors.lastName?.message}
-                      {...register('lastName', { required: 'Enter your last name' })}
-                    />
-                    <TextField
-                      label="Email"
-                      type="email"
-                      required
-                      error={!!errors.email}
-                      helperText={errors.email?.message}
-                      {...register('email', {
-                        required: 'Enter your email',
-                        pattern: { value: EMAIL_RE, message: 'Enter a valid email address' },
-                      })}
+                      autoComplete="name"
+                      error={!!errors.name}
+                      helperText={errors.name?.message}
+                      sx={{ gridColumn: { sm: 'span 2' } }}
+                      {...register('name', { required: 'Enter your name' })}
                     />
                     <TextField
                       label="Phone"
                       type="tel"
                       required
+                      autoComplete="tel"
                       error={!!errors.phone}
-                      helperText={errors.phone?.message}
+                      helperText={errors.phone?.message ?? 'The fastest way to reach you'}
                       {...register('phone', {
                         required: 'Enter a phone number',
                         pattern: { value: PHONE_RE, message: 'Enter a valid phone number' },
                       })}
                     />
-
-                    {isShipper ? (
-                      <TextField
-                        label="Company"
-                        required
-                        error={!!errors.company}
-                        helperText={errors.company?.message}
-                        {...register('company', { required: 'Enter your company name' })}
-                      />
-                    ) : (
-                      <TextField
-                        label="State you're based in"
-                        required
-                        error={!!errors.state}
-                        helperText={errors.state?.message}
-                        {...register('state', { required: 'Enter your state' })}
-                      />
-                    )}
-
-                    {isDriver && (
-                      <Controller
-                        name="cdlClass"
-                        control={control}
-                        rules={{ required: 'Select your CDL class' }}
-                        render={({ field, fieldState }) => (
-                          <TextField
-                            {...field}
-                            select
-                            required
-                            label="CDL class"
-                            error={!!fieldState.error}
-                            helperText={fieldState.error?.message}
-                          >
-                            {CDL_CLASS.map((c) => <MenuItem key={c} value={c}>{c}</MenuItem>)}
-                          </TextField>
-                        )}
-                      />
-                    )}
-
-                    {isDriver && (
-                      <Controller
-                        name="experience"
-                        control={control}
-                        rules={{ required: 'Select your experience' }}
-                        render={({ field, fieldState }) => (
-                          <TextField
-                            {...field}
-                            select
-                            required
-                            label="Verifiable OTR experience"
-                            error={!!fieldState.error}
-                            helperText={fieldState.error?.message}
-                            sx={{ gridColumn: { sm: 'span 2' } }}
-                          >
-                            {EXPERIENCE.map((e) => <MenuItem key={e} value={e}>{e}</MenuItem>)}
-                          </TextField>
-                        )}
-                      />
-                    )}
-
-                    {isOwner && (
-                      <Controller
-                        name="truckCount"
-                        control={control}
-                        rules={{ required: 'Select how many trucks you own' }}
-                        render={({ field, fieldState }) => (
-                          <TextField
-                            {...field}
-                            select
-                            required
-                            label="Trucks you own"
-                            error={!!fieldState.error}
-                            helperText={fieldState.error?.message}
-                            sx={{ gridColumn: { sm: audience === 'fleet-owner' ? 'span 2' : 'span 1' } }}
-                          >
-                            {TRUCK_COUNT.map((c) => <MenuItem key={c} value={c}>{c}</MenuItem>)}
-                          </TextField>
-                        )}
-                      />
-                    )}
-
-                    {isShipper && (
-                      <TextField
-                        label="Lanes you need covered"
-                        placeholder="e.g. Houston → Dallas, weekly"
-                        sx={{ gridColumn: { sm: 'span 2' } }}
-                        {...register('lanes')}
-                      />
-                    )}
+                    <TextField
+                      label="Email (optional)"
+                      type="email"
+                      autoComplete="email"
+                      error={!!errors.email}
+                      helperText={errors.email?.message}
+                      {...register('email', {
+                        pattern: { value: EMAIL_RE, message: 'Enter a valid email address' },
+                      })}
+                    />
                   </Box>
 
                   <TextField
-                    label={isShipper ? 'Tell us about your freight' : 'Anything we should know? (optional)'}
+                    label={isShipper ? 'What do you need moved? (optional)' : 'Anything we should know? (optional)'}
                     multiline
                     minRows={3}
                     {...register('message')}

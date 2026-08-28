@@ -4,7 +4,7 @@ export const runtime = 'nodejs';
 
 type Payload = Record<string, unknown>;
 
-const REQUIRED = ['firstName', 'lastName', 'email', 'phone', 'audience'] as const;
+const REQUIRED = ['name', 'phone', 'audience'] as const;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 // Naive in-memory rate limit — swap for Redis/Upstash before production traffic.
@@ -40,7 +40,9 @@ export async function POST(req: Request) {
   if (missing.length) {
     return NextResponse.json({ error: `Missing: ${missing.join(', ')}` }, { status: 400 });
   }
-  if (!EMAIL_RE.test(String(body.email))) {
+  // Email is optional now — validate only when one was supplied.
+  const email = String(body.email ?? '').trim();
+  if (email && !EMAIL_RE.test(email)) {
     return NextResponse.json({ error: 'Invalid email' }, { status: 400 });
   }
   if (body.consent !== true) {
@@ -54,11 +56,9 @@ export async function POST(req: Request) {
   // serverless instances; move it to Redis/Upstash before production traffic.
   console.info('[drayvo:apply]', {
     audience: body.audience,
-    name: `${body.firstName} ${body.lastName}`,
-    email: body.email,
+    name: body.name,
     phone: body.phone,
-    state: body.state,
-    company: body.company,
+    email: email || null,
     receivedAt: new Date().toISOString(),
   });
 

@@ -15,12 +15,12 @@ export const site = {
   email: 'dispatch@drayvologistics.com',
   recruitingEmail: 'drive@drayvologistics.com',
 
-  // TODO(verify): confirm the registered business address before publishing.
-  // Do not display a terminal address the company does not operate from.
   address: {
-    street: '',
+    street: '17350 State Hwy 249',
+    suite: 'Ste 220',
     city: 'Houston',
     state: 'TX',
+    postalCode: '77064',
     country: 'US',
   },
 

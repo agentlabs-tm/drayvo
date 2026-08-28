@@ -25,9 +25,9 @@ import { FAQS } from '@/lib/faqs';
  * figure in schema is worse than in body copy, because search engines present
  * it as a fact attributed to the company.
  *
- * TODO(verify): add `address`, `telephone`, and FMCSA identifiers once
- * confirmed, and reinstate a JobPosting entry with a real `baseSalary` and
- * `validThrough` when the pay structure is signed off.
+ * TODO(verify): add `telephone` and the FMCSA identifiers once confirmed, and
+ * reinstate a JobPosting entry with a real `baseSalary` and `validThrough`
+ * when the pay structure is signed off.
  */
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -41,6 +41,14 @@ const jsonLd = {
       description: brandVoice.positioning,
       slogan: brandVoice.line,
       email: site.email,
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: `${site.address.street}, ${site.address.suite}`,
+        addressLocality: site.address.city,
+        addressRegion: site.address.state,
+        postalCode: site.address.postalCode,
+        addressCountry: site.address.country,
+      },
     },
     {
       '@type': 'WebSite',

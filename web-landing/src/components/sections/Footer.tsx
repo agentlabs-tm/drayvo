@@ -75,9 +75,10 @@ export default function Footer() {
                   confirmed. Never publish a placeholder operating authority number. */}
               {site.authorityVerified && site.mcNumber ? ` · ${site.mcNumber} · ${site.dotNumber}` : ''}
             </Typography>
-            {site.address.city && (
+            {site.address.street && (
               <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                {site.address.city}, {site.address.state}
+                {site.address.street}, {site.address.suite}, {site.address.city}{' '}
+                {site.address.state} {site.address.postalCode}
               </Typography>
             )}
           </Stack>
