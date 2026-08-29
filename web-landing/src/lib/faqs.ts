@@ -4,7 +4,7 @@
  *
  * Answers describe process and policy, not performance. Where a number would
  * normally appear (pay rate, response time, fleet size, on-time percentage) the
- * answer explains the mechanism instead — those figures are unverified, and the
+ * answer explains the mechanism instead - those figures are unverified, and the
  * FAQ is exactly where an unverifiable claim does the most damage, because
  * search engines surface it as an answer.
  *
@@ -23,11 +23,11 @@ export const FAQ_GROUPS: FaqGroup[] = [
     items: [
       {
         q: 'How do I know what a load pays before I take it?',
-        a: 'You see the rate on the load before you accept it — that is the first commitment in The Drayvo Standard and it applies to company drivers and owner-operators alike. If a load is offered without a rate attached, that is a mistake on our side and you should say so.',
+        a: 'You see the rate on the load before you accept it - that is the first commitment in The Drayvo Standard and it applies to company drivers and owner-operators alike. If a load is offered without a rate attached, that is a mistake on our side and you should say so.',
       },
       {
         q: 'How is my pay calculated, and when do I get it?',
-        a: 'Your pay structure and pay calendar are set out in writing before you accept an offer, and every settlement is itemized. We do not publish a headline rate here because pay varies by lane and experience — your recruiter will give you the real number for the work you would be doing.',
+        a: 'Your pay structure and pay calendar are set out in writing before you accept an offer, and every settlement is itemized. We do not publish a headline rate here because pay varies by lane and experience - your recruiter will give you the real number for the work you would be doing.',
       },
       {
         q: 'What gets deducted from my settlement?',
@@ -69,11 +69,11 @@ export const FAQ_GROUPS: FaqGroup[] = [
     items: [
       {
         q: 'I own trucks but do not want to run a company. How does that work?',
-        a: 'You keep the title. We run the unit under our operating authority and take on everything around it — driver, freight, maintenance, compliance, and reporting. You get revenue and cost for your truck rather than a monthly summary you have to take on faith.',
+        a: 'You keep the title. We run the unit under our operating authority and take on everything around it - driver, freight, maintenance, compliance, and reporting. You get revenue and cost for your truck rather than a monthly summary you have to take on faith.',
       },
       {
         q: 'Is this an investment product?',
-        a: 'No. It is a truck management arrangement. You own a physical asset and we operate it for you under a written agreement — there is no pooled fund, no promised return, and no security being offered. Any figures we discuss with you are specific to your truck and your lanes.',
+        a: 'No. It is a truck management arrangement. You own a physical asset and we operate it for you under a written agreement - there is no pooled fund, no promised return, and no security being offered. Any figures we discuss with you are specific to your truck and your lanes.',
       },
       {
         q: 'What happens when my truck is in the shop?',
@@ -81,7 +81,7 @@ export const FAQ_GROUPS: FaqGroup[] = [
       },
       {
         q: 'How do I know the numbers you report are complete?',
-        a: 'Because it ties back to specific loads rather than to a monthly total. Ask for the detail behind any line at any time — a management arrangement you cannot audit is not one worth having.',
+        a: 'Because it ties back to specific loads rather than to a monthly total. Ask for the detail behind any line at any time - a management arrangement you cannot audit is not one worth having.',
       },
     ],
   },

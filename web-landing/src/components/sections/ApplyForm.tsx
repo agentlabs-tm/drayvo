@@ -2,8 +2,19 @@
 
 import * as React from 'react';
 import {
-  Alert, Box, Button, Checkbox, CircularProgress, Container, FormControlLabel, Link,
-  Stack, TextField, ToggleButton, ToggleButtonGroup, Typography,
+  Alert,
+  Box,
+  Button,
+  Checkbox,
+  CircularProgress,
+  Container,
+  FormControlLabel,
+  Link,
+  Stack,
+  TextField,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
 } from '@mui/material';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
@@ -34,17 +45,28 @@ const AUDIENCES: { value: Audience; label: string }[] = [
   { value: 'shipper', label: 'Shipper / broker' },
 ];
 
-
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const PHONE_RE = /^[\d\s()+.-]{10,20}$/;
 
 export default function ApplyForm() {
   const [status, setStatus] = React.useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 
-  const { register, handleSubmit, control, watch, reset, formState: { errors } } = useForm<ApplyValues>({
+  const {
+    register,
+    handleSubmit,
+    control,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<ApplyValues>({
     mode: 'onTouched',
     defaultValues: {
-      audience: 'company-driver', name: '', phone: '', email: '', message: '', consent: false,
+      audience: 'company-driver',
+      name: '',
+      phone: '',
+      email: '',
+      message: '',
+      consent: false,
     },
   });
 
@@ -89,7 +111,10 @@ export default function ApplyForm() {
         >
           <Box>
             <Reveal>
-              <Typography variant="overline" sx={{ color: 'primary.main', display: 'block', mb: 2 }}>
+              <Typography
+                variant="overline"
+                sx={{ color: 'primary.main', display: 'block', mb: 2 }}
+              >
                 Start here
               </Typography>
             </Reveal>
@@ -100,36 +125,44 @@ export default function ApplyForm() {
             </Reveal>
             <Reveal delay={0.12}>
               <Typography sx={{ color: 'text.secondary', mt: 2.5 }}>
-                Tell us who you are and how to reach you — that is all we need to start. A person
-                reads every message and follows up directly. If you would rather skip the form
-                entirely, the number below reaches us.
+                Tell us who you are and how to reach you - that is all we need to start. A person
+                reads every message and follows up directly.
               </Typography>
             </Reveal>
 
             <Reveal delay={0.18}>
               <Stack spacing={2} sx={{ mt: 4 }}>
-                <ContactLine
-                  icon={<PhoneInTalkOutlinedIcon fontSize="small" />}
-                  label="Phone"
-                  value={site.phone}
-                  href={`tel:${site.phoneHref}`}
-                />
+                {site.phone && (
+                  <ContactLine
+                    icon={<PhoneInTalkOutlinedIcon fontSize="small" />}
+                    label="Phone"
+                    value={site.phone}
+                    href={`tel:${site.phoneHref}`}
+                  />
+                )}
                 <ContactLine
                   icon={<EmailOutlinedIcon fontSize="small" />}
                   label="Email"
-                  value={site.recruitingEmail}
-                  href={`mailto:${site.recruitingEmail}`}
+                  value={site.email}
+                  href={`mailto:${site.email}`}
                 />
               </Stack>
             </Reveal>
 
             <Reveal delay={0.24}>
-              <Stack direction="row" spacing={1.25} sx={{ mt: 4, alignItems: 'flex-start', color: 'text.secondary' }}>
+              <Stack
+                direction="row"
+                spacing={1.25}
+                sx={{ mt: 4, alignItems: 'flex-start', color: 'text.secondary' }}
+              >
                 <LockOutlinedIcon sx={{ fontSize: 17, mt: '2px' }} />
                 <Typography variant="caption">
                   Used only to respond to your enquiry. We don&apos;t sell your information or pass
                   it to lead brokers. See our{' '}
-                  <Link href="/privacy" sx={{ color: 'primary.main' }}>privacy notice</Link>.
+                  <Link href="/privacy" sx={{ color: 'primary.main' }}>
+                    privacy notice
+                  </Link>
+                  .
                 </Typography>
               </Stack>
             </Reveal>
@@ -150,21 +183,37 @@ export default function ApplyForm() {
               }}
             >
               {status === 'sent' ? (
-                <Stack spacing={2} sx={{ alignItems: 'flex-start', py: { xs: 4, md: 8 } }} role="status">
+                <Stack
+                  spacing={2}
+                  sx={{ alignItems: 'flex-start', py: { xs: 4, md: 8 } }}
+                  role="status"
+                >
                   <CheckCircleOutlineRoundedIcon sx={{ fontSize: 48, color: 'success.main' }} />
-                  <Typography variant="h4" sx={{ color: 'text.primary' }}>Message received</Typography>
-                  <Typography sx={{ color: 'text.secondary', maxWidth: 480 }}>
-                    Thanks — this has reached us and a person will follow up. If it is urgent,
-                    calling {site.phone} is faster than waiting on a reply.
+                  <Typography variant="h4" sx={{ color: 'text.primary' }}>
+                    Message received
                   </Typography>
-                  <Button variant="outlined" onClick={() => setStatus('idle')} sx={{ mt: 1, color: 'text.primary' }}>
+                  <Typography sx={{ color: 'text.secondary', maxWidth: 480 }}>
+                    Thanks - this has reached us and a person will follow up.{' '}
+                    {site.phone
+                      ? `If it is urgent, calling ${site.phone} is faster than waiting on a reply.`
+                      : `If it is urgent, email ${site.email} and mark it urgent.`}
+                  </Typography>
+                  <Button
+                    variant="outlined"
+                    onClick={() => setStatus('idle')}
+                    sx={{ mt: 1, color: 'text.primary' }}
+                  >
                     Send another
                   </Button>
                 </Stack>
               ) : (
                 <Stack spacing={3}>
                   <Box>
-                    <Typography component="label" variant="overline" sx={{ color: 'text.secondary', display: 'block', mb: 1 }}>
+                    <Typography
+                      component="label"
+                      variant="overline"
+                      sx={{ color: 'text.secondary', display: 'block', mb: 1 }}
+                    >
                       I am a
                     </Typography>
                     <Controller
@@ -198,14 +247,22 @@ export default function ApplyForm() {
                           }}
                         >
                           {AUDIENCES.map((o) => (
-                            <ToggleButton key={o.value} value={o.value}>{o.label}</ToggleButton>
+                            <ToggleButton key={o.value} value={o.value}>
+                              {o.label}
+                            </ToggleButton>
                           ))}
                         </ToggleButtonGroup>
                       )}
                     />
                   </Box>
 
-                  <Box sx={{ display: 'grid', gap: 2, gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' } }}>
+                  <Box
+                    sx={{
+                      display: 'grid',
+                      gap: 2,
+                      gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
+                    }}
+                  >
                     <TextField
                       label="Your name"
                       required
@@ -240,7 +297,11 @@ export default function ApplyForm() {
                   </Box>
 
                   <TextField
-                    label={isShipper ? 'What do you need moved? (optional)' : 'Anything we should know? (optional)'}
+                    label={
+                      isShipper
+                        ? 'What do you need moved? (optional)'
+                        : 'Anything we should know? (optional)'
+                    }
                     multiline
                     minRows={3}
                     {...register('message')}
@@ -266,7 +327,11 @@ export default function ApplyForm() {
                           sx={{ alignItems: 'flex-start', m: 0, '& .MuiCheckbox-root': { pt: 0 } }}
                         />
                         {fieldState.error && (
-                          <Typography variant="caption" role="alert" sx={{ color: 'error.main', display: 'block', ml: 3.75 }}>
+                          <Typography
+                            variant="caption"
+                            role="alert"
+                            sx={{ color: 'error.main', display: 'block', ml: 3.75 }}
+                          >
                             {fieldState.error.message}
                           </Typography>
                         )}
@@ -276,8 +341,10 @@ export default function ApplyForm() {
 
                   {status === 'error' && (
                     <Alert severity="error" sx={{ borderRadius: 1 }}>
-                      That didn&apos;t send. Call {site.phone} and we&apos;ll take your details
-                      over the phone instead.
+                      That didn&apos;t send.{' '}
+                      {site.phone
+                        ? `Call ${site.phone} and we'll take your details over the phone instead.`
+                        : `Email ${site.email} and we'll pick it up from there.`}
                     </Alert>
                   )}
 
@@ -286,9 +353,13 @@ export default function ApplyForm() {
                     variant="contained"
                     size="large"
                     disabled={status === 'sending'}
-                    endIcon={status === 'sending'
-                      ? <CircularProgress size={16} color="inherit" />
-                      : <SendRoundedIcon />}
+                    endIcon={
+                      status === 'sending' ? (
+                        <CircularProgress size={16} color="inherit" />
+                      ) : (
+                        <SendRoundedIcon />
+                      )
+                    }
                     sx={{ alignSelf: { sm: 'flex-start' } }}
                   >
                     {status === 'sending' ? 'Sending…' : 'Send'}
@@ -304,9 +375,15 @@ export default function ApplyForm() {
 }
 
 function ContactLine({
-  icon, label, value, href,
+  icon,
+  label,
+  value,
+  href,
 }: {
-  icon: React.ReactNode; label: string; value: string; href: string;
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+  href: string;
 }) {
   return (
     <Stack
@@ -322,14 +399,23 @@ function ContactLine({
     >
       <Box
         sx={{
-          width: 38, height: 38, borderRadius: 1, display: 'grid', placeItems: 'center', flexShrink: 0,
-          border: '1px solid', borderColor: 'divider', color: 'primary.main',
+          width: 38,
+          height: 38,
+          borderRadius: 1,
+          display: 'grid',
+          placeItems: 'center',
+          flexShrink: 0,
+          border: '1px solid',
+          borderColor: 'divider',
+          color: 'primary.main',
         }}
       >
         {icon}
       </Box>
       <Box>
-        <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block' }}>{label}</Typography>
+        <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block' }}>
+          {label}
+        </Typography>
         <Typography className="contact-value" sx={{ color: 'text.primary', fontWeight: 600 }}>
           {value}
         </Typography>

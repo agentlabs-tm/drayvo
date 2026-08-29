@@ -9,7 +9,7 @@ export type SectionTone = 'base' | 'raised' | 'contrast';
  * Page section wrapper. Centralizing tone here is what gives the page its
  * rhythm.
  *
- * All three tones follow the active color scheme — including `contrast`, which
+ * All three tones follow the active color scheme - including `contrast`, which
  * is the band that carries operating-record content. It resolves through the
  * `--surface-contrast` variable in globals.css rather than being pinned to the
  * brand dark, so light mode is genuinely light.

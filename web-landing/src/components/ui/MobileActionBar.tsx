@@ -10,7 +10,7 @@ import { site } from '@/lib/site';
  * Sticky call/apply bar for small screens.
  *
  * Driver recruiting traffic is overwhelmingly mobile, and the two actions that
- * convert — phoning a recruiter and starting an application — otherwise live at
+ * convert - phoning a recruiter and starting an application - otherwise live at
  * the top and bottom of a long page. This keeps both a thumb away.
  *
  * It stays hidden until the hero has scrolled past, so it never competes with
@@ -30,7 +30,7 @@ export default function MobileActionBar() {
             formOnScreen = entry.isIntersecting;
             setVisible(window.scrollY > window.innerHeight * 0.9 && !formOnScreen);
           },
-          { threshold: 0.12 },
+          { threshold: 0.12 }
         )
       : null;
     observer?.observe(apply!);
@@ -72,15 +72,17 @@ export default function MobileActionBar() {
           }}
         >
           <Stack direction="row" spacing={1.25}>
-            <Button
-              href={`tel:${site.phoneHref}`}
-              variant="outlined"
-              startIcon={<PhoneInTalkRoundedIcon />}
-              sx={{ flex: 1, color: 'text.primary' }}
-            >
-              Call
-            </Button>
-            <Button href="#apply" variant="contained" sx={{ flex: 2 }}>
+            {site.phoneHref && (
+              <Button
+                href={`tel:${site.phoneHref}`}
+                variant="outlined"
+                startIcon={<PhoneInTalkRoundedIcon />}
+                sx={{ flex: 1, color: 'text.primary' }}
+              >
+                Call
+              </Button>
+            )}
+            <Button href="#apply" variant="contained" sx={{ flex: site.phoneHref ? 2 : 1 }}>
               Drive with Drayvo
             </Button>
           </Stack>

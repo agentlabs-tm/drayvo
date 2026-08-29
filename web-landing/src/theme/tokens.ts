@@ -1,9 +1,9 @@
 /**
- * Drayvo Logistics — brand tokens, taken directly from the logo artwork
+ * Drayvo Logistics - brand tokens, taken directly from the logo artwork
  * in `public/brand/`. Every color on the site resolves back to this file.
  */
 export const brand = {
-  // Signature orange — the logo's D-arrow gradient runs #FF6600 → #F24200.
+  // Signature orange - the logo's D-arrow gradient runs #FF6600 → #F24200.
   // Reserved for actions and proof points, never for decoration.
   orange: '#FF6600',
   orangeDeep: '#F24200',
@@ -18,7 +18,7 @@ export const brand = {
   /** Hover/pressed step below `orangeText`. */
   orangeDeepText: '#A82F00',
 
-  // Brand dark — the plate color behind the reversed lockup.
+  // Brand dark - the plate color behind the reversed lockup.
   ink: '#060D1A',
   // Charcoal band used to break the page into sections and carry the
   // "operating record" surfaces (settlements, reporting previews).
@@ -30,4 +30,3 @@ export const brand = {
   mist: '#F4F6F9',
   paper: '#FFFFFF',
 } as const;
-

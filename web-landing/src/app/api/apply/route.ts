@@ -7,7 +7,7 @@ type Payload = Record<string, unknown>;
 const REQUIRED = ['name', 'phone', 'audience'] as const;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-// Naive in-memory rate limit — swap for Redis/Upstash before production traffic.
+// Naive in-memory rate limit - swap for Redis/Upstash before production traffic.
 const hits = new Map<string, { count: number; reset: number }>();
 const WINDOW_MS = 60_000;
 const MAX_PER_WINDOW = 5;
@@ -40,7 +40,7 @@ export async function POST(req: Request) {
   if (missing.length) {
     return NextResponse.json({ error: `Missing: ${missing.join(', ')}` }, { status: 400 });
   }
-  // Email is optional now — validate only when one was supplied.
+  // Email is optional now - validate only when one was supplied.
   const email = String(body.email ?? '').trim();
   if (email && !EMAIL_RE.test(email)) {
     return NextResponse.json({ error: 'Invalid email' }, { status: 400 });
@@ -49,7 +49,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Consent required' }, { status: 400 });
   }
 
-  // TODO(integrate): deliver to the CRM / ATS / email provider — this route
+  // TODO(integrate): deliver to the CRM / ATS / email provider - this route
   // currently only logs, so submissions are NOT reaching anyone. Wire this up
   // before the form goes live.
   // TODO(scale): the rate limiter above is in-memory and does not survive

@@ -52,13 +52,13 @@ video {
 
 /* ------------------------------------------------------------------
    Section surfaces.
-   The page rhythm needs a third surface beyond default/paper — the
+   The page rhythm needs a third surface beyond default/paper - the
    "contrast" band that carries operating-record content. It must flip
    with the color scheme, so it is defined per scheme here rather than
    hardcoded to the brand dark.
 
    MUI's colorSchemeSelector: 'data' stamps `data-light` / `data-dark`
-   on <html> — not `data-mui-color-scheme`.
+   on <html> - not `data-mui-color-scheme`.
 ------------------------------------------------------------------- */
 :root,
 [data-light] {
@@ -79,8 +79,8 @@ video {
 
 /* ------------------------------------------------------------------
    Road graphic.
-   Asphalt reads as a dark surface in both schemes — a light-grey road
-   in light mode looks like a diagram rather than a road — but the
+   Asphalt reads as a dark surface in both schemes - a light-grey road
+   in light mode looks like a diagram rather than a road - but the
    values are tuned per scheme so it sits on its band correctly.
 ------------------------------------------------------------------- */
 :root,

@@ -9,7 +9,7 @@ import { brand } from '@/theme/tokens';
  * The road: an asphalt ribbon with edge lines and a dashed centre line, running
  * off both sides of the frame, carrying a continuous convoy of tractor units.
  *
- * Built as stacked strokes on one path rather than as separate shapes — the
+ * Built as stacked strokes on one path rather than as separate shapes - the
  * widest stroke is the shoulder, a narrower one on top is the asphalt, and a
  * dashed stroke above that is the centre line. Stacking means the whole road
  * follows the curve automatically, and the same path drives the convoy.
@@ -23,8 +23,7 @@ import { brand } from '@/theme/tokens';
  */
 
 /** Runs from off-canvas left to off-canvas right. */
-const PATH =
-  'M -80 196 C 60 196, 120 96, 300 104 S 470 190, 610 132 S 800 52, 1040 74';
+const PATH = 'M -80 196 C 60 196, 120 96, 300 104 S 470 190, 610 132 S 800 52, 1040 74';
 
 const STOPS = [
   { x: 300, y: 104, label: 'Pickup' },
@@ -36,7 +35,7 @@ const STOPS = [
 const TRAVEL = 18;
 /**
  * Share of each leg spent accelerating and braking. A trapezoidal profile —
- * pull away, cruise, slow into the stop — peaks at only 1/(1 - 2 * RAMP) of
+ * pull away, cruise, slow into the stop - peaks at only 1/(1 - 2 * RAMP) of
  * its average speed, where a cubic ease peaks at 3x and made the runs between
  * stops read as far too fast.
  */
@@ -61,18 +60,28 @@ const TRAILER_LEN = 68;
 
 /**
  * Roadside trees. Positions were checked against the carriageway rather than
- * placed by eye — every one clears the road plus its shoulder by at least 27
+ * placed by eye - every one clears the road plus its shoulder by at least 27
  * units, so nothing sits on the asphalt however the curve is read.
  *
  * `s` scales the tree; smaller ones sit further from the road to suggest depth
  * without needing a perspective system.
  */
 const TREES = [
-  { x: 60, y: 70, s: 1.0 }, { x: 120, y: 45, s: 0.72 }, { x: 28, y: 118, s: 0.85 },
-  { x: 300, y: 34, s: 0.66 }, { x: 420, y: 58, s: 0.92 }, { x: 505, y: 52, s: 0.7 },
-  { x: 560, y: 38, s: 0.6 }, { x: 690, y: 42, s: 0.88 }, { x: 880, y: 28, s: 0.64 },
-  { x: 95, y: 205, s: 0.95 }, { x: 215, y: 197, s: 0.75 }, { x: 330, y: 192, s: 1.05 },
-  { x: 655, y: 196, s: 0.8 }, { x: 760, y: 178, s: 1.0 }, { x: 845, y: 192, s: 0.7 },
+  { x: 60, y: 70, s: 1.0 },
+  { x: 120, y: 45, s: 0.72 },
+  { x: 28, y: 118, s: 0.85 },
+  { x: 300, y: 34, s: 0.66 },
+  { x: 420, y: 58, s: 0.92 },
+  { x: 505, y: 52, s: 0.7 },
+  { x: 560, y: 38, s: 0.6 },
+  { x: 690, y: 42, s: 0.88 },
+  { x: 880, y: 28, s: 0.64 },
+  { x: 95, y: 205, s: 0.95 },
+  { x: 215, y: 197, s: 0.75 },
+  { x: 330, y: 192, s: 1.05 },
+  { x: 655, y: 196, s: 0.8 },
+  { x: 760, y: 178, s: 1.0 },
+  { x: 845, y: 192, s: 0.7 },
   { x: 905, y: 170, s: 0.88 },
 ];
 
@@ -96,13 +105,15 @@ function legProgress(x: number) {
   return travelled / area;
 }
 
-type Leg = { kind: 'drive'; from: number; to: number; seconds: number } | { kind: 'wait'; at: number; seconds: number };
+type Leg =
+  | { kind: 'drive'; from: number; to: number; seconds: number }
+  | { kind: 'wait'; at: number; seconds: number };
 
 /**
  * Turns the stop coordinates into a drive/wait timeline along the path.
  *
  * The stops are authored as x/y points, so their position along the path is
- * recovered by sampling — that keeps the markers and the pauses in sync no
+ * recovered by sampling - that keeps the markers and the pauses in sync no
  * matter how the curve is edited later.
  */
 function buildTimeline(path: SVGPathElement): { legs: Leg[]; cycle: number } {
@@ -190,11 +201,11 @@ export default function RouteGraphic() {
 
       tractor.setAttribute(
         'transform',
-        `translate(${kingpinPt.x} ${kingpinPt.y}) rotate(${heading(kingpinPt, nosePt)})`,
+        `translate(${kingpinPt.x} ${kingpinPt.y}) rotate(${heading(kingpinPt, nosePt)})`
       );
       trailer.setAttribute(
         'transform',
-        `translate(${rearPt.x} ${rearPt.y}) rotate(${heading(rearPt, kingpinPt)})`,
+        `translate(${rearPt.x} ${rearPt.y}) rotate(${heading(rearPt, kingpinPt)})`
       );
       tractor.setAttribute('opacity', String(opacity));
       trailer.setAttribute('opacity', String(opacity));
@@ -271,7 +282,7 @@ export default function RouteGraphic() {
           ))}
         </motion.g>
 
-        {/* Shoulder — the outermost stroke reads as the road's edge lines */}
+        {/* Shoulder - the outermost stroke reads as the road's edge lines */}
         <motion.path
           {...draw}
           d={PATH}
@@ -322,7 +333,15 @@ export default function RouteGraphic() {
             transition={{ delay: reduce ? 0 : 0.5 + i * 0.28, duration: 0.45 }}
           >
             {/* Stem from the marker down to the road */}
-            <line x1={s.x} y1={s.y - 30} x2={s.x} y2={s.y} stroke={brand.orange} strokeWidth={1.5} opacity={0.55} />
+            <line
+              x1={s.x}
+              y1={s.y - 30}
+              x2={s.x}
+              y2={s.y}
+              stroke={brand.orange}
+              strokeWidth={1.5}
+              opacity={0.55}
+            />
             <circle cx={s.x} cy={s.y} r={4.5} fill={brand.orange} />
             <circle cx={s.x} cy={s.y} r={10} fill={brand.orange} opacity={0.16} />
             <text
@@ -370,7 +389,7 @@ export default function RouteGraphic() {
 }
 
 /**
- * Roadside tree. Two stacked canopy tiers over a short trunk — enough to read
+ * Roadside tree. Two stacked canopy tiers over a short trunk - enough to read
  * as a conifer at this scale without tipping into clip-art, and desaturated so
  * it stays scenery rather than competing with the road or the brand orange.
  */
@@ -398,7 +417,11 @@ function Tractor() {
       {/* sleeper box */}
       <path d="M3 2 V-9.4 Q3 -11 4.6 -11 H16.5 V2 Z" fill={brand.orange} />
       {/* roof fairing over the sleeper, sloping down to the cab */}
-      <path d="M6 -11 Q13 -12.6 17.6 -9.6 L17.6 -7.4 L6 -8.6 Z" fill={brand.orange} opacity="0.92" />
+      <path
+        d="M6 -11 Q13 -12.6 17.6 -9.6 L17.6 -7.4 L6 -8.6 Z"
+        fill={brand.orange}
+        opacity="0.92"
+      />
       {/* cab */}
       <path d="M16.5 2 V-9.2 Q16.5 -10.4 17.8 -10.4 H21.4 L24.6 -4.6 V2 Z" fill={brand.orange} />
       {/* windshield */}

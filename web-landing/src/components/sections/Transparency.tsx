@@ -13,7 +13,7 @@ import { brand } from '@/theme/tokens';
  * Transparency in action.
  *
  * These are conceptual interface previews illustrating the *format* of the
- * information Drayvo shares — not screenshots, and not company performance.
+ * information Drayvo shares - not screenshots, and not company performance.
  * Every figure below is an illustrative example and is labelled as such in the
  * UI itself, not merely in a comment, so it cannot be mistaken for a claim.
  *
@@ -40,7 +40,13 @@ const RATE_CARD = {
 const OWNER_ROWS = [
   { truck: 'Unit 104', revenue: '8,420', cost: '3,180', status: 'In service', tone: 'ok' as const },
   { truck: 'Unit 107', revenue: '7,905', cost: '2,940', status: 'In service', tone: 'ok' as const },
-  { truck: 'Unit 112', revenue: '2,310', cost: '4,110', status: 'In shop — 3 days', tone: 'warn' as const },
+  {
+    truck: 'Unit 112',
+    revenue: '2,310',
+    cost: '4,110',
+    status: 'In shop - 3 days',
+    tone: 'warn' as const,
+  },
 ];
 
 export default function Transparency() {
@@ -73,8 +79,8 @@ export default function Transparency() {
         </Reveal>
         <Reveal delay={0.12}>
           <Typography sx={{ color: 'text.secondary', mt: 2.5, fontSize: '1.05rem' }}>
-            Transparency is a claim until you can see the format it arrives in. This is what
-            drivers and truck owners get from us, and how plainly it is stated.
+            Transparency is a claim until you can see the format it arrives in. This is what drivers
+            and truck owners get from us, and how plainly it is stated.
           </Typography>
         </Reveal>
       </Box>
@@ -101,7 +107,7 @@ export default function Transparency() {
         <Reveal delay={0.08}>
           <Panel
             kicker="Owner reporting"
-            title="Fleet view — month to date"
+            title="Fleet view - month to date"
             caption="Revenue and cost per truck, with downtime shown rather than absorbed."
           >
             <Box
@@ -137,7 +143,9 @@ export default function Transparency() {
                 {OWNER_ROWS.map((r) => (
                   <Box component="tr" key={r.truck}>
                     <Box component="td" sx={cell}>
-                      <Typography sx={{ color: 'text.primary', fontWeight: 600, fontSize: '0.9rem' }}>
+                      <Typography
+                        sx={{ color: 'text.primary', fontWeight: 600, fontSize: '0.9rem' }}
+                      >
                         {r.truck}
                       </Typography>
                     </Box>
@@ -152,11 +160,16 @@ export default function Transparency() {
                         <Box
                           aria-hidden
                           sx={{
-                            width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
+                            width: 6,
+                            height: 6,
+                            borderRadius: '50%',
+                            flexShrink: 0,
                             bgcolor: r.tone === 'ok' ? 'success.main' : 'primary.main',
                           }}
                         />
-                        <Typography sx={{ color: 'text.secondary', fontSize: '0.82rem' }}>{r.status}</Typography>
+                        <Typography sx={{ color: 'text.secondary', fontSize: '0.82rem' }}>
+                          {r.status}
+                        </Typography>
                       </Stack>
                     </Box>
                   </Box>
@@ -164,13 +177,25 @@ export default function Transparency() {
               </Box>
             </Box>
 
-            <Box sx={{ mt: 2.5, p: 2, borderRadius: 1, bgcolor: alpha(brand.orange, 0.08), border: '1px solid', borderColor: alpha(brand.orange, 0.3) }}>
+            <Box
+              sx={{
+                mt: 2.5,
+                p: 2,
+                borderRadius: 1,
+                bgcolor: alpha(brand.orange, 0.08),
+                border: '1px solid',
+                borderColor: alpha(brand.orange, 0.3),
+              }}
+            >
               <Typography variant="body2" sx={{ color: 'text.primary', fontWeight: 600 }}>
-                Unit 112 — brake service, day 3
+                Unit 112 - brake service, day 3
               </Typography>
-              <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block', mt: 0.5 }}>
-                Parts delayed. Estimated return to service Thursday. You would have had this
-                update the day the truck came out of service, not at month end.
+              <Typography
+                variant="caption"
+                sx={{ color: 'text.secondary', display: 'block', mt: 0.5 }}
+              >
+                Parts delayed. Estimated return to service Thursday. You would have had this update
+                the day the truck came out of service, not at month end.
               </Typography>
             </Box>
           </Panel>
@@ -207,7 +232,10 @@ function Mono({ children, muted }: { children: React.ReactNode; muted?: boolean 
  * the badge is part of the component, so a panel cannot be reused without it.
  */
 function Panel({
-  kicker, title, caption, children,
+  kicker,
+  title,
+  caption,
+  children,
 }: {
   kicker: string;
   title: string;
@@ -238,8 +266,15 @@ function Panel({
         }}
       >
         <Box>
-          <Typography variant="overline" sx={{ color: 'text.secondary', display: 'block' }}>{kicker}</Typography>
-          <Typography component="h3" sx={{ color: 'text.primary', fontWeight: 700, fontSize: '1.05rem' }}>{title}</Typography>
+          <Typography variant="overline" sx={{ color: 'text.secondary', display: 'block' }}>
+            {kicker}
+          </Typography>
+          <Typography
+            component="h3"
+            sx={{ color: 'text.primary', fontWeight: 700, fontSize: '1.05rem' }}
+          >
+            {title}
+          </Typography>
         </Box>
         <Chip
           label="Example"
@@ -292,17 +327,61 @@ function SettlementEstimator() {
   const net = gross - deductions;
 
   const lines = [
-    { label: 'Linehaul', detail: `${miles.toLocaleString('en-US')} mi @ $${RATE_CARD.perMile.toFixed(2)}`, value: linehaul, positive: true },
-    { label: 'Detention', detail: `${detention} hr @ $${RATE_CARD.detentionPerHour}`, value: detentionPay, positive: true },
+    {
+      label: 'Linehaul',
+      detail: `${miles.toLocaleString('en-US')} mi @ $${RATE_CARD.perMile.toFixed(2)}`,
+      value: linehaul,
+      positive: true,
+    },
+    {
+      label: 'Detention',
+      detail: `${detention} hr @ $${RATE_CARD.detentionPerHour}`,
+      value: detentionPay,
+      positive: true,
+    },
     { label: 'Fuel advance', detail: 'Repaid this week', value: -advance, positive: false },
-    { label: 'Occupational insurance', detail: 'Weekly', value: -RATE_CARD.weeklyInsurance, positive: false },
-    { label: 'Maintenance escrow', detail: 'Weekly', value: -RATE_CARD.weeklyEscrow, positive: false },
+    {
+      label: 'Occupational insurance',
+      detail: 'Weekly',
+      value: -RATE_CARD.weeklyInsurance,
+      positive: false,
+    },
+    {
+      label: 'Maintenance escrow',
+      detail: 'Weekly',
+      value: -RATE_CARD.weeklyEscrow,
+      positive: false,
+    },
   ];
 
   const CONTROLS = [
-    { label: 'Miles this week', value: miles, set: setMiles, min: 1200, max: 3400, step: 50, format: (v: number) => v.toLocaleString('en-US') },
-    { label: 'Detention hours', value: detention, set: setDetention, min: 0, max: 10, step: 1, format: (v: number) => `${v} hr` },
-    { label: 'Fuel advance taken', value: advance, set: setAdvance, min: 0, max: 900, step: 50, format: (v: number) => `$${v}` },
+    {
+      label: 'Miles this week',
+      value: miles,
+      set: setMiles,
+      min: 1200,
+      max: 3400,
+      step: 50,
+      format: (v: number) => v.toLocaleString('en-US'),
+    },
+    {
+      label: 'Detention hours',
+      value: detention,
+      set: setDetention,
+      min: 0,
+      max: 10,
+      step: 1,
+      format: (v: number) => `${v} hr`,
+    },
+    {
+      label: 'Fuel advance taken',
+      value: advance,
+      set: setAdvance,
+      min: 0,
+      max: 900,
+      step: 50,
+      format: (v: number) => `$${v}`,
+    },
   ];
 
   return (
@@ -311,9 +390,16 @@ function SettlementEstimator() {
         {CONTROLS.map((c) => (
           <Box key={c.label}>
             <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'baseline' }}>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>{c.label}</Typography>
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                {c.label}
+              </Typography>
               <Typography
-                sx={{ fontFamily: 'var(--font-mono)', fontSize: '0.82rem', fontWeight: 600, color: 'text.primary' }}
+                sx={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '0.82rem',
+                  fontWeight: 600,
+                  color: 'text.primary',
+                }}
               >
                 {c.format(c.value)}
               </Typography>
@@ -334,7 +420,9 @@ function SettlementEstimator() {
                 '& .MuiSlider-thumb': {
                   width: 16,
                   height: 16,
-                  '&:hover, &.Mui-focusVisible': { boxShadow: `0 0 0 6px ${alpha(brand.orange, 0.18)}` },
+                  '&:hover, &.Mui-focusVisible': {
+                    boxShadow: `0 0 0 6px ${alpha(brand.orange, 0.18)}`,
+                  },
                 },
               }}
             />
@@ -353,7 +441,13 @@ function SettlementEstimator() {
               <Typography variant="body2" sx={{ color: 'text.primary', fontWeight: 600 }}>
                 {l.label}
               </Typography>
-              <Typography sx={{ color: 'text.secondary', fontFamily: 'var(--font-mono)', fontSize: '0.72rem' }}>
+              <Typography
+                sx={{
+                  color: 'text.secondary',
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '0.72rem',
+                }}
+              >
                 {l.detail}
               </Typography>
             </Box>
@@ -386,8 +480,16 @@ function SettlementEstimator() {
       >
         <Box>
           <Typography sx={{ color: 'text.primary', fontWeight: 700 }}>Net to driver</Typography>
-          <Typography sx={{ color: 'text.secondary', fontFamily: 'var(--font-mono)', fontSize: '0.72rem' }}>
-            gross {gross.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} − deductions {deductions.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          <Typography
+            sx={{ color: 'text.secondary', fontFamily: 'var(--font-mono)', fontSize: '0.72rem' }}
+          >
+            gross{' '}
+            {gross.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}{' '}
+            − deductions{' '}
+            {deductions.toLocaleString('en-US', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
           </Typography>
         </Box>
         <Typography

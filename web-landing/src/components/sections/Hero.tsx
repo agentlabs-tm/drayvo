@@ -12,7 +12,7 @@ import { brandVoice } from '@/lib/brand';
 
 /**
  * First viewport. Its one job is to make clear, immediately, that Drayvo is
- * built for two audiences — people who drive trucks and people who own them —
+ * built for two audiences - people who drive trucks and people who own them —
  * and that the differentiator is visibility, not a headline rate.
  */
 export default function Hero() {
@@ -42,7 +42,10 @@ export default function Hero() {
         >
           <Box>
             <Reveal>
-              <Typography variant="overline" sx={{ color: 'primary.main', display: 'block', mb: 2.5 }}>
+              <Typography
+                variant="overline"
+                sx={{ color: 'primary.main', display: 'block', mb: 2.5 }}
+              >
                 For drivers and truck owners
               </Typography>
             </Reveal>
@@ -58,7 +61,9 @@ export default function Hero() {
                   lineHeight: 1.05,
                 }}
               >
-                <Box component="span" sx={{ display: 'block' }}>Every Mile Matters.</Box>
+                <Box component="span" sx={{ display: 'block' }}>
+                  Every Mile Matters.
+                </Box>
                 <Box component="span" sx={{ display: 'block', color: 'primary.main' }}>
                   Every Driver Matters.
                 </Box>
@@ -99,7 +104,12 @@ export default function Hero() {
 
             <Reveal delay={0.24}>
               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ mt: 5 }}>
-                <Button href="#apply" variant="contained" size="large" endIcon={<ArrowForwardRoundedIcon />}>
+                <Button
+                  href="#apply"
+                  variant="contained"
+                  size="large"
+                  endIcon={<ArrowForwardRoundedIcon />}
+                >
                   Drive with Drayvo
                 </Button>
                 <Button
@@ -147,7 +157,7 @@ function AudienceSplit() {
       lines: [
         'Load-level revenue and cost reporting',
         'Maintenance and downtime documented',
-        'You own the asset — we run the operation',
+        'You own the asset - we run the operation',
       ],
       href: '#owners',
       cta: 'For truck owners',
@@ -190,7 +200,7 @@ function AudienceSplit() {
 
 /**
  * Background: route lines on a grid, drawn once and static. Deliberately not
- * animated — the page has enough motion in its reveals, and a moving
+ * animated - the page has enough motion in its reveals, and a moving
  * background undercuts the "operational record" tone.
  */
 function RouteLines() {

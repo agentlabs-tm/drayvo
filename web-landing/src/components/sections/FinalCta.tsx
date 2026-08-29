@@ -20,19 +20,26 @@ export default function FinalCta() {
         <Reveal>
           <Typography variant="h2" sx={{ color: 'text.primary', maxWidth: 860 }}>
             Trucking should work for the people who{' '}
-            <Box component="span" sx={{ color: 'primary.main' }}>keep it moving.</Box>
+            <Box component="span" sx={{ color: 'primary.main' }}>
+              keep it moving.
+            </Box>
           </Typography>
         </Reveal>
         <Reveal delay={0.08}>
           <Typography sx={{ color: 'text.secondary', mt: 3, maxWidth: 620, fontSize: '1.05rem' }}>
-            Bring the offer you are considering. We will go through ours next to it — the pay
-            structure, the deductions, the reporting — and you can decide with both in front of
-            you. Talk to us before you sign anywhere else.
+            Bring the offer you are considering. We will go through ours next to it - the pay
+            structure, the deductions, the reporting - and you can decide with both in front of you.
+            Talk to us before you sign anywhere else.
           </Typography>
         </Reveal>
         <Reveal delay={0.16}>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ mt: 5 }}>
-            <Button href="#apply" variant="contained" size="large" endIcon={<ArrowForwardRoundedIcon />}>
+            <Button
+              href="#apply"
+              variant="contained"
+              size="large"
+              endIcon={<ArrowForwardRoundedIcon />}
+            >
               Drive with Drayvo
             </Button>
             <Button

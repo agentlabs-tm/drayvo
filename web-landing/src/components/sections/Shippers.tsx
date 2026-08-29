@@ -6,7 +6,7 @@ import Section from '@/components/ui/Section';
 import Reveal from '@/components/motion/Reveal';
 
 /**
- * Shippers — the secondary audience, given a compact section rather than the
+ * Shippers - the secondary audience, given a compact section rather than the
  * multi-card service grid it had before.
  *
  * The previous version advertised six freight modes, all-48-state coverage, and
@@ -58,8 +58,8 @@ export default function Shippers() {
           <Reveal delay={0.12}>
             <Typography sx={{ color: 'text.secondary', mt: 2.5 }}>
               We would rather tell you plainly what we can cover than quote capacity we cannot
-              deliver on. Send us a lane and you will get a straight answer either way — and
-              when we commit to it, it moves.
+              deliver on. Send us a lane and you will get a straight answer either way - and when we
+              commit to it, it moves.
             </Typography>
           </Reveal>
           <Reveal delay={0.18}>
@@ -84,8 +84,12 @@ export default function Shippers() {
                   borderColor: 'divider',
                 }}
               >
-                <Typography variant="h6" component="h3" sx={{ color: 'text.primary' }}>{p.title}</Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary', mt: 0.75 }}>{p.body}</Typography>
+                <Typography variant="h6" component="h3" sx={{ color: 'text.primary' }}>
+                  {p.title}
+                </Typography>
+                <Typography variant="body2" sx={{ color: 'text.secondary', mt: 0.75 }}>
+                  {p.body}
+                </Typography>
               </Box>
             </Reveal>
           ))}

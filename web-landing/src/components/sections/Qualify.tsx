@@ -21,7 +21,7 @@ import { site } from '@/lib/site';
  * not apply, and people who would not spend a week waiting to be told no. Four
  * questions and an immediate, honest answer fixes both ends.
  *
- * The outcome is deliberately three-way rather than pass/fail — "worth a
+ * The outcome is deliberately three-way rather than pass/fail - "worth a
  * conversation" is the truthful answer for most edge cases, and routing those
  * to a phone call rather than a form is what actually converts them.
  *
@@ -76,26 +76,36 @@ const QUESTIONS: Question[] = [
   },
 ];
 
-const RESULTS: Record<Outcome, {
-  title: string;
-  body: string;
-  tone: 'good' | 'neutral';
-  cta: { label: string; href: string; icon: React.ReactNode };
-}> = {
+const RESULTS: Record<
+  Outcome,
+  {
+    title: string;
+    body: string;
+    tone: 'good' | 'neutral';
+    cta: { label: string; href: string; icon: React.ReactNode };
+  }
+> = {
   strong: {
     title: 'You meet what we ask',
-    body: 'On these four points you are exactly who we are looking for. Start an application and a person will pick it up from there — nothing about your answers here is stored or sent until you do.',
+    body: 'On these four points you are exactly who we are looking for. Start an application and a person will pick it up from there - nothing about your answers here is stored or sent until you do.',
     tone: 'good',
     cta: { label: 'Start your application', href: '#apply', icon: <ArrowForwardRoundedIcon /> },
   },
   talk: {
     title: 'Worth a conversation',
-    body: 'One of your answers sits outside our standard requirements, which is not the same as a no. These are the cases we look at individually rather than filter out, so call and we will tell you straight where you stand.',
+    body: 'One of your answers sits outside our standard requirements, which is not the same as a no. These are the cases we look at individually rather than filter out, so get in touch and we will tell you straight where you stand.',
     tone: 'neutral',
-    cta: { label: `Call ${site.phone}`, href: `tel:${site.phoneHref}`, icon: <PhoneInTalkRoundedIcon /> },
+    // Falls back to the form until a real phone number is published.
+    cta: site.phone
+      ? {
+          label: `Call ${site.phone}`,
+          href: `tel:${site.phoneHref}`,
+          icon: <PhoneInTalkRoundedIcon />,
+        }
+      : { label: 'Talk to us', href: '#apply', icon: <PhoneInTalkRoundedIcon /> },
   },
   'not-yet': {
-    title: 'Not right now — here is why',
+    title: 'Not right now - here is why',
     body: 'Based on your answers we would not be able to place you today, and we would rather say so than run you through a process that ends in no. Requirements change as you gain experience or time passes on your record. Keep us in mind.',
     tone: 'neutral',
     cta: { label: 'See what we ask for', href: '#drivers', icon: <ArrowForwardRoundedIcon /> },
@@ -113,11 +123,11 @@ export default function Qualify() {
   const done = step >= QUESTIONS.length;
   const progress = (Math.min(step, QUESTIONS.length) / QUESTIONS.length) * 100;
 
-  // The worst individual answer decides the outcome — one disqualifier is not
+  // The worst individual answer decides the outcome - one disqualifier is not
   // averaged away by three good answers.
   const outcome: Outcome = answers.reduce<Outcome>(
     (worst, a) => (RANK[a] > RANK[worst] ? a : worst),
-    'strong',
+    'strong'
   );
 
   const choose = (o: Outcome) => {
@@ -137,7 +147,14 @@ export default function Qualify() {
     <Section id="qualify" tone="contrast">
       <SectionHeading
         eyebrow="Two-minute check"
-        title={<>Find out where you stand <Box component="span" sx={{ color: 'primary.main' }}>before you apply.</Box></>}
+        title={
+          <>
+            Find out where you stand{' '}
+            <Box component="span" sx={{ color: 'primary.main' }}>
+              before you apply.
+            </Box>
+          </>
+        }
         subtitle="Four questions, an honest answer, and nothing recorded. We would rather you know now than wait a week to hear it."
       />
 
@@ -171,7 +188,10 @@ export default function Qualify() {
               height: 3,
               borderRadius: 2,
               bgcolor: 'var(--hairline)',
-              '& .MuiLinearProgress-bar': { bgcolor: 'primary.main', transition: 'transform .5s ease' },
+              '& .MuiLinearProgress-bar': {
+                bgcolor: 'primary.main',
+                transition: 'transform .5s ease',
+              },
             }}
           />
         </Box>
@@ -190,40 +210,50 @@ export default function Qualify() {
                 exit={reduce ? undefined : { opacity: 0, x: -24 }}
                 transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
               >
-                <Typography variant="h4" component="h3" sx={{ color: 'text.primary', fontSize: { xs: '1.3rem', md: '1.55rem' } }}>
+                <Typography
+                  variant="h4"
+                  component="h3"
+                  sx={{ color: 'text.primary', fontSize: { xs: '1.3rem', md: '1.55rem' } }}
+                >
                   {question.prompt}
                 </Typography>
 
-                <Stack component="ul" aria-label={question.prompt} spacing={1.25} sx={{ mt: 3, listStyle: 'none', p: 0, m: 0 }}>
+                <Stack
+                  component="ul"
+                  aria-label={question.prompt}
+                  spacing={1.25}
+                  sx={{ mt: 3, listStyle: 'none', p: 0, m: 0 }}
+                >
                   {question.options.map((opt) => (
                     <Box component="li" key={opt.label} sx={{ display: 'flex' }}>
-                    <Box
-                      component="button"
-                      type="button"
-                      onClick={() => choose(opt.outcome)}
-                      sx={{
-                        width: '100%',
-                        textAlign: 'left',
-                        font: 'inherit',
-                        cursor: 'pointer',
-                        px: 2.25,
-                        py: 1.6,
-                        borderRadius: 1,
-                        border: '1px solid',
-                        borderColor: 'divider',
-                        bgcolor: 'transparent',
-                        color: 'text.primary',
-                        fontWeight: 600,
-                        transition: 'border-color .18s ease, background-color .18s ease, transform .18s ease',
-                        '&:hover': {
-                          borderColor: 'primary.main',
-                          bgcolor: alpha(brand.orange, 0.07),
-                          transform: reduce ? 'none' : 'translateX(3px)',
-                        },
-                      }}
-                    >
-                      {opt.label}
-                    </Box>
+                      <Box
+                        component="button"
+                        type="button"
+                        onClick={() => choose(opt.outcome)}
+                        sx={{
+                          width: '100%',
+                          textAlign: 'left',
+                          font: 'inherit',
+                          cursor: 'pointer',
+                          px: 2.25,
+                          py: 1.6,
+                          borderRadius: 1,
+                          border: '1px solid',
+                          borderColor: 'divider',
+                          bgcolor: 'transparent',
+                          color: 'text.primary',
+                          fontWeight: 600,
+                          transition:
+                            'border-color .18s ease, background-color .18s ease, transform .18s ease',
+                          '&:hover': {
+                            borderColor: 'primary.main',
+                            bgcolor: alpha(brand.orange, 0.07),
+                            transform: reduce ? 'none' : 'translateX(3px)',
+                          },
+                        }}
+                      >
+                        {opt.label}
+                      </Box>
                     </Box>
                   ))}
                 </Stack>
@@ -249,15 +279,24 @@ export default function Qualify() {
               >
                 <Stack direction="row" spacing={1.5} sx={{ alignItems: 'flex-start' }}>
                   {result.tone === 'good' ? (
-                    <CheckCircleRoundedIcon sx={{ color: 'success.main', fontSize: 30, mt: '2px' }} />
+                    <CheckCircleRoundedIcon
+                      sx={{ color: 'success.main', fontSize: 30, mt: '2px' }}
+                    />
                   ) : (
                     <InfoOutlinedIcon sx={{ color: 'primary.main', fontSize: 30, mt: '2px' }} />
                   )}
                   <Box>
-                    <Typography variant="h4" component="h3" sx={{ color: 'text.primary', fontSize: { xs: '1.35rem', md: '1.6rem' } }}>
+                    <Typography
+                      variant="h4"
+                      component="h3"
+                      sx={{ color: 'text.primary', fontSize: { xs: '1.35rem', md: '1.6rem' } }}
+                    >
                       {result.title}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1.5, maxWidth: 520 }}>
+                    <Typography
+                      variant="body2"
+                      sx={{ color: 'text.secondary', mt: 1.5, maxWidth: 520 }}
+                    >
                       {result.body}
                     </Typography>
                   </Box>
@@ -267,7 +306,11 @@ export default function Qualify() {
                   <Button href={result.cta.href} variant="contained" endIcon={result.cta.icon}>
                     {result.cta.label}
                   </Button>
-                  <Button onClick={restart} startIcon={<RestartAltRoundedIcon />} sx={{ color: 'text.secondary' }}>
+                  <Button
+                    onClick={restart}
+                    startIcon={<RestartAltRoundedIcon />}
+                    sx={{ color: 'text.secondary' }}
+                  >
                     Start over
                   </Button>
                 </Stack>

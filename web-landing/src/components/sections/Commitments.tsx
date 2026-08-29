@@ -17,13 +17,29 @@ import Reveal from '@/components/motion/Reveal';
  *
  * TODO(verify): once audited figures exist (on-time percentage, fleet size,
  * safety record, average tenure), they may be added *alongside* these
- * commitments — never as a replacement, and never without a source.
+ * commitments - never as a replacement, and never without a source.
  */
 const COMMITMENTS = [
-  { icon: VisibilityOutlinedIcon, title: 'Rates shown before dispatch', body: 'You see what a load pays before you accept it.' },
-  { icon: ReceiptLongOutlinedIcon, title: 'Itemized weekly settlements', body: 'Every line, every deduction, on a set schedule.' },
-  { icon: HeadsetMicOutlinedIcon, title: 'Direct dispatcher access', body: 'A name and a number, not a rotating queue.' },
-  { icon: AssessmentOutlinedIcon, title: 'Load-level owner reporting', body: 'Revenue, cost, and downtime per truck, per load.' },
+  {
+    icon: VisibilityOutlinedIcon,
+    title: 'Rates shown before dispatch',
+    body: 'You see what a load pays before you accept it.',
+  },
+  {
+    icon: ReceiptLongOutlinedIcon,
+    title: 'Itemized weekly settlements',
+    body: 'Every line, every deduction, on a set schedule.',
+  },
+  {
+    icon: HeadsetMicOutlinedIcon,
+    title: 'Direct dispatcher access',
+    body: 'A name and a number, not a rotating queue.',
+  },
+  {
+    icon: AssessmentOutlinedIcon,
+    title: 'Load-level owner reporting',
+    body: 'Revenue, cost, and downtime per truck, per load.',
+  },
 ];
 
 export default function Commitments() {
@@ -52,10 +68,16 @@ export default function Commitments() {
               }}
             >
               <Icon sx={{ color: 'primary.main', fontSize: 26 }} />
-              <Typography variant="h6" component="h3" sx={{ color: 'text.primary', fontSize: '1.02rem' }}>
+              <Typography
+                variant="h6"
+                component="h3"
+                sx={{ color: 'text.primary', fontSize: '1.02rem' }}
+              >
                 {title}
               </Typography>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>{body}</Typography>
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                {body}
+              </Typography>
             </Stack>
           </Reveal>
         ))}
@@ -74,7 +96,9 @@ export default function Commitments() {
       >
         Drayvo publishes commitments it can keep rather than statistics it cannot substantiate.
         Every claim on this page is something you can hold us to —{' '}
-        <Box component="span" sx={{ color: 'primary.main', fontWeight: 700 }}>ask about any of them and you will get a direct answer.</Box>
+        <Box component="span" sx={{ color: 'primary.main', fontWeight: 700 }}>
+          ask about any of them and you will get a direct answer.
+        </Box>
       </Typography>
     </Section>
   );

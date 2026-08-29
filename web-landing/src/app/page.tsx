@@ -21,7 +21,7 @@ import { FAQS } from '@/lib/faqs';
 
 /**
  * Structured data. Deliberately narrow: no aggregateRating, no numeric
- * employee/fleet counts, and no JobPosting salary — publishing an unverified
+ * employee/fleet counts, and no JobPosting salary - publishing an unverified
  * figure in schema is worse than in body copy, because search engines present
  * it as a fact attributed to the company.
  *
@@ -82,7 +82,10 @@ const jsonLd = {
 export default function Home() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Header />
       <Box component="main">
         <Hero />

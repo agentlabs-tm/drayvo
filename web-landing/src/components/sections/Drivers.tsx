@@ -12,8 +12,8 @@ import { brand } from '@/theme/tokens';
 /**
  * Driver experience.
  *
- * Compensation is described structurally — how pay is calculated, disclosed,
- * and settled — rather than as advertised figures. Specific rates, percentage
+ * Compensation is described structurally - how pay is calculated, disclosed,
+ * and settled - rather than as advertised figures. Specific rates, percentage
  * splits, mileage ranges, fuel discounts, and benefits were removed because
  * none are verified, and pay claims in driver recruiting are regulated
  * advertising.
@@ -43,7 +43,7 @@ const PATHS = [
     points: [
       'Load rate and your share shown before you accept',
       'Deductions disclosed and itemized every settlement',
-      'You choose loads — we do not force dispatch',
+      'You choose loads - we do not force dispatch',
       'Compliance, permits, and filings handled for you',
       'Maintenance events documented against your unit',
     ],
@@ -65,7 +65,14 @@ export default function Drivers() {
     <Section id="drivers" tone="base">
       <SectionHeading
         eyebrow="For drivers"
-        title={<>Your truck. Your miles. <Box component="span" sx={{ color: 'primary.main' }}>Your money.</Box></>}
+        title={
+          <>
+            Your truck. Your miles.{' '}
+            <Box component="span" sx={{ color: 'primary.main' }}>
+              Your money.
+            </Box>
+          </>
+        }
         subtitle="Two ways to run with Drayvo. Both work the same way: you see the number before you commit, and the settlement shows how it was reached."
       />
 
@@ -90,8 +97,14 @@ export default function Drivers() {
                 bgcolor: 'background.paper',
               }}
             >
-              <Typography variant="overline" sx={{ color: 'primary.main' }}>{p.tag}</Typography>
-              <Typography variant="h4" component="h3" sx={{ color: 'text.primary', fontSize: { xs: '1.5rem', md: '1.75rem' } }}>
+              <Typography variant="overline" sx={{ color: 'primary.main' }}>
+                {p.tag}
+              </Typography>
+              <Typography
+                variant="h4"
+                component="h3"
+                sx={{ color: 'text.primary', fontSize: { xs: '1.5rem', md: '1.75rem' } }}
+              >
                 {p.lead}
               </Typography>
 
@@ -102,7 +115,12 @@ export default function Drivers() {
               <Box sx={{ flex: 1 }} />
               <Typography
                 variant="caption"
-                sx={{ color: 'text.secondary', pt: 1.5, borderTop: '1px solid', borderColor: 'divider' }}
+                sx={{
+                  color: 'text.secondary',
+                  pt: 1.5,
+                  borderTop: '1px solid',
+                  borderColor: 'divider',
+                }}
               >
                 {p.footnote}
               </Typography>
@@ -110,7 +128,10 @@ export default function Drivers() {
                 href="#apply"
                 variant={p.lead_accent ? 'contained' : 'outlined'}
                 endIcon={<ArrowForwardRoundedIcon />}
-                sx={{ alignSelf: 'flex-start', ...(p.lead_accent ? {} : { color: 'text.primary' }) }}
+                sx={{
+                  alignSelf: 'flex-start',
+                  ...(p.lead_accent ? {} : { color: 'text.primary' }),
+                }}
               >
                 Start an application
               </Button>
@@ -134,7 +155,9 @@ export default function Drivers() {
           }}
         >
           <Box>
-            <Typography variant="h5" component="h3" sx={{ color: 'text.primary' }}>What we ask of you</Typography>
+            <Typography variant="h5" component="h3" sx={{ color: 'text.primary' }}>
+              What we ask of you
+            </Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }}>
               Close but not exact? Call anyway. A person reads every application.
             </Typography>

@@ -11,7 +11,7 @@ import { brand } from '@/theme/tokens';
  * Owner operating system.
  *
  * Scope only. These name the functions Drayvo takes on and what the owner gets
- * back from each — deliberately not how any of it is run. The site's promise is
+ * back from each - deliberately not how any of it is run. The site's promise is
  * transparency to owners about *their truck*, not a public account of the
  * company's operating method.
  *
@@ -25,10 +25,22 @@ import { brand } from '@/theme/tokens';
  * versus through partners, and say which is which.
  */
 const OPERATIONS = [
-  { title: 'Driver placement', body: 'We find and vet the driver, and you know who is in your truck.' },
-  { title: 'Dispatch and load planning', body: 'Your truck stays loaded, and you can see what each load pays.' },
-  { title: 'Maintenance coordination', body: 'Service is arranged and documented against your unit.' },
-  { title: 'Fuel and routing', body: 'Managed against cost per mile, with the spend reported to you.' },
+  {
+    title: 'Driver placement',
+    body: 'We find and vet the driver, and you know who is in your truck.',
+  },
+  {
+    title: 'Dispatch and load planning',
+    body: 'Your truck stays loaded, and you can see what each load pays.',
+  },
+  {
+    title: 'Maintenance coordination',
+    body: 'Service is arranged and documented against your unit.',
+  },
+  {
+    title: 'Fuel and routing',
+    body: 'Managed against cost per mile, with the spend reported to you.',
+  },
   { title: 'Compliance', body: 'Handled under our operating authority.' },
   { title: 'Reporting', body: 'Revenue and cost per truck, without having to ask for it.' },
   { title: 'Downtime', body: 'If your truck is off the road you hear it the same day.' },
@@ -54,28 +66,38 @@ export default function Owners() {
           <Reveal delay={0.06}>
             <Typography variant="h2" sx={{ color: 'text.primary' }}>
               You own the asset.{' '}
-              <Box component="span" sx={{ color: 'primary.main' }}>We run the operation.</Box>
+              <Box component="span" sx={{ color: 'primary.main' }}>
+                We run the operation.
+              </Box>
             </Typography>
           </Reveal>
           <Reveal delay={0.12}>
             <Typography sx={{ color: 'text.secondary', mt: 2.5, fontSize: '1.05rem' }}>
-              Buying a truck is the straightforward part. Everything after it is the work we
-              take on. The title stays in your name, and the reporting comes to you without
-              being asked for.
+              Buying a truck is the straightforward part. Everything after it is the work we take
+              on. The title stays in your name, and the reporting comes to you without being asked
+              for.
             </Typography>
           </Reveal>
           <Reveal delay={0.18}>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ mt: 4 }}>
-              <Button href="#apply" variant="contained" size="large" endIcon={<ArrowForwardRoundedIcon />}>
+              <Button
+                href="#apply"
+                variant="contained"
+                size="large"
+                endIcon={<ArrowForwardRoundedIcon />}
+              >
                 Partner your truck
               </Button>
             </Stack>
           </Reveal>
           <Reveal delay={0.24}>
-            <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block', mt: 3, maxWidth: 420 }}>
+            <Typography
+              variant="caption"
+              sx={{ color: 'text.secondary', display: 'block', mt: 3, maxWidth: 420 }}
+            >
               Drayvo manages trucks owned by their operators and by fleet owners. This is a
-              management arrangement, not an investment product, and terms are set out in a
-              written agreement before any truck goes into service.
+              management arrangement, not an investment product, and terms are set out in a written
+              agreement before any truck goes into service.
             </Typography>
           </Reveal>
         </Box>
@@ -116,10 +138,16 @@ export default function Owners() {
                   {String(i + 1).padStart(2, '0')}
                 </Typography>
                 <Box>
-                  <Typography variant="h6" component="h3" sx={{ color: 'text.primary', fontSize: '1.05rem' }}>
+                  <Typography
+                    variant="h6"
+                    component="h3"
+                    sx={{ color: 'text.primary', fontSize: '1.05rem' }}
+                  >
                     {o.title}
                   </Typography>
-                  <Typography variant="body2" sx={{ color: 'text.secondary', mt: 0.5 }}>{o.body}</Typography>
+                  <Typography variant="body2" sx={{ color: 'text.secondary', mt: 0.5 }}>
+                    {o.body}
+                  </Typography>
                 </Box>
               </Stack>
             </Reveal>

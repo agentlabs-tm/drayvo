@@ -21,12 +21,12 @@ const ASSETS = {
 } as const;
 
 /**
- * The lockup ships in two color-ways — dark artwork for light surfaces and
+ * The lockup ships in two color-ways - dark artwork for light surfaces and
  * reversed artwork for dark ones. Both are rendered and one is hidden in CSS,
  * so the correct mark is right in the first paint with no JS swap flicker.
  *
  * The show/hide rules come from `theme.applyStyles`, which emits whatever
- * selector the theme's colorSchemeSelector strategy actually uses — including
+ * selector the theme's colorSchemeSelector strategy actually uses - including
  * the "system preference, no attribute set yet" case that a hand-written
  * `[data-mui-color-scheme]` selector silently misses.
  */

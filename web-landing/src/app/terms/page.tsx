@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 /**
  * TODO(legal): replace with terms drafted or reviewed by counsel. Nothing on
  * the marketing site constitutes an offer of employment, a rate guarantee, or
- * a management agreement — that needs to be stated here explicitly once the
+ * a management agreement - that needs to be stated here explicitly once the
  * real driver and owner agreements exist. Set to noindex until reviewed.
  */
 export default function Terms() {

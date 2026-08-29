@@ -10,7 +10,7 @@ const mono = 'var(--font-mono)';
 /**
  * One CSS-variable theme carrying both color schemes. The mode switch only flips
  * a `data-light` / `data-dark` attribute on <html>, so the server and client
- * render identical markup — no hydration mismatch and no theme flash.
+ * render identical markup - no hydration mismatch and no theme flash.
  *
  * Mode-dependent styling must go through `theme.applyStyles('dark' | 'light', …)`
  * rather than `theme.palette.mode`, which is fixed to the default scheme here.
@@ -24,7 +24,12 @@ const theme = createTheme({
   colorSchemes: {
     light: {
       palette: {
-        primary: { main: brand.orangeText, light: brand.orange, dark: '#A82F00', contrastText: '#FFFFFF' },
+        primary: {
+          main: brand.orangeText,
+          light: brand.orange,
+          dark: '#A82F00',
+          contrastText: '#FFFFFF',
+        },
         secondary: { main: '#3A4A63', contrastText: '#FFFFFF' },
         background: { default: brand.mist, paper: brand.paper },
         text: { primary: brand.ink, secondary: '#4A5769' },
@@ -35,7 +40,12 @@ const theme = createTheme({
     },
     dark: {
       palette: {
-        primary: { main: brand.orange, light: brand.orangeLight, dark: brand.orangeDeep, contrastText: brand.ink },
+        primary: {
+          main: brand.orange,
+          light: brand.orangeLight,
+          dark: brand.orangeDeep,
+          contrastText: brand.ink,
+        },
         secondary: { main: brand.steel, contrastText: brand.ink },
         background: { default: brand.ink, paper: brand.charcoal },
         text: { primary: '#EDF1F7', secondary: '#9DAABD' },
@@ -96,7 +106,10 @@ const theme = createTheme({
           html: { scrollBehavior: 'smooth' },
         },
         '@media (prefers-reduced-motion: reduce)': {
-          '*': { animationDuration: '0.001ms !important', transitionDuration: '0.001ms !important' },
+          '*': {
+            animationDuration: '0.001ms !important',
+            transitionDuration: '0.001ms !important',
+          },
         },
       },
     },

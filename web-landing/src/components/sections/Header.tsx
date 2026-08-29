@@ -2,7 +2,16 @@
 
 import * as React from 'react';
 import {
-  AppBar, Box, Button, Container, Divider, Drawer, IconButton, Link as MLink, Stack, Toolbar,
+  AppBar,
+  Box,
+  Button,
+  Container,
+  Divider,
+  Drawer,
+  IconButton,
+  Link as MLink,
+  Stack,
+  Toolbar,
 } from '@mui/material';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
@@ -46,7 +55,12 @@ export default function Header() {
       >
         <Container maxWidth="xl">
           <Toolbar disableGutters sx={{ minHeight: { xs: 64, md: 80 }, gap: 2 }}>
-            <MLink href="#top" underline="none" aria-label={`${site.name} — home`} sx={{ display: 'flex' }}>
+            <MLink
+              href="#top"
+              underline="none"
+              aria-label={`${site.name} - home`}
+              sx={{ display: 'flex' }}
+            >
               <Logo height={36} />
             </MLink>
 
@@ -81,14 +95,25 @@ export default function Header() {
                 onClick={() => setMode(resolved === 'dark' ? 'light' : 'dark')}
                 aria-label={`Switch to ${resolved === 'dark' ? 'light' : 'dark'} mode`}
                 size="small"
-                sx={{ border: '1px solid', borderColor: 'divider', borderRadius: 1, color: 'text.primary' }}
+                sx={{
+                  border: '1px solid',
+                  borderColor: 'divider',
+                  borderRadius: 1,
+                  color: 'text.primary',
+                }}
               >
-                {resolved === 'dark'
-                  ? <LightModeRoundedIcon fontSize="small" />
-                  : <DarkModeRoundedIcon fontSize="small" />}
+                {resolved === 'dark' ? (
+                  <LightModeRoundedIcon fontSize="small" />
+                ) : (
+                  <DarkModeRoundedIcon fontSize="small" />
+                )}
               </IconButton>
 
-              <Button href="#apply" variant="contained" sx={{ display: { xs: 'none', sm: 'inline-flex' } }}>
+              <Button
+                href="#apply"
+                variant="contained"
+                sx={{ display: { xs: 'none', sm: 'inline-flex' } }}
+              >
                 Drive with Drayvo
               </Button>
 
@@ -114,7 +139,9 @@ export default function Header() {
       >
         <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
           <Logo height={32} />
-          <IconButton onClick={() => setOpen(false)} aria-label="Close menu"><CloseRoundedIcon /></IconButton>
+          <IconButton onClick={() => setOpen(false)} aria-label="Close menu">
+            <CloseRoundedIcon />
+          </IconButton>
         </Stack>
         <Divider sx={{ my: 2 }} />
         <Stack component="nav" aria-label="Mobile" spacing={0.5}>
@@ -138,7 +165,13 @@ export default function Header() {
         </Stack>
         <Box sx={{ flex: 1 }} />
         <Stack spacing={1.25} sx={{ mt: 3 }}>
-          <Button href="#apply" onClick={() => setOpen(false)} variant="contained" size="large" fullWidth>
+          <Button
+            href="#apply"
+            onClick={() => setOpen(false)}
+            variant="contained"
+            size="large"
+            fullWidth
+          >
             Drive with Drayvo
           </Button>
           <Button

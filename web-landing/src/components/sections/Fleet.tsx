@@ -22,9 +22,21 @@ import { brand } from '@/theme/tokens';
  * be filled with a genuine photo; an honest gap beats a stock image.
  */
 const SLOTS = [
-  { label: 'Our drivers', caption: 'The people running the freight.', span: { xs: 'span 1', md: 'span 2' } },
-  { label: 'Dispatch', caption: 'Who answers when you call.', span: { xs: 'span 1', md: 'span 1' } },
-  { label: 'Equipment', caption: 'The trucks we actually run.', span: { xs: 'span 1', md: 'span 1' } },
+  {
+    label: 'Our drivers',
+    caption: 'The people running the freight.',
+    span: { xs: 'span 1', md: 'span 2' },
+  },
+  {
+    label: 'Dispatch',
+    caption: 'Who answers when you call.',
+    span: { xs: 'span 1', md: 'span 1' },
+  },
+  {
+    label: 'Equipment',
+    caption: 'The trucks we actually run.',
+    span: { xs: 'span 1', md: 'span 1' },
+  },
   { label: 'Maintenance', caption: 'Service, documented.', span: { xs: 'span 1', md: 'span 2' } },
 ];
 
@@ -34,7 +46,7 @@ export default function Fleet() {
       <SectionHeading
         eyebrow="Real people, real operations"
         title="No stock photos here"
-        subtitle="We would rather show you an empty frame than a stock image of somebody else's truck. Photographs of our drivers, our dispatchers, and our equipment go here — real people, named, and published with their permission."
+        subtitle="We would rather show you an empty frame than a stock image of somebody else's truck. Photographs of our drivers, our dispatchers, and our equipment go here - real people, named, and published with their permission."
       />
 
       <Box
@@ -61,8 +73,12 @@ export default function Fleet() {
                 bgcolor: alpha(brand.steel, 0.06),
               }}
             >
-              <PhotoCameraOutlinedIcon sx={{ color: 'text.secondary', fontSize: 26, opacity: 0.7 }} />
-              <Typography variant="overline" sx={{ color: 'text.secondary' }}>{s.label}</Typography>
+              <PhotoCameraOutlinedIcon
+                sx={{ color: 'text.secondary', fontSize: 26, opacity: 0.7 }}
+              />
+              <Typography variant="overline" sx={{ color: 'text.secondary' }}>
+                {s.label}
+              </Typography>
               <Typography variant="body2" sx={{ color: 'text.secondary', maxWidth: 260 }}>
                 {s.caption}
               </Typography>

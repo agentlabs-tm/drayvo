@@ -6,7 +6,7 @@
  *
  *   node scripts/generate-icons.mjs
  *
- * Outputs are committed, not built — favicon.ico in particular must be a real
+ * Outputs are committed, not built - favicon.ico in particular must be a real
  * file in src/app for Next to serve it at the site root.
  */
 import { ImageResponse } from 'next/dist/server/og/image-response.js';
@@ -24,7 +24,7 @@ async function png(size) {
         children: { type: 'img', props: { src, width: size, height: size } },
       },
     },
-    { width: size, height: size },
+    { width: size, height: size }
   );
   return Buffer.from(await res.arrayBuffer());
 }
@@ -57,7 +57,9 @@ function ico(entries) {
 const sizes = [16, 32, 48];
 const icoEntries = [];
 for (const size of sizes) icoEntries.push({ size, data: await png(size) });
-writeFileSync('src/app/favicon.ico', ico(icoEntries));
+// public/, not src/app/: the app-directory convention emits a content-hashed
+// URL, and Google caches favicons by URL. A stable path refreshes faster.
+writeFileSync('public/favicon.ico', ico(icoEntries));
 
 for (const [size, out] of [
   [96, 'public/brand/icon-96.png'],
@@ -82,7 +84,10 @@ const lockup = readFileSync('public/brand/logo-horizontal-dark.svg', 'utf8');
 const lockupSrc = `data:image/svg+xml;base64,${Buffer.from(lockup).toString('base64')}`;
 
 const row = (children) => ({ type: 'div', props: { style: { display: 'flex' }, children } });
-const text = (value, style) => ({ type: 'div', props: { style: { display: 'flex', ...style }, children: value } });
+const text = (value, style) => ({
+  type: 'div',
+  props: { style: { display: 'flex', ...style }, children: value },
+});
 
 const og = new ImageResponse(
   {
@@ -105,8 +110,18 @@ const og = new ImageResponse(
           props: {
             style: { display: 'flex', flexDirection: 'column', gap: 14 },
             children: [
-              text('Every Mile Matters.', { color: '#fff', fontSize: 68, fontWeight: 800, letterSpacing: -2.5 }),
-              text('Every Driver Matters.', { color: ORANGE, fontSize: 68, fontWeight: 800, letterSpacing: -2.5 }),
+              text('Every Mile Matters.', {
+                color: '#fff',
+                fontSize: 68,
+                fontWeight: 800,
+                letterSpacing: -2.5,
+              }),
+              text('Every Driver Matters.', {
+                color: ORANGE,
+                fontSize: 68,
+                fontWeight: 800,
+                letterSpacing: -2.5,
+              }),
             ],
           },
         },
@@ -115,14 +130,18 @@ const og = new ImageResponse(
           props: {
             style: { display: 'flex', gap: 28, color: '#93A1B8', fontSize: 22 },
             children: [
-              text('Reliable freight'), text('·'), text('Transparent pay'), text('·'), text('Built around drivers'),
+              text('Reliable freight'),
+              text('·'),
+              text('Transparent pay'),
+              text('·'),
+              text('Built around drivers'),
             ],
           },
         },
       ],
     },
   },
-  { width: 1200, height: 630 },
+  { width: 1200, height: 630 }
 );
 writeFileSync('public/brand/og.png', Buffer.from(await og.arrayBuffer()));
 
