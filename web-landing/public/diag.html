@@ -33,14 +33,32 @@
     border-bottom: 1px solid rgb(255 255 255 / 0.14);
   }
   #topbar {
-    left: 0; width: 50%;
+    left: 0; width: 33.33%;
     background: rgb(6 13 26 / 0.88);
     backdrop-filter: saturate(160%) blur(14px);
     -webkit-backdrop-filter: saturate(160%) blur(14px);
     border-right: 2px solid #ff6600;
   }
   /* Same colour, no blur - opaque so it cannot be confused with the page. */
-  #topbar2 { left: 50%; width: 50%; background: #060d1a; }
+  #topbar2 { left: 33.33%; width: 33.33%; background: #060d1a;
+             border-right: 2px solid #ff6600; }
+
+  /* CANDIDATE FIX: `sticky` instead of `fixed`.
+     A sticky element is positioned by the scrolling machinery - the same
+     machinery that is already placing page content and the bottom bar
+     correctly - rather than by the fixed-position path that is misplacing
+     A and B. It sits in normal flow as a direct child of <body>, full width,
+     with A and B painted over its left two thirds; the right third is the
+     part you can see. If C hugs the true top of the screen while A and B sit
+     lower, `sticky` is the fix. */
+  #stickybar {
+    position: -webkit-sticky; position: sticky; top: 0; z-index: 1000;
+    height: 56px; width: 100%;
+    display: flex; align-items: center; justify-content: flex-end;
+    padding-right: 12px; font-weight: 700; font-size: 12px;
+    background: #14361f; color: #4ade80;
+    border-bottom: 1px solid rgb(255 255 255 / 0.14);
+  }
   /* Mimics the mobile action bar: fixed, bottom:0, opaque, orange button. */
   #bottombar {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 1100;
@@ -66,9 +84,10 @@
 </head>
 <body>
 
-<div id="topbar">A: blur<br>(like header)</div>
-<div id="topbar2">B: no blur</div>
-<div class="pad"></div>
+<div id="stickybar">C: sticky&nbsp;&nbsp;</div>
+<div id="topbar">A: fixed<br>+blur</div>
+<div id="topbar2">B: fixed<br>plain</div>
+
 
 <div class="panel"><h2>READ THIS PANEL</h2>Scroll down a little, then screenshot the whole screen.
 Repeat once more further down the page.</div>
@@ -104,6 +123,7 @@ Repeat once more further down the page.</div>
     var cs = getComputedStyle(probe);
     var tr = top.getBoundingClientRect();
     var t2r = document.getElementById('topbar2').getBoundingClientRect();
+    var scr = document.getElementById('stickybar').getBoundingClientRect();
     var br = bot.getBoundingClientRect();
 
     // The two numbers that matter: a correct fixed top bar sits at 0, and a
@@ -121,7 +141,9 @@ Repeat once more further down the page.</div>
       'A (blur)    rect.top = ' + topOff,
       'B (no blur) rect.top = ' + n(t2r.top),
       'A vs B delta         = ' + n(tr.top - t2r.top) + '   (layout says they are identical)',
-      '>> LOOK AT THE SCREEN: are bars A and B at the SAME height?',
+      'C (sticky)  rect.top = ' + n(scr.top),
+      '>> ON SCREEN: is C (green, right third) HIGHER than A and B?',
+      '   if yes -> sticky is the fix.',
       'bottombar bottom vs viewport      = ' + botGap + (Math.abs(botGap) < 1 ? '   OK' : '   <-- SHOULD BE 0'),
       '',
       'window.innerWidth/Height  = ' + window.innerWidth + ' x ' + window.innerHeight,
