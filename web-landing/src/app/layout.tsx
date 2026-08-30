@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { JetBrains_Mono, Manrope, Sora } from 'next/font/google';
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 import ColorModeProvider from '@/theme/ColorModeProvider';
+import InAppWebviewFlag from '@/components/util/InAppWebviewFlag';
 import { site } from '@/lib/site';
 
 import './globals.css';
@@ -106,6 +107,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <body>
         <InitColorSchemeScript attribute="data" defaultMode="system" />
+        <InAppWebviewFlag />
         <ColorModeProvider>{children}</ColorModeProvider>
       </body>
     </html>

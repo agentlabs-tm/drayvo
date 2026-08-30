@@ -21,6 +21,7 @@ import { useColorScheme } from '@mui/material/styles';
 import Logo from '@/components/brand/Logo';
 import { nav, site } from '@/lib/site';
 import { useAppTheme } from '@/theme/useAppTheme';
+import { WEBVIEW_ATTR } from '@/lib/inAppWebview';
 
 export default function Header() {
   const theme = useAppTheme();
@@ -49,6 +50,33 @@ export default function Header() {
           backdropFilter: solid ? 'saturate(160%) blur(14px)' : 'none',
           borderBottom: '1px solid',
           borderColor: solid ? 'divider' : 'transparent',
+
+          /**
+           * In an iOS in-app browser the host's top content inset pushes any
+           * pinned element down, leaving a strip above it that page content
+           * scrolls through (see lib/inAppWebview.ts). `sticky` is displaced
+           * identically, so the only way to avoid the strip is not to pin the
+           * header at all: here it sits in normal flow and scrolls away, and
+           * the sticky bottom action bar - which that inset does not affect —
+           * carries the primary CTA.
+           *
+           * Phones only. A tablet or desktop webview has room to spare and
+           * losing the nav there would cost more than the artifact.
+           *
+           * The selector outranks MUI's `.MuiAppBar-positionFixed`, so no
+           * `!important` is needed.
+           */
+          [theme.breakpoints.down('md')]: {
+            [`html[${WEBVIEW_ATTR}] &`]: {
+              position: 'static',
+              // Opaque regardless of scroll: in flow it sits above the hero
+              // rather than over it, so the transparent-until-scrolled
+              // treatment would render as a bare gap.
+              bgcolor: 'background.default',
+              borderColor: 'divider',
+              backdropFilter: 'none',
+            },
+          },
           transition: 'background-color .25s ease, border-color .25s ease',
           color: 'text.primary',
           /**

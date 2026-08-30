@@ -9,6 +9,8 @@ import RouteGraphic from '@/components/motion/RouteGraphic';
 import BulletList from '@/components/ui/BulletList';
 import { brand } from '@/theme/tokens';
 import { brandVoice } from '@/lib/brand';
+import { WEBVIEW_ATTR } from '@/lib/inAppWebview';
+import { useAppTheme } from '@/theme/useAppTheme';
 
 /**
  * First viewport. Its one job is to make clear, immediately, that Drayvo is
@@ -16,6 +18,8 @@ import { brandVoice } from '@/lib/brand';
  * and that the differentiator is visibility, not a headline rate.
  */
 export default function Hero() {
+  const theme = useAppTheme();
+
   return (
     <Box
       component="section"
@@ -42,6 +46,21 @@ export default function Hero() {
         '@media (max-height: 520px)': {
           pt: 11,
           pb: 5,
+        },
+        /**
+         * When the header is unpinned (iOS in-app browser - see Header), it
+         * takes up 56px of flow above this section instead of floating over it.
+         * The clearance reserved for a pinned header has to come back off, or
+         * the hero opens with a large empty band.
+         *
+         * Gated to the same breakpoint as the Header rule. Without that gate a
+         * desktop webview - where the header stays pinned - had its hero
+         * padding cut from 160px to 56px and the headline slid under the bar.
+         */
+        [theme.breakpoints.down('md')]: {
+          [`html[${WEBVIEW_ATTR}] &`]: {
+            pt: theme.spacing(5),
+          },
         },
         overflow: 'hidden',
       }}
