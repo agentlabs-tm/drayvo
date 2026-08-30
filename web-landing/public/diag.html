@@ -18,16 +18,29 @@
   }
   @supports (overflow: clip) { body { overflow-x: clip; } }
 
-  /* Mimics the site header: fixed, top:0, translucent. */
-  #topbar {
-    position: fixed; top: 0; left: auto; right: 0; width: 100%;
+  /* THE EXPERIMENT.
+     Two fixed bars, both `top: 0`, identical in every respect except that the
+     left one has `backdrop-filter` and the right one does not. WebKit promotes
+     a backdrop-filtered element to its own compositing layer; if that layer is
+     what gets mispositioned in this webview, these two halves will render at
+     different heights on screen. Same layout, same coordinates - so any visible
+     difference is compositing, and names the culprit in one screenshot. */
+  #topbar, #topbar2 {
+    position: fixed; top: 0;
     height: 56px; z-index: 1100;
-    display: flex; align-items: center; padding: 0 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 12px; text-align: center;
+    border-bottom: 1px solid rgb(255 255 255 / 0.14);
+  }
+  #topbar {
+    left: 0; width: 50%;
     background: rgb(6 13 26 / 0.88);
     backdrop-filter: saturate(160%) blur(14px);
-    border-bottom: 1px solid rgb(255 255 255 / 0.14);
-    font-weight: 700;
+    -webkit-backdrop-filter: saturate(160%) blur(14px);
+    border-right: 2px solid #ff6600;
   }
+  /* Same colour, no blur - opaque so it cannot be confused with the page. */
+  #topbar2 { left: 50%; width: 50%; background: #060d1a; }
   /* Mimics the mobile action bar: fixed, bottom:0, opaque, orange button. */
   #bottombar {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 1100;
@@ -53,7 +66,8 @@
 </head>
 <body>
 
-<div id="topbar">FIXED&nbsp;&nbsp;top:0&nbsp;&nbsp;(acts as the site header)</div>
+<div id="topbar">A: blur<br>(like header)</div>
+<div id="topbar2">B: no blur</div>
 <div class="pad"></div>
 
 <div class="panel"><h2>READ THIS PANEL</h2>Scroll down a little, then screenshot the whole screen.
@@ -89,6 +103,7 @@ Repeat once more further down the page.</div>
     var vv = window.visualViewport;
     var cs = getComputedStyle(probe);
     var tr = top.getBoundingClientRect();
+    var t2r = document.getElementById('topbar2').getBoundingClientRect();
     var br = bot.getBoundingClientRect();
 
     // The two numbers that matter: a correct fixed top bar sits at 0, and a
@@ -103,7 +118,10 @@ Repeat once more further down the page.</div>
     return [
       'UA: ' + navigator.userAgent,
       '',
-      'topbar.getBoundingClientRect().top = ' + topOff + (topOff === 0 ? '   OK' : '   <-- SHOULD BE 0'),
+      'A (blur)    rect.top = ' + topOff,
+      'B (no blur) rect.top = ' + n(t2r.top),
+      'A vs B delta         = ' + n(tr.top - t2r.top) + '   (layout says they are identical)',
+      '>> LOOK AT THE SCREEN: are bars A and B at the SAME height?',
       'bottombar bottom vs viewport      = ' + botGap + (Math.abs(botGap) < 1 ? '   OK' : '   <-- SHOULD BE 0'),
       '',
       'window.innerWidth/Height  = ' + window.innerWidth + ' x ' + window.innerHeight,
