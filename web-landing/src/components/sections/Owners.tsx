@@ -57,52 +57,43 @@ export default function Owners() {
           alignItems: 'start',
         }}
       >
-        <Box sx={{ position: { lg: 'sticky' }, top: { lg: 120 } }}>
-          <Reveal>
-            <Typography variant="overline" sx={{ color: 'primary.main', display: 'block', mb: 2 }}>
-              For truck owners
-            </Typography>
-          </Reveal>
-          <Reveal delay={0.06}>
-            <Typography variant="h2" sx={{ color: 'text.primary' }}>
-              You own the asset.{' '}
-              <Box component="span" sx={{ color: 'primary.main' }}>
-                We run the operation.
-              </Box>
-            </Typography>
-          </Reveal>
-          <Reveal delay={0.12}>
-            <Typography sx={{ color: 'text.secondary', mt: 2.5, fontSize: '1.05rem' }}>
-              Buying a truck is the straightforward part. Everything after it is the work we take
-              on. The title stays in your name, and the reporting comes to you without being asked
-              for.
-            </Typography>
-          </Reveal>
-          <Reveal delay={0.18}>
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ mt: 4 }}>
-              <Button
-                href="#apply"
-                variant="contained"
-                size="large"
-                endIcon={<ArrowForwardRoundedIcon />}
-              >
-                Partner your truck
-              </Button>
-            </Stack>
-          </Reveal>
-          <Reveal delay={0.24}>
-            <Typography
-              variant="caption"
-              sx={{ color: 'text.secondary', display: 'block', mt: 3, maxWidth: 420 }}
+        <Reveal sx={{ position: { lg: 'sticky' }, top: { lg: 120 } }}>
+          <Typography variant="overline" sx={{ color: 'primary.main', display: 'block', mb: 2 }}>
+            For truck owners
+          </Typography>
+          <Typography variant="h2" sx={{ color: 'text.primary' }}>
+            You own the asset.{' '}
+            <Box component="span" sx={{ color: 'primary.main' }}>
+              We run the operation.
+            </Box>
+          </Typography>
+          <Typography sx={{ color: 'text.secondary', mt: 2.5, fontSize: '1.05rem' }}>
+            Buying a truck is the straightforward part. Everything after it is the work we take on.
+            The title stays in your name, and the reporting comes to you without being asked for.
+          </Typography>
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ mt: 4 }}>
+            <Button
+              href="#apply"
+              variant="contained"
+              size="large"
+              endIcon={<ArrowForwardRoundedIcon />}
             >
-              Drayvo manages trucks owned by their operators and by fleet owners. This is a
-              management arrangement, not an investment product, and terms are set out in a written
-              agreement before any truck goes into service.
-            </Typography>
-          </Reveal>
-        </Box>
+              Partner your truck
+            </Button>
+          </Stack>
+          <Typography
+            variant="caption"
+            sx={{ color: 'text.secondary', display: 'block', mt: 3, maxWidth: 420 }}
+          >
+            Drayvo manages trucks owned by their operators and by fleet owners. This is a
+            management arrangement, not an investment product, and terms are set out in a written
+            agreement before any truck goes into service.
+          </Typography>
+        </Reveal>
 
-        <Box
+        {/* One reveal for the panel: the rows are a single ruled list, and
+            seven staggered entrances made it read as seven separate objects. */}
+        <Reveal
           sx={{
             border: '1px solid',
             borderColor: 'var(--hairline)',
@@ -111,8 +102,8 @@ export default function Owners() {
           }}
         >
           {OPERATIONS.map((o, i) => (
-            <Reveal key={o.title} delay={Math.min(i * 0.04, 0.2)}>
-              <Stack
+            <Stack
+                key={o.title}
                 direction="row"
                 spacing={{ xs: 2, md: 3 }}
                 sx={{
@@ -149,10 +140,9 @@ export default function Owners() {
                     {o.body}
                   </Typography>
                 </Box>
-              </Stack>
-            </Reveal>
+            </Stack>
           ))}
-        </Box>
+        </Reveal>
       </Box>
     </Section>
   );

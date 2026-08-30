@@ -53,7 +53,9 @@ export const nav = [
   { label: 'For Drivers', href: '#drivers' },
   { label: 'For Truck Owners', href: '#owners' },
   { label: 'For Shippers', href: '#shippers' },
-  { label: 'Our Fleet', href: '#fleet' },
+  // "Our Fleet" is withheld while the Fleet section is unrendered - a nav item
+  // pointing at an anchor that does not exist is a dead link. Restore both
+  // together once there are real photographs. See app/page.tsx.
   { label: 'FAQ', href: '#faq' },
   { label: 'Contact', href: '#apply' },
 ] as const;

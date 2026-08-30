@@ -13,6 +13,7 @@ import Section from '@/components/ui/Section';
 import SectionHeading from '@/components/ui/SectionHeading';
 import { brand } from '@/theme/tokens';
 import { site } from '@/lib/site';
+import { publishQualifySummary } from '@/lib/qualifyHandoff';
 
 /**
  * Instant eligibility check.
@@ -34,6 +35,8 @@ type Outcome = 'strong' | 'talk' | 'not-yet';
 type Question = {
   id: string;
   prompt: string;
+  /** Short form of the prompt, used when the answers travel to the form. */
+  short: string;
   options: { label: string; outcome: Outcome }[];
 };
 
@@ -41,6 +44,7 @@ const QUESTIONS: Question[] = [
   {
     id: 'cdl',
     prompt: 'Do you hold a valid Class A CDL?',
+    short: 'Class A CDL',
     options: [
       { label: 'Yes', outcome: 'strong' },
       { label: 'In school now', outcome: 'talk' },
@@ -50,6 +54,7 @@ const QUESTIONS: Question[] = [
   {
     id: 'experience',
     prompt: 'How much verifiable OTR experience do you have?',
+    short: 'Verifiable OTR experience',
     options: [
       { label: '1 year or more', outcome: 'strong' },
       { label: '6–12 months', outcome: 'strong' },
@@ -60,6 +65,7 @@ const QUESTIONS: Question[] = [
   {
     id: 'violations',
     prompt: 'Moving violations in the last three years?',
+    short: 'Moving violations (last 3 years)',
     options: [
       { label: 'None', outcome: 'strong' },
       { label: 'One or two', outcome: 'talk' },
@@ -69,6 +75,7 @@ const QUESTIONS: Question[] = [
   {
     id: 'dui',
     prompt: 'Any DUI or DWI in the last five years?',
+    short: 'DUI or DWI (last 5 years)',
     options: [
       { label: 'No', outcome: 'strong' },
       { label: 'Yes', outcome: 'not-yet' },
@@ -117,7 +124,10 @@ const RANK: Record<Outcome, number> = { strong: 0, talk: 1, 'not-yet': 2 };
 export default function Qualify() {
   const reduce = useReducedMotion();
   const [step, setStep] = React.useState(0);
-  const [answers, setAnswers] = React.useState<Outcome[]>([]);
+  // The chosen label is kept alongside the outcome so the answers can travel to
+  // the application form; the outcome alone would only say "strong", not "1 year
+  // or more", which is the part a recruiter can act on.
+  const [answers, setAnswers] = React.useState<{ label: string; outcome: Outcome }[]>([]);
   const liveRef = React.useRef<HTMLDivElement>(null);
 
   const done = step >= QUESTIONS.length;
@@ -126,13 +136,23 @@ export default function Qualify() {
   // The worst individual answer decides the outcome - one disqualifier is not
   // averaged away by three good answers.
   const outcome: Outcome = answers.reduce<Outcome>(
-    (worst, a) => (RANK[a] > RANK[worst] ? a : worst),
+    (worst, a) => (RANK[a.outcome] > RANK[worst] ? a.outcome : worst),
     'strong'
   );
 
-  const choose = (o: Outcome) => {
-    setAnswers((prev) => [...prev, o]);
+  const choose = (label: string, o: Outcome) => {
+    setAnswers((prev) => [...prev, { label, outcome: o }]);
     setStep((s) => s + 1);
+  };
+
+  /**
+   * Hands the answers to the application form. Fired only from the result's
+   * call to action - an affirmative click - and only when that action leads to
+   * the form. Nothing leaves this component otherwise.
+   */
+  const handOff = () => {
+    const lines = answers.map((a, i) => `- ${QUESTIONS[i].short}: ${a.label}`);
+    publishQualifySummary(`From the two-minute check:\n${lines.join('\n')}`);
   };
 
   const restart = () => {
@@ -229,7 +249,7 @@ export default function Qualify() {
                       <Box
                         component="button"
                         type="button"
-                        onClick={() => choose(opt.outcome)}
+                        onClick={() => choose(opt.label, opt.outcome)}
                         sx={{
                           width: '100%',
                           textAlign: 'left',
@@ -303,7 +323,13 @@ export default function Qualify() {
                 </Stack>
 
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ mt: 3.5 }}>
-                  <Button href={result.cta.href} variant="contained" endIcon={result.cta.icon}>
+                  <Button
+                    href={result.cta.href}
+                    variant="contained"
+                    endIcon={result.cta.icon}
+                    // Only the routes that end at the form carry the answers.
+                    onClick={result.cta.href === '#apply' ? handOff : undefined}
+                  >
                     {result.cta.label}
                   </Button>
                   <Button

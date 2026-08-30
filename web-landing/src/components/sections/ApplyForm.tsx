@@ -25,6 +25,7 @@ import { alpha } from '@mui/material/styles';
 import { useForm, Controller } from 'react-hook-form';
 import Reveal from '@/components/motion/Reveal';
 import { site } from '@/lib/site';
+import { onQualifySummary } from '@/lib/qualifyHandoff';
 import { brand } from '@/theme/tokens';
 
 export type Audience = 'company-driver' | 'owner-operator' | 'fleet-owner' | 'shipper';
@@ -51,12 +52,16 @@ const PHONE_RE = /^[\d\s()+.-]{10,20}$/;
 export default function ApplyForm() {
   const [status, setStatus] = React.useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 
+  const [fromCheck, setFromCheck] = React.useState(false);
+
   const {
     register,
     handleSubmit,
     control,
     watch,
     reset,
+    setValue,
+    getValues,
     formState: { errors },
   } = useForm<ApplyValues>({
     mode: 'onTouched',
@@ -72,6 +77,35 @@ export default function ApplyForm() {
 
   const audience = watch('audience');
   const isShipper = audience === 'shipper';
+  /**
+   * Watched purely to drive the message label's shrink state. `register` leaves
+   * the field uncontrolled, so MUI decides whether to float the label from its
+   * own "filled" flag - which only updates on real input events. Text put there
+   * by `setValue` (the hand-off from the eligibility check) would otherwise sit
+   * underneath an unshrunk label.
+   */
+  const message = watch('message');
+
+  /**
+   * Receives the eligibility check's answers when the reader clicks through
+   * from it, so four questions they just answered are not asked again.
+   *
+   * Written into the visible message field rather than a hidden one: the reader
+   * can see exactly what is about to be sent and edit or clear it first, which
+   * is what the check's "nothing is submitted, stored, or sent" promise
+   * requires. Existing text is preserved rather than overwritten.
+   */
+  React.useEffect(
+    () =>
+      onQualifySummary((summary) => {
+        const current = getValues('message');
+        setValue('message', current ? `${current}\n\n${summary}` : summary, {
+          shouldDirty: true,
+        });
+        setFromCheck(true);
+      }),
+    [setValue, getValues],
+  );
 
   const onSubmit = async (values: ApplyValues) => {
     setStatus('sending');
@@ -84,6 +118,10 @@ export default function ApplyForm() {
       if (!res.ok) throw new Error('Request failed');
       setStatus('sent');
       reset();
+      // The carried-over answers are gone with the reset, so the notice about
+      // them must go too - otherwise "Send another" starts on an empty field
+      // that still claims to hold the check's results.
+      setFromCheck(false);
     } catch {
       setStatus('error');
     }
@@ -329,6 +367,18 @@ export default function ApplyForm() {
                     }
                     multiline
                     minRows={3}
+                    // Grows once the check's answers land, so the reader can see
+                    // the whole of what they are about to send without scrolling
+                    // inside a three-row box.
+                    maxRows={12}
+                    // `undefined`, not `false`, when empty: that hands the
+                    // decision back to MUI's default focus behaviour.
+                    slotProps={{ inputLabel: { shrink: message ? true : undefined } }}
+                    helperText={
+                      fromCheck
+                        ? 'Your answers from the two-minute check were added here. Edit or delete them before sending.'
+                        : undefined
+                    }
                     {...register('message')}
                   />
 

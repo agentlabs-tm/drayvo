@@ -20,25 +20,34 @@ export default function SectionHeading({
   subtitle?: React.ReactNode;
   maxWidth?: number;
 }) {
+  /**
+   * One Reveal for the whole heading, not one per line.
+   *
+   * The eyebrow, title, and subtitle are a single unit of meaning and read as
+   * one; animating them separately made three staggered events out of a thing
+   * the eye takes in at once, and cost three scroll observers per section. It
+   * also thins the page's total reveal count, which is what lets the reveals
+   * that remain actually signify something.
+   */
   return (
-    <Stack spacing={2} sx={{ maxWidth, alignItems: 'flex-start' }}>
-      <Reveal>
+    <Reveal>
+      <Stack spacing={2} sx={{ maxWidth, alignItems: 'flex-start' }}>
         <Typography variant="overline" sx={{ color: 'primary.main' }}>
           {eyebrow}
         </Typography>
-      </Reveal>
-      <Reveal delay={0.06}>
         <Typography variant="h2" sx={{ color: 'text.primary' }}>
           {title}
         </Typography>
-      </Reveal>
-      {subtitle && (
-        <Reveal delay={0.12}>
-          <Typography component="p" variant="subtitle1" sx={{ color: 'text.secondary', maxWidth: 640 }}>
+        {subtitle && (
+          <Typography
+            component="p"
+            variant="subtitle1"
+            sx={{ color: 'text.secondary', maxWidth: 640 }}
+          >
             {subtitle}
           </Typography>
-        </Reveal>
-      )}
-    </Stack>
+        )}
+      </Stack>
+    </Reveal>
   );
 }

@@ -9,7 +9,6 @@ import Qualify from '@/components/sections/Qualify';
 import Drivers from '@/components/sections/Drivers';
 import Owners from '@/components/sections/Owners';
 import Shippers from '@/components/sections/Shippers';
-import Fleet from '@/components/sections/Fleet';
 import Faq from '@/components/sections/Faq';
 import FinalCta from '@/components/sections/FinalCta';
 import ApplyForm from '@/components/sections/ApplyForm';
@@ -90,14 +89,28 @@ export default function Home() {
       <Box component="main">
         <Hero />
         <Commitments />
+        {/*
+          Transparency sits third, directly behind the commitments it evidences.
+          It carries the interactive settlement - the one place a reader can move
+          a slider and watch the arithmetic hold - which is the site's strongest
+          argument and was previously buried at position five, behind two long
+          text sections. Claim, then proof, then the detail behind the proof.
+        */}
+        <Transparency />
         <Standard />
         <Paths />
-        <Transparency />
         <Drivers />
         <Qualify />
         <Owners />
         <Shippers />
-        <Fleet />
+        {/*
+          <Fleet /> is deliberately not rendered. It ships as an honest empty
+          state - four dashed camera frames - which on a trucking site reads as
+          "this carrier has no trucks" rather than as the candour it was meant to
+          convey. The component is kept intact: reinstate it here, and restore
+          the "Our Fleet" entry in `nav`, once there are real photographs to put
+          in it. See components/sections/Fleet.tsx.
+        */}
         <Faq />
         <FinalCta />
         <ApplyForm />

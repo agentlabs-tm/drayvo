@@ -8,7 +8,9 @@ import { brandVoice } from '@/lib/brand';
 const COLUMNS = [
   {
     title: 'Company',
-    links: nav.filter((n) => ['#why', '#fleet', '#faq', '#apply'].includes(n.href)),
+    // Filtered from `nav` rather than duplicated, so an entry removed there
+    // (currently "Our Fleet") cannot linger here as a dead anchor.
+    links: nav.filter((n) => ['#why', '#faq', '#apply'].includes(n.href)),
   },
   {
     title: 'Work with us',

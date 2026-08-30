@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import Section from '@/components/ui/Section';
 import Reveal from '@/components/motion/Reveal';
@@ -44,40 +44,33 @@ export default function Shippers() {
           alignItems: 'center',
         }}
       >
-        <Box>
-          <Reveal>
-            <Typography variant="overline" sx={{ color: 'primary.main', display: 'block', mb: 2 }}>
-              For shippers
-            </Typography>
-          </Reveal>
-          <Reveal delay={0.06}>
-            <Typography variant="h2" sx={{ color: 'text.primary' }}>
-              Capacity from people who answer
-            </Typography>
-          </Reveal>
-          <Reveal delay={0.12}>
-            <Typography sx={{ color: 'text.secondary', mt: 2.5 }}>
-              We would rather tell you plainly what we can cover than quote capacity we cannot
-              deliver on. Send us a lane and you will get a straight answer either way - and when we
-              commit to it, it moves.
-            </Typography>
-          </Reveal>
-          <Reveal delay={0.18}>
-            <Button
-              href="#apply"
-              variant="outlined"
-              endIcon={<ArrowForwardRoundedIcon />}
-              sx={{ mt: 3.5, color: 'text.primary' }}
-            >
-              Ship with Drayvo
-            </Button>
-          </Reveal>
-        </Box>
+        <Reveal>
+          <Typography variant="overline" sx={{ color: 'primary.main', display: 'block', mb: 2 }}>
+            For shippers
+          </Typography>
+          <Typography variant="h2" sx={{ color: 'text.primary' }}>
+            Capacity from people who answer
+          </Typography>
+          <Typography sx={{ color: 'text.secondary', mt: 2.5 }}>
+            We would rather tell you plainly what we can cover than quote capacity we cannot
+            deliver on. Send us a lane and you will get a straight answer either way - and when we
+            commit to it, it moves.
+          </Typography>
+          <Button
+            href="#apply"
+            variant="outlined"
+            endIcon={<ArrowForwardRoundedIcon />}
+            sx={{ mt: 3.5, color: 'text.primary' }}
+          >
+            Ship with Drayvo
+          </Button>
+        </Reveal>
 
-        <Stack spacing={0}>
+        {/* One reveal for the list; the three points are a single ruled column. */}
+        <Reveal>
           {POINTS.map((p, i) => (
-            <Reveal key={p.title} delay={i * 0.06}>
               <Box
+                key={p.title}
                 sx={{
                   py: { xs: 2.5, md: 3 },
                   borderTop: i === 0 ? 'none' : '1px solid',
@@ -91,9 +84,8 @@ export default function Shippers() {
                   {p.body}
                 </Typography>
               </Box>
-            </Reveal>
           ))}
-        </Stack>
+        </Reveal>
       </Box>
     </Section>
   );

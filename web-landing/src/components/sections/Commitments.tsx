@@ -48,7 +48,9 @@ export default function Commitments() {
       <Typography variant="h2" sx={visuallyHidden}>
         How Drayvo operates
       </Typography>
-      <Box
+      {/* One reveal for the whole bar. It is a single row of four short claims
+          read together, not four things arriving in sequence. */}
+      <Reveal
         sx={{
           display: 'grid',
           gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))', lg: 'repeat(4, minmax(0, 1fr))' },
@@ -56,8 +58,8 @@ export default function Commitments() {
         }}
       >
         {COMMITMENTS.map(({ icon: Icon, title, body }, i) => (
-          <Reveal key={title} delay={i * 0.05}>
-            <Stack
+          <Stack
+              key={title}
               spacing={1.25}
               sx={{
                 height: '100%',
@@ -78,10 +80,9 @@ export default function Commitments() {
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                 {body}
               </Typography>
-            </Stack>
-          </Reveal>
+          </Stack>
         ))}
-      </Box>
+      </Reveal>
 
       <Typography
         variant="caption"

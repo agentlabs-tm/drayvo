@@ -57,29 +57,26 @@ const STANDARD = [
 export default function Standard() {
   return (
     <Section id="why" tone="contrast">
-      <Box sx={{ maxWidth: 760 }}>
-        <Reveal>
+      <Reveal>
+        <Box sx={{ maxWidth: 760 }}>
           <Typography variant="overline" sx={{ color: 'primary.main', display: 'block', mb: 2 }}>
             The Drayvo Standard
           </Typography>
-        </Reveal>
-        <Reveal delay={0.06}>
           <Typography variant="h2" sx={{ color: 'text.primary' }}>
             Seven commitments.{' '}
             <Box component="span" sx={{ color: 'primary.main' }}>
               In writing.
             </Box>
           </Typography>
-        </Reveal>
-        <Reveal delay={0.12}>
           <Typography sx={{ color: 'text.secondary', mt: 2.5, fontSize: '1.05rem' }}>
             Any carrier can advertise a rate. These are the operating practices behind ours. They
             are specific on purpose - each one is something you can check against your own
             experience within a few weeks of running with us.
           </Typography>
-        </Reveal>
-      </Box>
+        </Box>
+      </Reveal>
 
+      <Reveal>
       <Box
         sx={{
           mt: { xs: 5, md: 8 },
@@ -93,37 +90,43 @@ export default function Standard() {
           overflow: 'hidden',
         }}
       >
-        {STANDARD.map((s, i) => (
-          <Reveal key={s.n} delay={Math.min(i * 0.04, 0.2)} sx={{ height: '100%' }}>
-            <Stack
-              spacing={1.5}
+        {/*
+          The cards no longer animate individually. Seven staggered reveals
+          inside a grid that is already one continuous ruled block drew attention
+          to the cells rather than to the block, and on a phone - one column, one
+          card per screen - the stagger was never visible as a stagger at all.
+          The section reveals as a unit instead.
+        */}
+        {STANDARD.map((s) => (
+          <Stack
+            key={s.n}
+            spacing={1.5}
+            sx={{
+              height: '100%',
+              p: { xs: 3, md: 3.5 },
+              bgcolor: 'var(--surface-contrast)',
+              transition: 'background-color .25s ease',
+              '&:hover': { bgcolor: 'action.hover' },
+            }}
+          >
+            <Typography
               sx={{
-                height: '100%',
-                p: { xs: 3, md: 3.5 },
-                bgcolor: 'var(--surface-contrast)',
-                transition: 'background-color .25s ease',
-                '&:hover': { bgcolor: 'action.hover' },
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.8rem',
+                fontWeight: 600,
+                letterSpacing: '0.1em',
+                color: 'primary.main',
               }}
             >
-              <Typography
-                sx={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '0.8rem',
-                  fontWeight: 600,
-                  letterSpacing: '0.1em',
-                  color: 'primary.main',
-                }}
-              >
-                {s.n}
-              </Typography>
-              <Typography variant="h6" component="h3" sx={{ color: 'text.primary' }}>
-                {s.title}
-              </Typography>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {s.body}
-              </Typography>
-            </Stack>
-          </Reveal>
+              {s.n}
+            </Typography>
+            <Typography variant="h6" component="h3" sx={{ color: 'text.primary' }}>
+              {s.title}
+            </Typography>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              {s.body}
+            </Typography>
+          </Stack>
         ))}
 
         {/*
@@ -136,6 +139,7 @@ export default function Standard() {
         <Box sx={{ bgcolor: 'var(--surface-contrast)', display: { xs: 'none', md: 'block' } }} />
         <Box sx={{ bgcolor: 'var(--surface-contrast)', display: { xs: 'none', xl: 'block' } }} />
       </Box>
+      </Reveal>
     </Section>
   );
 }

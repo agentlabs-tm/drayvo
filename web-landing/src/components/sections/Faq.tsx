@@ -13,7 +13,6 @@ import {
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import Section from '@/components/ui/Section';
 import SectionHeading from '@/components/ui/SectionHeading';
-import Reveal from '@/components/motion/Reveal';
 import { FAQ_GROUPS } from '@/lib/faqs';
 
 export default function Faq() {
@@ -54,9 +53,8 @@ export default function Faq() {
         aria-labelledby={`faq-tab-${group.audience}`}
         sx={{ mt: 3, display: 'grid', gap: 1.25 }}
       >
-        {group.items.map((f, i) => (
-          <Reveal key={f.q} delay={Math.min(i * 0.04, 0.16)}>
-            <Accordion disableGutters elevation={0}>
+        {group.items.map((f) => (
+            <Accordion key={f.q} disableGutters elevation={0}>
               <AccordionSummary
                 expandIcon={<ExpandMoreRoundedIcon sx={{ color: 'primary.main' }} />}
                 sx={{ px: { xs: 2, md: 3 }, py: 1.25 }}
@@ -78,7 +76,6 @@ export default function Faq() {
                 </Typography>
               </AccordionDetails>
             </Accordion>
-          </Reveal>
         ))}
       </Box>
     </Section>
