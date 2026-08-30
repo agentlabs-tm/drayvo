@@ -44,7 +44,30 @@ const RAMP = 0.28;
 const DWELL = 1.1;
 /** Seconds for the road to draw in. */
 const DRAW = 1.6;
-const CONVOY = [0, 1];
+/**
+ * Convoy size, chosen per breakpoint to match how much of the road is on screen.
+ *
+ * The SVG uses `slice`, so a narrow viewport crops rather than shrinks: a phone
+ * sees roughly 436 of the path's 1120 units - about a third of the route. Units
+ * are spaced evenly around the cycle, so each one is only in frame for that same
+ * third of its run. Two units on a phone therefore leave the road visibly empty
+ * for several seconds at a time, which reads as a broken animation rather than a
+ * quiet one.
+ *
+ * Scaling the count with the crop keeps roughly the same amount of traffic in
+ * frame at every width, instead of the same number of trucks on the whole road.
+ *
+ * `label` is in path units and is compensation for that same crop: the SVG
+ * scales to about 0.66px per unit on a 320px screen, so the desktop size of 15
+ * lands at under 10px there. Raising it keeps the stop names at a consistent
+ * ~12px on screen instead of a consistent size in the drawing.
+ */
+const DENSITY_BY_WIDTH = [
+  { query: '(min-width: 900px)', units: 2, label: 15 },
+  { query: '(min-width: 600px)', units: 3, label: 16 },
+] as const;
+const DENSITY_SMALL = { units: 5, label: 18 } as const;
+
 const FADE = 0.04;
 
 const SHOULDER = 34;
@@ -160,7 +183,40 @@ function progressAt(legs: Leg[], time: number) {
   return 1;
 }
 
+/**
+ * Convoy size and label size for the current width.
+ *
+ * `useSyncExternalStore` keeps this SSR-safe: the server snapshot is the
+ * desktop tier, so React hydrates against exactly the markup that was sent and
+ * re-renders into the correct tier if the viewport turns out to be narrower —
+ * where reading the media query during render would be a hydration mismatch.
+ *
+ * The snapshot is returned as a stable string and parsed by the caller: this
+ * store is polled on every render, and returning a fresh object each time would
+ * fail `useSyncExternalStore`'s identity check and loop.
+ */
+function subscribeToWidth(onChange: () => void) {
+  const lists = DENSITY_BY_WIDTH.map((b) => window.matchMedia(b.query));
+  lists.forEach((mq) => mq.addEventListener('change', onChange));
+  return () => lists.forEach((mq) => mq.removeEventListener('change', onChange));
+}
+
+function readDensityKey() {
+  const match = DENSITY_BY_WIDTH.find((b) => window.matchMedia(b.query).matches);
+  return match ? match.query : 'small';
+}
+
+function useDensity() {
+  const key = React.useSyncExternalStore(
+    subscribeToWidth,
+    readDensityKey,
+    () => DENSITY_BY_WIDTH[0].query,
+  );
+  return DENSITY_BY_WIDTH.find((b) => b.query === key) ?? DENSITY_SMALL;
+}
+
 export default function RouteGraphic() {
+  const { units, label: labelSize } = useDensity();
   const ref = React.useRef<HTMLDivElement>(null);
   const revealed = useInView(ref, { once: true, amount: 0.25 });
   const inView = useInView(ref, { amount: 0.1 });
@@ -213,12 +269,19 @@ export default function RouteGraphic() {
 
     const { legs, cycle } = buildTimeline(path);
 
-    // Parked at stops rather than mid-carriageway, so the still frame reads.
+    /**
+     * Parked at stops rather than mid-carriageway, so the still frame reads as
+     * a route with trucks working it. There are only three stops, so any units
+     * beyond that are spaced along the road instead of left invisible - on a
+     * phone the convoy is five and the three stops alone would leave most of
+     * the visible crop empty.
+     */
     if (reduce) {
-      tractorRefs.current.forEach((_, i) => {
-        const leg = legs.filter((l) => l.kind === 'wait')[i];
-        if (leg && leg.kind === 'wait') place(i, leg.at, 1);
-      });
+      const waits = legs.filter((l) => l.kind === 'wait');
+      for (let i = 0; i < units; i += 1) {
+        const wait = waits[i];
+        place(i, wait?.kind === 'wait' ? wait.at : (i + 0.5) / units, 1);
+      }
       return;
     }
     if (!inView) return;
@@ -230,23 +293,25 @@ export default function RouteGraphic() {
     const tick = (now: number) => {
       const elapsed = (now - origin) / 1000;
 
-      CONVOY.forEach((index, i) => {
-        const since = elapsed - DRAW - (index * cycle) / CONVOY.length;
+      for (let i = 0; i < units; i += 1) {
+        // Units are spread evenly around one cycle, so the spacing closes up
+        // automatically as the count rises on narrower screens.
+        const since = elapsed - DRAW - (i * cycle) / units;
         if (since < 0) {
           place(i, 0, 0);
-          return;
+          continue;
         }
         const progress = progressAt(legs, since % cycle);
         const opacity = Math.min(1, progress / FADE, (1 - progress) / FADE);
         place(i, progress, Math.max(0, opacity));
-      });
+      }
 
       frame = requestAnimationFrame(tick);
     };
 
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [inView, reduce]);
+  }, [inView, reduce, units]);
 
   const draw = {
     initial: { pathLength: reduce ? 1 : 0 },
@@ -361,7 +426,7 @@ export default function RouteGraphic() {
               fill="currentColor"
               style={{
                 fontFamily: 'var(--font-mono)',
-                fontSize: 15,
+                fontSize: labelSize,
                 fontWeight: 600,
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
@@ -372,8 +437,8 @@ export default function RouteGraphic() {
           </motion.g>
         ))}
 
-        {CONVOY.map((index, i) => (
-          <g key={index}>
+        {Array.from({ length: units }, (_, i) => (
+          <g key={i}>
             {/* Trailer first so the tractor's cab overlaps it at the hinge */}
             <g
               opacity={0}
