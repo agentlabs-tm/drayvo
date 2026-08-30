@@ -51,9 +51,24 @@ export default function Header() {
           borderColor: solid ? 'divider' : 'transparent',
           transition: 'background-color .25s ease, border-color .25s ease',
           color: 'text.primary',
-          // Notch clearance when the page is opened in a browser that draws
-          // under the status bar (installed PWA, some in-app browsers).
-          pt: 'env(safe-area-inset-top)',
+          /**
+           * Deliberately NO `env(safe-area-inset-top)` padding here.
+           *
+           * A safe-area inset is only meaningful when the page opts into
+           * drawing under the system UI with `viewport-fit=cover`, which this
+           * site does not (see the viewport export in app/layout.tsx) - the
+           * browser already insets the page below the status bar, so there is
+           * nothing to clear.
+           *
+           * iOS in-app browsers (Telegram, and others embedding WKWebView)
+           * report a non-zero top inset regardless. Padding the bar by it added
+           * a ~59px strip above the logo that belongs to the header but sits
+           * above the toolbar - and because the bar is 88% opaque with a
+           * backdrop blur, page content was visibly scrolling through it.
+           *
+           * If edge-to-edge is ever wanted, add `viewportFit: 'cover'` to the
+           * viewport export and reintroduce the inset everywhere at once.
+           */
         }}
       >
         <Container maxWidth="xl">
@@ -171,9 +186,13 @@ export default function Header() {
               // grows past a comfortable reading width on a large tablet.
               width: { xs: 'min(88vw, 340px)', sm: 360 },
               p: 2.5,
-              pt: 'calc(env(safe-area-inset-top) + 20px)',
-              pb: 'calc(env(safe-area-inset-bottom) + 20px)',
-              pr: 'calc(env(safe-area-inset-right) + 20px)',
+              // Same reasoning as the AppBar: no top inset without
+              // `viewport-fit=cover`, or an in-app browser's spurious value
+              // pushes the drawer's own header down for no reason. The bottom
+              // and right insets are kept but bounded, so a wrong value can
+              // only ever add padding - it cannot expose content.
+              pb: 'max(20px, env(safe-area-inset-bottom))',
+              pr: 'max(20px, env(safe-area-inset-right))',
               bgcolor: 'background.default',
               // A landscape phone is ~360px tall; the menu has to scroll rather
               // than clip its CTAs off the bottom.

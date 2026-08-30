@@ -63,7 +63,10 @@ export default function MobileActionBar() {
             zIndex: (t) => t.zIndex.appBar,
             display: { xs: 'block', md: 'none' },
             pt: 1.25,
-            pb: 'calc(env(safe-area-inset-bottom, 0px) + 12px)',
+            // Bounded rather than added to a base: an in-app browser reporting a
+            // spurious inset can then only ever match the home-indicator gap,
+            // never stack on top of the padding and inflate the bar.
+            pb: 'max(12px, env(safe-area-inset-bottom, 0px))',
             // Clears the notch in landscape, where the bar spans the full width
             // and its outer button would otherwise sit under the sensor housing.
             pl: 'max(12px, env(safe-area-inset-left))',
