@@ -57,7 +57,7 @@ export default function Paths() {
         sx={{
           mt: { xs: 5, md: 8 },
           display: 'grid',
-          gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)', lg: '1fr 1fr 0.8fr' },
+          gridTemplateColumns: { xs: '1fr', md: 'repeat(2, minmax(0, 1fr))', lg: '1fr 1fr 0.8fr' },
           gap: 2.5,
           alignItems: 'stretch',
         }}

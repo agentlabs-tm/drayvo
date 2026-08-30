@@ -259,8 +259,18 @@ export default function RouteGraphic() {
       ref={ref}
       sx={{
         width: '100%',
+        /**
+         * The viewBox is 4.3:1 and the SVG uses `slice`, so a squarer ratio
+         * crops in rather than shrinking: phones get a close-up of the road
+         * where the rigs and the stop labels stay legible, and wide screens get
+         * the full route. Rendering the native ratio at 320px would put the
+         * labels at 5px and the trees at 7 - the same picture, unreadable.
+         */
         aspectRatio: { xs: '2 / 1', sm: '5 / 2', md: '940 / 218' },
         overflow: 'hidden',
+        // The convoy is repainted every frame; scoping that work to this box
+        // keeps it off the rest of the hero on weaker mobile GPUs.
+        contain: 'paint',
       }}
     >
       <Box

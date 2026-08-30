@@ -84,7 +84,7 @@ export default function Standard() {
         sx={{
           mt: { xs: 5, md: 8 },
           display: 'grid',
-          gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)', xl: 'repeat(3, 1fr)' },
+          gridTemplateColumns: { xs: '1fr', md: 'repeat(2, minmax(0, 1fr))', xl: 'repeat(3, minmax(0, 1fr))' },
           gap: '1px',
           bgcolor: 'var(--hairline)',
           border: '1px solid',
@@ -126,13 +126,14 @@ export default function Standard() {
           </Reveal>
         ))}
 
-        {/* Fills the trailing grid cell so the record block stays rectangular. */}
-        <Box
-          sx={{
-            bgcolor: 'var(--surface-contrast)',
-            display: { xs: 'none', md: 'block', xl: 'none' },
-          }}
-        />
+        {/*
+          Fills the trailing grid cells so the record block stays rectangular.
+          Seven items need one filler to reach eight at `md` (2 columns) and two
+          to reach nine at `xl` (3 columns). The second filler previously
+          rendered alone at `xl`, leaving the ninth cell empty and showing the
+          container's hairline background as a bare grey block.
+        */}
+        <Box sx={{ bgcolor: 'var(--surface-contrast)', display: { xs: 'none', md: 'block' } }} />
         <Box sx={{ bgcolor: 'var(--surface-contrast)', display: { xs: 'none', xl: 'block' } }} />
       </Box>
     </Section>

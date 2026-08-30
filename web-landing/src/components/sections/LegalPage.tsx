@@ -10,12 +10,28 @@ export default function LegalPage({
   body: string[];
 }) {
   return (
-    <Box component="main" sx={{ bgcolor: 'background.default', minHeight: '100vh', py: { xs: 8, md: 14 } }}>
+    <Box
+      component="main"
+      sx={{
+        bgcolor: 'background.default',
+        /**
+         * `dvh` tracks the visible viewport as mobile browser chrome collapses;
+         * `vh` is fixed to the *expanded* chrome height, so a short legal page
+         * ends up taller than the screen and scrolls for no reason. `vh` first
+         * as the fallback for engines without `dvh`. (An array here would be
+         * read as MUI breakpoint values, not CSS fallbacks, hence @supports.)
+         */
+        minHeight: '100vh',
+        '@supports (min-height: 100dvh)': { minHeight: '100dvh' },
+        py: { xs: 7, sm: 9, md: 14 },
+        pb: { xs: 'calc(env(safe-area-inset-bottom, 0px) + 56px)', md: 14 },
+      }}
+    >
       <Container maxWidth="md">
         <Button href="/" startIcon={<ArrowBackRoundedIcon />} sx={{ mb: 4, px: 0, color: 'text.secondary' }}>
           Back to Drayvo
         </Button>
-        <Typography variant="h1" sx={{ color: 'text.primary', fontSize: { xs: '2.25rem', md: '3rem' } }}>
+        <Typography variant="h1" sx={{ color: 'text.primary', fontSize: 'clamp(1.9rem, 6vw, 3rem)' }}>
           {title}
         </Typography>
         <Alert severity="info" sx={{ mt: 3, borderRadius: 1 }}>

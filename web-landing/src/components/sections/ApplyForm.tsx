@@ -95,8 +95,8 @@ export default function ApplyForm() {
       id="apply"
       sx={{
         bgcolor: 'background.default',
-        py: { xs: 8, md: 14 },
-        scrollMarginTop: { xs: 72, md: 88 },
+        py: { xs: 7, sm: 9, md: 14 },
+        scrollMarginTop: { xs: 76, md: 96 },
         borderTop: '1px solid',
         borderColor: 'divider',
       }}
@@ -228,14 +228,26 @@ export default function ApplyForm() {
                           sx={{
                             display: 'grid',
                             gap: 1,
-                            gridTemplateColumns: { xs: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' },
+                            // `minmax(0, 1fr)`, not `1fr`: a grid track's
+                            // default `auto` minimum is the widest label, which
+                            // pushed the group past the card at 320px.
+                            gridTemplateColumns: {
+                              xs: 'repeat(2, minmax(0, 1fr))',
+                              md: 'repeat(4, minmax(0, 1fr))',
+                            },
                             '& .MuiToggleButton-root': {
                               borderRadius: '6px !important',
                               border: '1px solid !important',
                               borderColor: 'divider !important',
                               textTransform: 'none',
                               fontWeight: 600,
-                              fontSize: '0.85rem',
+                              fontSize: { xs: '0.8rem', sm: '0.85rem' },
+                              lineHeight: 1.3,
+                              // Even at 0.8rem "Shipper / broker" needs to wrap
+                              // in a 120px track; the floor keeps all four the
+                              // same height and comfortably tappable.
+                              minHeight: 48,
+                              px: 1,
                               py: 1.1,
                               color: 'text.secondary',
                             },
@@ -277,6 +289,9 @@ export default function ApplyForm() {
                       type="tel"
                       required
                       autoComplete="tel"
+                      // `type` alone leaves Android on an alphanumeric keypad;
+                      // `inputMode="tel"` is what actually selects the dial pad.
+                      slotProps={{ htmlInput: { inputMode: 'tel', autoCapitalize: 'off' } }}
                       error={!!errors.phone}
                       helperText={errors.phone?.message ?? 'The fastest way to reach you'}
                       {...register('phone', {
@@ -288,6 +303,16 @@ export default function ApplyForm() {
                       label="Email (optional)"
                       type="email"
                       autoComplete="email"
+                      // Stops iOS capitalising the first letter of an address
+                      // and offering autocorrect on a domain name.
+                      slotProps={{
+                        htmlInput: {
+                          inputMode: 'email',
+                          autoCapitalize: 'off',
+                          autoCorrect: 'off',
+                          spellCheck: false,
+                        },
+                      }}
                       error={!!errors.email}
                       helperText={errors.email?.message}
                       {...register('email', {
@@ -314,7 +339,7 @@ export default function ApplyForm() {
                     render={({ field, fieldState }) => (
                       <Box>
                         <FormControlLabel
-                          control={<Checkbox {...field} checked={field.value} size="small" />}
+                          control={<Checkbox {...field} checked={field.value} />}
                           label={
                             /* TODO(legal): replace with consent language reviewed by counsel,
                                covering TCPA requirements for SMS and autodialled calls. */
@@ -360,7 +385,10 @@ export default function ApplyForm() {
                         <SendRoundedIcon />
                       )
                     }
-                    sx={{ alignSelf: { sm: 'flex-start' } }}
+                    // Full width on phones - it is the section's only action and
+                    // the thumb should not have to find it. Content-width from
+                    // `sm`, where a button spanning the card reads as a banner.
+                    sx={{ alignSelf: { xs: 'stretch', sm: 'flex-start' } }}
                   >
                     {status === 'sending' ? 'Sending…' : 'Send'}
                   </Button>
@@ -394,6 +422,7 @@ function ContactLine({
       sx={{
         alignItems: 'center',
         textDecoration: 'none',
+        minHeight: 44,
         '&:hover .contact-value': { color: 'primary.main' },
       }}
     >
@@ -412,11 +441,22 @@ function ContactLine({
       >
         {icon}
       </Box>
-      <Box>
+      <Box sx={{ minWidth: 0 }}>
         <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block' }}>
           {label}
         </Typography>
-        <Typography className="contact-value" sx={{ color: 'text.primary', fontWeight: 600 }}>
+        <Typography
+          className="contact-value"
+          sx={{
+            color: 'text.primary',
+            fontWeight: 600,
+            // `contact@drayvologistics.com` has no break opportunity of its
+            // own and is ~215px at this weight - it has to be allowed to
+            // break anywhere rather than widen the column past a 320px screen.
+            overflowWrap: 'anywhere',
+            fontSize: { xs: '0.95rem', sm: '1rem' },
+          }}
+        >
           {value}
         </Typography>
       </Box>

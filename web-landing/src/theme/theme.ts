@@ -58,31 +58,57 @@ const theme = createTheme({
   shape: { borderRadius: 4 },
   typography: {
     fontFamily: body,
+    /**
+     * Every display size is a single clamp rather than a per-breakpoint object,
+     * so the type scales continuously instead of stepping. The `vw` middle term
+     * is tuned against the *narrowest* line each level actually has to carry —
+     * at 320px the hero headline is 19 characters of Sora ExtraBold, which is
+     * why the h1 floor is 1.75rem and not the 2.5rem a desktop-first scale
+     * would leave behind.
+     */
     h1: {
       fontFamily: display,
       fontWeight: 800,
       letterSpacing: '-0.035em',
-      lineHeight: 1.02,
-      fontSize: 'clamp(2.5rem, 6vw, 5rem)',
+      lineHeight: 1.04,
+      fontSize: 'clamp(1.75rem, 7.4vw, 5rem)',
     },
     h2: {
       fontFamily: display,
       fontWeight: 800,
       letterSpacing: '-0.028em',
-      lineHeight: 1.08,
-      fontSize: 'clamp(1.85rem, 3.6vw, 3rem)',
+      lineHeight: 1.12,
+      fontSize: 'clamp(1.65rem, 4.6vw, 3rem)',
     },
     h3: {
       fontFamily: display,
       fontWeight: 700,
       letterSpacing: '-0.02em',
-      lineHeight: 1.15,
-      fontSize: 'clamp(1.35rem, 2.2vw, 1.85rem)',
+      lineHeight: 1.2,
+      fontSize: 'clamp(1.25rem, 2.6vw, 1.85rem)',
     },
-    h4: { fontFamily: display, fontWeight: 700, letterSpacing: '-0.015em', lineHeight: 1.2 },
-    h5: { fontFamily: display, fontWeight: 700, letterSpacing: '-0.01em', lineHeight: 1.3 },
-    h6: { fontFamily: display, fontWeight: 700, letterSpacing: '-0.005em', lineHeight: 1.35 },
-    subtitle1: { fontSize: '1.0625rem', lineHeight: 1.65 },
+    h4: {
+      fontFamily: display,
+      fontWeight: 700,
+      letterSpacing: '-0.015em',
+      lineHeight: 1.24,
+      fontSize: 'clamp(1.3rem, 3vw, 1.75rem)',
+    },
+    h5: {
+      fontFamily: display,
+      fontWeight: 700,
+      letterSpacing: '-0.01em',
+      lineHeight: 1.32,
+      fontSize: 'clamp(1.15rem, 2.2vw, 1.5rem)',
+    },
+    h6: {
+      fontFamily: display,
+      fontWeight: 700,
+      letterSpacing: '-0.005em',
+      lineHeight: 1.35,
+      fontSize: 'clamp(1rem, 1.6vw, 1.15rem)',
+    },
+    subtitle1: { fontSize: 'clamp(1rem, 1.2vw, 1.0625rem)', lineHeight: 1.65 },
     body1: { fontSize: '1rem', lineHeight: 1.7 },
     body2: { fontSize: '0.9375rem', lineHeight: 1.65 },
     button: { fontWeight: 700, letterSpacing: '0.005em', textTransform: 'none' },
@@ -100,7 +126,16 @@ const theme = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         html: { WebkitFontSmoothing: 'antialiased' },
-        body: { overflowX: 'hidden' },
+        /**
+         * `clip` rather than `hidden`: `hidden` turns <body> into a scroll
+         * container, which silently disables `position: sticky` on descendants
+         * (the owner-operations column). `clip` suppresses the same overflow
+         * without that side effect. `hidden` stays as the pre-Safari-16 fallback.
+         */
+        body: {
+          overflowX: 'hidden',
+          '@supports (overflow: clip)': { overflowX: 'clip' },
+        },
         '::selection': { background: alpha(brand.orange, 0.3) },
         '@media (prefers-reduced-motion: no-preference)': {
           html: { scrollBehavior: 'smooth' },
@@ -113,6 +148,24 @@ const theme = createTheme({
         },
       },
     },
+    /**
+     * Horizontal gutters step with the viewport and add the landscape notch
+     * inset, so nothing sits under the sensor housing on a rotated iPhone.
+     * Every full-width surface on the site routes through Container, so this is
+     * the one place safe areas need handling.
+     */
+    MuiContainer: {
+      styleOverrides: {
+        root: ({ theme: t }) => ({
+          paddingInlineStart: `max(${t.spacing(2)}, env(safe-area-inset-left))`,
+          paddingInlineEnd: `max(${t.spacing(2)}, env(safe-area-inset-right))`,
+          [t.breakpoints.up('sm')]: {
+            paddingInlineStart: `max(${t.spacing(3)}, env(safe-area-inset-left))`,
+            paddingInlineEnd: `max(${t.spacing(3)}, env(safe-area-inset-right))`,
+          },
+        }),
+      },
+    },
     MuiButton: {
       defaultProps: { disableElevation: true },
       styleOverrides: {
@@ -120,9 +173,13 @@ const theme = createTheme({
           borderRadius: 6,
           paddingInline: 22,
           paddingBlock: 11,
+          // Floor rather than a fixed height: keeps every button - including the
+          // borderless text ones - a comfortable tap target without stretching
+          // the ones that already exceed it.
+          minHeight: 44,
           transition: 'background-color .2s ease, border-color .2s ease, color .2s ease',
         },
-        sizeLarge: { paddingInline: 28, paddingBlock: 14, fontSize: '1rem' },
+        sizeLarge: { paddingInline: 28, paddingBlock: 14, fontSize: '1rem', minHeight: 52 },
         outlined: ({ theme: t }) => ({
           borderWidth: 1,
           borderColor: alpha(brand.steel, 0.55),
@@ -145,11 +202,22 @@ const theme = createTheme({
       ],
     },
     MuiPaper: { styleOverrides: { root: { backgroundImage: 'none' } } },
+    /** 44px minimum on every icon-only control - they are the smallest targets on the page. */
+    MuiIconButton: { styleOverrides: { root: { minWidth: 44, minHeight: 44 } } },
+    /**
+     * The default 20px vertical padding gives the rail a ~40px grab area. On a
+     * touch screen the settlement sliders are the only draggable controls on
+     * the site, so they get a full 48.
+     */
+    MuiSlider: { styleOverrides: { root: { paddingBlock: 15 } } },
     MuiTextField: { defaultProps: { variant: 'outlined' } },
     MuiOutlinedInput: {
       styleOverrides: {
         root: ({ theme: t }) => ({
           borderRadius: 6,
+          // 16px floor: anything smaller makes iOS Safari zoom the viewport on
+          // focus, and it never zooms back out.
+          fontSize: '1rem',
           ...t.applyStyles('light', { background: brand.paper }),
           ...t.applyStyles('dark', { background: alpha('#FFFFFF', 0.04) }),
           '&.Mui-focused': { boxShadow: `0 0 0 3px ${alpha(brand.orange, 0.22)}` },

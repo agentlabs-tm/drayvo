@@ -80,7 +80,7 @@ export default function Drivers() {
         sx={{
           mt: { xs: 5, md: 8 },
           display: 'grid',
-          gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' },
+          gridTemplateColumns: { xs: '1fr', md: 'repeat(2, minmax(0, 1fr))' },
           gap: 2.5,
         }}
       >
@@ -149,7 +149,9 @@ export default function Drivers() {
             border: '1px solid',
             borderColor: 'divider',
             display: 'grid',
-            gridTemplateColumns: { xs: '1fr', lg: '300px 1fr' },
+            // `minmax` rather than a fixed 300px: the intro column may shrink
+            // when the requirement list needs the room, and never has to.
+            gridTemplateColumns: { xs: '1fr', lg: 'minmax(240px, 300px) 1fr' },
             gap: { xs: 2.5, lg: 5 },
             alignItems: { lg: 'center' },
           }}

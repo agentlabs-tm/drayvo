@@ -51,17 +51,27 @@ export default function Header() {
           borderColor: solid ? 'divider' : 'transparent',
           transition: 'background-color .25s ease, border-color .25s ease',
           color: 'text.primary',
+          // Notch clearance when the page is opened in a browser that draws
+          // under the status bar (installed PWA, some in-app browsers).
+          pt: 'env(safe-area-inset-top)',
         }}
       >
         <Container maxWidth="xl">
-          <Toolbar disableGutters sx={{ minHeight: { xs: 64, md: 80 }, gap: 2 }}>
+          <Toolbar disableGutters sx={{ minHeight: { xs: 56, md: 80 }, gap: { xs: 1, sm: 2 } }}>
             <MLink
               href="#top"
               underline="none"
               aria-label={`${site.name} - home`}
-              sx={{ display: 'flex' }}
+              sx={{ display: 'flex', minWidth: 0 }}
             >
-              <Logo height={36} />
+              {/* 30px on phones: the lockup is 4.6:1, so every pixel of height
+                  costs 4.6 of the width the header has to share. */}
+              <Box sx={{ display: { xs: 'flex', sm: 'none' } }}>
+                <Logo height={30} />
+              </Box>
+              <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
+                <Logo height={36} />
+              </Box>
             </MLink>
 
             <Box sx={{ flex: 1 }} />
@@ -90,12 +100,20 @@ export default function Header() {
               ))}
             </Stack>
 
-            <Stack direction="row" spacing={1} sx={{ alignItems: 'center', ml: { lg: 1.5 } }}>
+            <Stack
+              direction="row"
+              spacing={{ xs: 0.5, sm: 1 }}
+              sx={{ alignItems: 'center', ml: { lg: 1.5 }, flexShrink: 0 }}
+            >
+              {/* Below `sm` the header cannot carry logo + toggle + CTA + menu
+                  within 320px, and the recruiting CTA outranks the theme
+                  switch. The toggle moves into the drawer instead of shrinking
+                  everything to the point of being hard to hit. */}
               <IconButton
                 onClick={() => setMode(resolved === 'dark' ? 'light' : 'dark')}
                 aria-label={`Switch to ${resolved === 'dark' ? 'light' : 'dark'} mode`}
-                size="small"
                 sx={{
+                  display: { xs: 'none', sm: 'inline-flex' },
                   border: '1px solid',
                   borderColor: 'divider',
                   borderRadius: 1,
@@ -112,14 +130,26 @@ export default function Header() {
               <Button
                 href="#apply"
                 variant="contained"
-                sx={{ display: { xs: 'none', sm: 'inline-flex' } }}
+                sx={{
+                  whiteSpace: 'nowrap',
+                  px: { xs: 1.75, sm: 2.75 },
+                  fontSize: { xs: '0.85rem', sm: '0.875rem' },
+                }}
               >
-                Drive with Drayvo
+                {/* Same destination, shortened to fit rather than dropped. */}
+                <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
+                  Drive with Drayvo
+                </Box>
+                <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>
+                  Apply
+                </Box>
               </Button>
 
               <IconButton
                 onClick={() => setOpen(true)}
                 aria-label="Open menu"
+                aria-expanded={open}
+                aria-controls="mobile-menu"
                 sx={{ display: { lg: 'none' }, color: 'text.primary' }}
               >
                 <MenuRoundedIcon />
@@ -133,18 +163,37 @@ export default function Header() {
         anchor="right"
         open={open}
         onClose={() => setOpen(false)}
+        id="mobile-menu"
         slotProps={{
-          paper: { sx: { width: { xs: '88vw', sm: 360 }, p: 2.5, bgcolor: 'background.default' } },
+          paper: {
+            sx: {
+              // `88vw` capped so the panel never exceeds the screen, and never
+              // grows past a comfortable reading width on a large tablet.
+              width: { xs: 'min(88vw, 340px)', sm: 360 },
+              p: 2.5,
+              pt: 'calc(env(safe-area-inset-top) + 20px)',
+              pb: 'calc(env(safe-area-inset-bottom) + 20px)',
+              pr: 'calc(env(safe-area-inset-right) + 20px)',
+              bgcolor: 'background.default',
+              // A landscape phone is ~360px tall; the menu has to scroll rather
+              // than clip its CTAs off the bottom.
+              overflowY: 'auto',
+              overscrollBehavior: 'contain',
+            },
+          },
         }}
       >
-        <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+        <Stack
+          direction="row"
+          sx={{ alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}
+        >
           <Logo height={32} />
-          <IconButton onClick={() => setOpen(false)} aria-label="Close menu">
+          <IconButton onClick={() => setOpen(false)} aria-label="Close menu" edge="end">
             <CloseRoundedIcon />
           </IconButton>
         </Stack>
         <Divider sx={{ my: 2 }} />
-        <Stack component="nav" aria-label="Mobile" spacing={0.5}>
+        <Stack component="nav" aria-label="Mobile" spacing={0.5} sx={{ flexShrink: 0 }}>
           {nav.map((n) => (
             <Button
               key={n.href}
@@ -163,8 +212,8 @@ export default function Header() {
             </Button>
           ))}
         </Stack>
-        <Box sx={{ flex: 1 }} />
-        <Stack spacing={1.25} sx={{ mt: 3 }}>
+        <Box sx={{ flex: 1, minHeight: 24 }} />
+        <Stack spacing={1.25} sx={{ mt: 3, flexShrink: 0 }}>
           <Button
             href="#apply"
             onClick={() => setOpen(false)}
@@ -183,6 +232,22 @@ export default function Header() {
             sx={{ color: 'text.primary' }}
           >
             Put your truck to work
+          </Button>
+          {/* Displaced from the toolbar below `sm`; rendered here at every size
+              so the drawer's contents do not change between breakpoints. */}
+          <Button
+            onClick={() => setMode(resolved === 'dark' ? 'light' : 'dark')}
+            startIcon={
+              resolved === 'dark' ? (
+                <LightModeRoundedIcon fontSize="small" />
+              ) : (
+                <DarkModeRoundedIcon fontSize="small" />
+              )
+            }
+            fullWidth
+            sx={{ color: 'text.secondary', justifyContent: 'flex-start', px: 1 }}
+          >
+            {resolved === 'dark' ? 'Light mode' : 'Dark mode'}
           </Button>
         </Stack>
       </Drawer>

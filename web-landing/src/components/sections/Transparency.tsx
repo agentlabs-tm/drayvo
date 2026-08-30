@@ -122,6 +122,15 @@ export default function Transparency() {
                       component="th"
                       scope="col"
                       sx={{
+                        /**
+                         * Four columns will not fit 248px of usable width at
+                         * 320px without either a horizontal scroll or truncated
+                         * status text. Status - the longest and least tabular
+                         * of the four - drops out of the table below `sm` and
+                         * reappears under the unit number instead, so the
+                         * numbers stay aligned and nothing is lost.
+                         */
+                        display: i === 3 ? { xs: 'none', sm: 'table-cell' } : 'table-cell',
                         textAlign: i === 0 || i === 3 ? 'left' : 'right',
                         pb: 1.25,
                         borderBottom: '1px solid',
@@ -148,6 +157,13 @@ export default function Transparency() {
                       >
                         {r.truck}
                       </Typography>
+                      {/* The status, relocated under the unit number below `sm`.
+                          This and the Status cell are mutually exclusive at
+                          every width, so exactly one copy is ever rendered —
+                          and read out - per row. */}
+                      <Box sx={{ display: { xs: 'block', sm: 'none' }, mt: 0.25 }}>
+                        <StatusLine status={r.status} tone={r.tone} />
+                      </Box>
                     </Box>
                     <Box component="td" sx={{ ...cell, textAlign: 'right' }}>
                       <Mono>{r.revenue}</Mono>
@@ -155,22 +171,14 @@ export default function Transparency() {
                     <Box component="td" sx={{ ...cell, textAlign: 'right' }}>
                       <Mono muted>{r.cost}</Mono>
                     </Box>
-                    <Box component="td" sx={cell}>
-                      <Stack direction="row" spacing={0.75} sx={{ alignItems: 'center' }}>
-                        <Box
-                          aria-hidden
-                          sx={{
-                            width: 6,
-                            height: 6,
-                            borderRadius: '50%',
-                            flexShrink: 0,
-                            bgcolor: r.tone === 'ok' ? 'success.main' : 'primary.main',
-                          }}
-                        />
-                        <Typography sx={{ color: 'text.secondary', fontSize: '0.82rem' }}>
-                          {r.status}
-                        </Typography>
-                      </Stack>
+                    <Box
+                      component="td"
+                      sx={{
+                        ...cell,
+                        display: { xs: 'none', sm: 'table-cell' },
+                      }}
+                    >
+                      <StatusLine status={r.status} tone={r.tone} />
                     </Box>
                   </Box>
                 ))}
@@ -210,6 +218,25 @@ const cell = {
   borderBottom: '1px solid',
   borderColor: 'var(--hairline)',
 } as const;
+
+/** Status dot + label. Shared by the table cell and its below-`sm` stand-in. */
+function StatusLine({ status, tone }: { status: string; tone: 'ok' | 'warn' }) {
+  return (
+    <Stack direction="row" spacing={0.75} sx={{ alignItems: 'center' }}>
+      <Box
+        aria-hidden
+        sx={{
+          width: 6,
+          height: 6,
+          borderRadius: '50%',
+          flexShrink: 0,
+          bgcolor: tone === 'ok' ? 'success.main' : 'primary.main',
+        }}
+      />
+      <Typography sx={{ color: 'text.secondary', fontSize: '0.82rem' }}>{status}</Typography>
+    </Stack>
+  );
+}
 
 function Mono({ children, muted }: { children: React.ReactNode; muted?: boolean }) {
   return (
@@ -258,20 +285,22 @@ function Panel({
           justifyContent: 'space-between',
           alignItems: 'center',
           gap: 1.5,
-          px: { xs: 2.5, md: 3 },
+          px: { xs: 2, sm: 2.5, md: 3 },
           py: 2,
           borderBottom: '1px solid',
           borderColor: 'var(--hairline)',
           bgcolor: 'var(--surface-panel-raised)',
         }}
       >
-        <Box>
+        {/* `minWidth: 0` lets the title wrap instead of forcing the row wider
+            than the panel and pushing the badge off the edge at 320px. */}
+        <Box sx={{ minWidth: 0 }}>
           <Typography variant="overline" sx={{ color: 'text.secondary', display: 'block' }}>
             {kicker}
           </Typography>
           <Typography
             component="h3"
-            sx={{ color: 'text.primary', fontWeight: 700, fontSize: '1.05rem' }}
+            sx={{ color: 'text.primary', fontWeight: 700, fontSize: { xs: '0.98rem', sm: '1.05rem' } }}
           >
             {title}
           </Typography>
@@ -280,6 +309,7 @@ function Panel({
           label="Example"
           size="small"
           sx={{
+            flexShrink: 0,
             bgcolor: 'action.hover',
             color: 'text.secondary',
             fontFamily: 'var(--font-mono)',
@@ -291,9 +321,9 @@ function Panel({
         />
       </Stack>
 
-      <Box sx={{ px: { xs: 2.5, md: 3 }, py: { xs: 2.5, md: 3 } }}>{children}</Box>
+      <Box sx={{ px: { xs: 2, sm: 2.5, md: 3 }, py: { xs: 2.5, md: 3 } }}>{children}</Box>
 
-      <Box sx={{ px: { xs: 2.5, md: 3 }, pb: 3 }}>
+      <Box sx={{ px: { xs: 2, sm: 2.5, md: 3 }, pb: 3 }}>
         <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block' }}>
           {caption}
         </Typography>
@@ -467,18 +497,23 @@ function SettlementEstimator() {
         ))}
       </Stack>
 
+      {/* Stacks below `sm`: the shown arithmetic ("gross … − deductions …") and
+          the total together need ~330px, which a 320px phone does not have
+          inside a bordered panel. Side by side they either overflow or force
+          the figure to a second line mid-number. */}
       <Stack
-        direction="row"
+        direction={{ xs: 'column', sm: 'row' }}
+        spacing={{ xs: 1, sm: 2 }}
         sx={{
           justifyContent: 'space-between',
-          alignItems: 'baseline',
+          alignItems: { xs: 'flex-start', sm: 'baseline' },
           mt: 2,
           pt: 2,
           borderTop: '2px solid',
           borderColor: alpha(brand.orange, 0.5),
         }}
       >
-        <Box>
+        <Box sx={{ minWidth: 0 }}>
           <Typography sx={{ color: 'text.primary', fontWeight: 700 }}>Net to driver</Typography>
           <Typography
             sx={{ color: 'text.secondary', fontFamily: 'var(--font-mono)', fontSize: '0.72rem' }}
@@ -496,7 +531,9 @@ function SettlementEstimator() {
           sx={{
             fontFamily: 'var(--font-mono)',
             fontWeight: 700,
-            fontSize: '1.3rem',
+            fontSize: { xs: '1.5rem', sm: '1.3rem' },
+            lineHeight: 1.2,
+            whiteSpace: 'nowrap',
             color: 'primary.main',
           }}
         >

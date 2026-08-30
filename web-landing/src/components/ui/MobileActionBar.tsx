@@ -62,9 +62,12 @@ export default function MobileActionBar() {
             bottom: 0,
             zIndex: (t) => t.zIndex.appBar,
             display: { xs: 'block', md: 'none' },
-            px: 1.5,
             pt: 1.25,
             pb: 'calc(env(safe-area-inset-bottom, 0px) + 12px)',
+            // Clears the notch in landscape, where the bar spans the full width
+            // and its outer button would otherwise sit under the sensor housing.
+            pl: 'max(12px, env(safe-area-inset-left))',
+            pr: 'max(12px, env(safe-area-inset-right))',
             bgcolor: 'var(--surface-panel)',
             borderTop: '1px solid',
             borderColor: 'var(--hairline)',
@@ -82,7 +85,11 @@ export default function MobileActionBar() {
                 Call
               </Button>
             )}
-            <Button href="#apply" variant="contained" sx={{ flex: site.phoneHref ? 2 : 1 }}>
+            <Button
+              href="#apply"
+              variant="contained"
+              sx={{ flex: site.phoneHref ? 2 : 1, minWidth: 0, whiteSpace: 'nowrap' }}
+            >
               Drive with Drayvo
             </Button>
           </Stack>

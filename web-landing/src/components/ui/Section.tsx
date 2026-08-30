@@ -43,8 +43,15 @@ export default function Section({
       id={id}
       sx={{
         position: 'relative',
-        py: { xs: 8, md: 14 },
-        scrollMarginTop: { xs: 72, md: 88 },
+        /**
+         * Three steps, not two. Jumping 64px → 112px straight off the `md`
+         * breakpoint left tablets carrying phone-sized section padding at
+         * desktop-sized measure, which read as cramped.
+         */
+        py: { xs: 7, sm: 9, md: 14 },
+        // Clears the fixed header (64 / 80) plus a little air, so an anchored
+        // section heading never lands underneath it.
+        scrollMarginTop: { xs: 76, md: 96 },
         ...TONES[tone],
         ...sx,
       }}
