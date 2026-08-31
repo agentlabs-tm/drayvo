@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { JetBrains_Mono, Manrope, Sora } from 'next/font/google';
+import { Archivo, IBM_Plex_Mono, IBM_Plex_Sans } from 'next/font/google';
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 import ColorModeProvider from '@/theme/ColorModeProvider';
 import InAppWebviewFlag from '@/components/util/InAppWebviewFlag';
@@ -17,7 +17,25 @@ const TITLE = `${site.name} | Driver-First Trucking & Fleet Management`;
 const DESCRIPTION =
   'Drayvo Logistics is a driver-first trucking company focused on transparent pay, reliable freight, modern fleet operations, and long-term partnerships with professional drivers and owner-operators.';
 
-const display = Sora({
+/**
+ * TYPE SYSTEM
+ *
+ * Chosen against the brand's own subject matter: this is a company whose
+ * product is the operating record - settlements, load-level reporting, service
+ * history. The type should read as signage and documents, not as a software
+ * marketing site.
+ *
+ * Archivo is a grotesque drawn for signage and print, with enough width and
+ * character to carry a headline without ornament. It replaced Sora, whose
+ * geometric, evenly-weighted forms are the default of every template landing
+ * page and were a large part of why the site read as generic.
+ *
+ * IBM Plex Sans and Plex Mono are a matched engineered pair. The mono is doing
+ * real work here - every figure, unit number, and settlement line is set in it —
+ * so it needs to be a sibling of the text face rather than a borrowed
+ * code font.
+ */
+const display = Archivo({
   subsets: ['latin'],
   weight: ['600', '700', '800'],
   variable: '--font-display',
@@ -25,14 +43,14 @@ const display = Sora({
 });
 
 /** Used for record-style content: settlement lines, reporting tables, indices. */
-const mono = JetBrains_Mono({
+const mono = IBM_Plex_Mono({
   subsets: ['latin'],
-  weight: ['500', '600'],
+  weight: ['400', '500', '600'],
   variable: '--font-mono',
   display: 'swap',
 });
 
-const body = Manrope({
+const body = IBM_Plex_Sans({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-body',

@@ -1,13 +1,11 @@
 'use client';
 
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
-import { alpha } from '@mui/material/styles';
 import Section from '@/components/ui/Section';
 import SectionHeading from '@/components/ui/SectionHeading';
 import Reveal from '@/components/motion/Reveal';
 import BulletList from '@/components/ui/BulletList';
-import { brand } from '@/theme/tokens';
 
 /**
  * Driver experience.
@@ -64,78 +62,77 @@ export default function Drivers() {
   return (
     <Section id="drivers" tone="base">
       <SectionHeading
-        eyebrow="For drivers"
-        title={
-          <>
-            Your truck. Your miles.{' '}
-            <Box component="span" sx={{ color: 'primary.main' }}>
-              Your money.
-            </Box>
-          </>
-        }
-        subtitle="Two ways to run with Drayvo. Both work the same way: you see the number before you commit, and the settlement shows how it was reached."
+        index="04"
+        label="For drivers"
+        title="Your truck. Your miles. Your money."
+        lead="Two ways to run with Drayvo. Both work the same way: you see the number before you commit, and the settlement shows how it was reached."
       />
 
+      {/*
+        Two columns divided by a rule rather than two bordered cards. The card
+        treatment implied these were alternatives to choose between, like plans;
+        they are two ways of working, and a shared rule states that better than
+        two boxes sitting apart on a background.
+      */}
       <Box
         sx={{
-          mt: { xs: 5, md: 8 },
+          mt: { xs: 4, md: 6 },
           display: 'grid',
           gridTemplateColumns: { xs: '1fr', md: 'repeat(2, minmax(0, 1fr))' },
-          gap: 2.5,
+          columnGap: { md: 6 },
+          rowGap: { xs: 5, md: 0 },
         }}
       >
         {PATHS.map((p, i) => (
-          <Reveal key={p.tag} delay={i * 0.06} sx={{ height: '100%' }}>
-            <Stack
-              spacing={2}
+          <Reveal
+            key={p.tag}
+            delay={i * 0.06}
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              borderTop: '2px solid',
+              borderColor: p.lead_accent ? 'primary.main' : 'divider',
+              pt: 2.5,
+              // Divider between the columns, drawn only on the second.
+              pl: { md: i === 1 ? 6 : 0 },
+              ml: { md: i === 1 ? -6 : 0 },
+              borderLeft: { md: i === 1 ? '1px solid' : 'none' },
+            }}
+          >
+            <Typography
               sx={{
-                height: '100%',
-                p: { xs: 3, md: 4 },
-                borderRadius: 1.5,
-                border: '1px solid',
-                borderColor: p.lead_accent ? alpha(brand.orange, 0.4) : 'divider',
-                bgcolor: 'background.paper',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.72rem',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: p.lead_accent ? 'primary.main' : 'text.secondary',
+                mb: 1,
               }}
             >
-              <Typography variant="overline" sx={{ color: 'primary.main' }}>
-                {p.tag}
-              </Typography>
-              <Typography
-                variant="h4"
-                component="h3"
-                sx={{ color: 'text.primary', fontSize: { xs: '1.5rem', md: '1.75rem' } }}
-              >
-                {p.lead}
-              </Typography>
+              {p.tag}
+            </Typography>
+            <Typography variant="h3" component="h3" sx={{ color: 'text.primary', mb: 2.5 }}>
+              {p.lead}
+            </Typography>
 
-              <Box sx={{ pt: 1 }}>
-                <BulletList items={p.points} marker="check" gap={1.5} />
-              </Box>
+            <BulletList items={p.points} marker="check" gap={1.25} />
 
-              <Box sx={{ flex: 1 }} />
-              <Typography
-                variant="caption"
-                sx={{
-                  color: 'text.secondary',
-                  pt: 1.5,
-                  borderTop: '1px solid',
-                  borderColor: 'divider',
-                }}
-              >
-                {p.footnote}
-              </Typography>
-              <Button
-                href="#apply"
-                variant={p.lead_accent ? 'contained' : 'outlined'}
-                endIcon={<ArrowForwardRoundedIcon />}
-                sx={{
-                  alignSelf: 'flex-start',
-                  ...(p.lead_accent ? {} : { color: 'text.primary' }),
-                }}
-              >
-                Start an application
-              </Button>
-            </Stack>
+            <Box sx={{ flex: 1, minHeight: 20 }} />
+            <Typography variant="caption" sx={{ color: 'text.secondary', mt: 2.5 }}>
+              {p.footnote}
+            </Typography>
+            <Button
+              href="#apply"
+              variant={p.lead_accent ? 'contained' : 'outlined'}
+              endIcon={<ArrowForwardRoundedIcon />}
+              sx={{
+                alignSelf: 'flex-start',
+                mt: 2,
+                ...(p.lead_accent ? {} : { color: 'text.primary' }),
+              }}
+            >
+              Start an application
+            </Button>
           </Reveal>
         ))}
       </Box>
@@ -143,10 +140,9 @@ export default function Drivers() {
       <Reveal delay={0.1}>
         <Box
           sx={{
-            mt: { xs: 3, md: 4 },
-            p: { xs: 3, md: 4 },
-            borderRadius: 1.5,
-            border: '1px solid',
+            mt: { xs: 5, md: 7 },
+            pt: { xs: 3, md: 4 },
+            borderTop: '1px solid',
             borderColor: 'divider',
             display: 'grid',
             // `minmax` rather than a fixed 300px: the intro column may shrink

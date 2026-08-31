@@ -5,6 +5,7 @@ import { Box, Chip, Slider, Stack, Typography } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import Section from '@/components/ui/Section';
 import Reveal from '@/components/motion/Reveal';
+import SectionHeading from '@/components/ui/SectionHeading';
 import AnimatedNumber from '@/components/ui/AnimatedNumber';
 import { brandVoice } from '@/lib/brand';
 import { brand } from '@/theme/tokens';
@@ -52,38 +53,40 @@ const OWNER_ROWS = [
 export default function Transparency() {
   return (
     <Section tone="contrast">
-      <Box sx={{ maxWidth: 720 }}>
-        <Reveal>
-          <Typography variant="overline" sx={{ color: 'primary.main', display: 'block', mb: 2 }}>
-            Transparency in action
-          </Typography>
-        </Reveal>
-        <Reveal delay={0.06}>
-          <Typography variant="h2" sx={{ color: 'text.primary' }}>
-            What &ldquo;open book&rdquo; actually looks like
-          </Typography>
-        </Reveal>
-        <Reveal delay={0.09}>
-          <Typography
-            sx={{
-              mt: 2,
-              fontFamily: 'var(--font-display)',
-              fontWeight: 700,
-              fontSize: { xs: '1.05rem', md: '1.2rem' },
-              letterSpacing: '-0.012em',
-              color: 'primary.main',
-            }}
-          >
-            {brandVoice.transparency}
-          </Typography>
-        </Reveal>
-        <Reveal delay={0.12}>
-          <Typography sx={{ color: 'text.secondary', mt: 2.5, fontSize: '1.05rem' }}>
-            Transparency is a claim until you can see the format it arrives in. This is what drivers
-            and truck owners get from us, and how plainly it is stated.
-          </Typography>
-        </Reveal>
-      </Box>
+      <SectionHeading
+        index="01"
+        label="Transparency in action"
+        title={'What \u201Copen book\u201D actually looks like'}
+        lead="Transparency is a claim until you can see the format it arrives in. This is what drivers and truck owners get from us, and how plainly it is stated."
+      />
+
+      {/*
+        The secondary brand line. It belongs here - the brand platform reserves
+        it for pay and reporting contexts - but not as another coloured subtitle
+        under the headline, which is the pattern this redesign removed. Set as a
+        statement against a rule instead, so it reads as the section's thesis
+        rather than as decoration.
+      */}
+      <Reveal>
+        <Typography
+          component="p"
+          sx={{
+            mt: { xs: 4, md: 5 },
+            pl: { xs: 2, md: 3 },
+            borderLeft: '2px solid',
+            borderColor: 'primary.main',
+            fontFamily: 'var(--font-display)',
+            fontWeight: 600,
+            fontSize: 'clamp(1.1rem, 2.2vw, 1.5rem)',
+            letterSpacing: '-0.02em',
+            lineHeight: 1.3,
+            color: 'text.primary',
+            maxWidth: '30ch',
+          }}
+        >
+          {brandVoice.transparency}
+        </Typography>
+      </Reveal>
 
       <Box
         sx={{

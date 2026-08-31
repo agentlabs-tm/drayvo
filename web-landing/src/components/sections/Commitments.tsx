@@ -1,10 +1,6 @@
 'use client';
 
-import { Box, Stack, Typography } from '@mui/material';
-import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
-import HeadsetMicOutlinedIcon from '@mui/icons-material/HeadsetMicOutlined';
-import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
+import { Box, Typography } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
 import Section from '@/components/ui/Section';
 import Reveal from '@/components/motion/Reveal';
@@ -21,22 +17,18 @@ import Reveal from '@/components/motion/Reveal';
  */
 const COMMITMENTS = [
   {
-    icon: VisibilityOutlinedIcon,
     title: 'Rates shown before dispatch',
     body: 'You see what a load pays before you accept it.',
   },
   {
-    icon: ReceiptLongOutlinedIcon,
     title: 'Itemized weekly settlements',
     body: 'Every line, every deduction, on a set schedule.',
   },
   {
-    icon: HeadsetMicOutlinedIcon,
     title: 'Direct dispatcher access',
     body: 'A name and a number, not a rotating queue.',
   },
   {
-    icon: AssessmentOutlinedIcon,
     title: 'Load-level owner reporting',
     body: 'Revenue, cost, and downtime per truck, per load.',
   },
@@ -48,39 +40,61 @@ export default function Commitments() {
       <Typography variant="h2" sx={visuallyHidden}>
         How Drayvo operates
       </Typography>
-      {/* One reveal for the whole bar. It is a single row of four short claims
-          read together, not four things arriving in sequence. */}
-      <Reveal
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))', lg: 'repeat(4, minmax(0, 1fr))' },
-          gap: { xs: 3, lg: 0 },
-        }}
-      >
-        {COMMITMENTS.map(({ icon: Icon, title, body }, i) => (
-          <Stack
-              key={title}
-              spacing={1.25}
+      {/*
+        Was four icon-over-title-over-body cards in a row - the most
+        template-like block on the page. Rebuilt as a ruled ledger band: each
+        commitment is a row carrying its index, the claim, and the detail,
+        separated by hairlines. It reads as a register of undertakings, which is
+        what it is, and the four can be scanned as a set rather than compared as
+        four competing cards.
+
+        The icons were dropped. A generic outline glyph beside each claim added
+        no information; it existed to make the block look designed.
+      */}
+      <Reveal sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
+        {COMMITMENTS.map(({ title, body }, i) => (
+          <Box
+            key={title}
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: { xs: '2.25rem 1fr', md: '3.5rem minmax(0, 22rem) 1fr' },
+              columnGap: { xs: 2, md: 4 },
+              rowGap: 0.25,
+              alignItems: 'baseline',
+              py: { xs: 2, md: 2.25 },
+              borderBottom: '1px solid',
+              borderColor: 'divider',
+            }}
+          >
+            <Typography
               sx={{
-                height: '100%',
-                px: { lg: 3.5 },
-                borderLeft: { lg: '1px solid' },
-                borderColor: { lg: 'divider' },
-                ...(i === 0 && { pl: { lg: 0 }, borderLeft: { lg: 'none' } }),
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.75rem',
+                fontWeight: 600,
+                color: 'primary.main',
               }}
             >
-              <Icon sx={{ color: 'primary.main', fontSize: 26 }} />
-              <Typography
-                variant="h6"
-                component="h3"
-                sx={{ color: 'text.primary', fontSize: '1.02rem' }}
-              >
-                {title}
-              </Typography>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {body}
-              </Typography>
-          </Stack>
+              {String(i + 1).padStart(2, '0')}
+            </Typography>
+            <Typography
+              component="h3"
+              sx={{
+                color: 'text.primary',
+                fontFamily: 'var(--font-display)',
+                fontWeight: 600,
+                fontSize: { xs: '1rem', md: '1.05rem' },
+                letterSpacing: '-0.015em',
+              }}
+            >
+              {title}
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{ color: 'text.secondary', gridColumn: { xs: 2, md: 'auto' } }}
+            >
+              {body}
+            </Typography>
+          </Box>
         ))}
       </Reveal>
 

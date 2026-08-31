@@ -166,16 +166,10 @@ export default function Qualify() {
   return (
     <Section id="qualify" tone="contrast">
       <SectionHeading
-        eyebrow="Two-minute check"
-        title={
-          <>
-            Find out where you stand{' '}
-            <Box component="span" sx={{ color: 'primary.main' }}>
-              before you apply.
-            </Box>
-          </>
-        }
-        subtitle="Four questions, an honest answer, and nothing recorded. We would rather you know now than wait a week to hear it."
+        index="05"
+        label="Two-minute check"
+        title="Find out where you stand before you apply."
+        lead="Four questions, an honest answer, and nothing recorded. We would rather you know now than wait a week to hear it."
       />
 
       <Box

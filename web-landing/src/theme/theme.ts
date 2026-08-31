@@ -69,22 +69,22 @@ const theme = createTheme({
     h1: {
       fontFamily: display,
       fontWeight: 800,
-      letterSpacing: '-0.035em',
-      lineHeight: 1.04,
+      letterSpacing: '-0.045em',
+      lineHeight: 1.0,
       fontSize: 'clamp(1.75rem, 7.4vw, 5rem)',
     },
     h2: {
       fontFamily: display,
       fontWeight: 800,
-      letterSpacing: '-0.028em',
-      lineHeight: 1.12,
+      letterSpacing: '-0.035em',
+      lineHeight: 1.06,
       fontSize: 'clamp(1.65rem, 4.6vw, 3rem)',
     },
     h3: {
       fontFamily: display,
       fontWeight: 700,
-      letterSpacing: '-0.02em',
-      lineHeight: 1.2,
+      letterSpacing: '-0.025em',
+      lineHeight: 1.15,
       fontSize: 'clamp(1.25rem, 2.6vw, 1.85rem)',
     },
     h4: {
@@ -112,13 +112,21 @@ const theme = createTheme({
     body1: { fontSize: '1rem', lineHeight: 1.7 },
     body2: { fontSize: '0.9375rem', lineHeight: 1.65 },
     button: { fontWeight: 700, letterSpacing: '0.005em', textTransform: 'none' },
+    /**
+     * The old overline - mono, uppercase, 0.16em tracked, orange - opened every
+     * section on the page and was the single most template-like element in the
+     * design. It survives only as a small utility label (panel kickers, form
+     * field groups); section openings now use the ruled header in
+     * SectionHeading instead. Tracking is halved so it reads as a label rather
+     * than a badge.
+     */
     overline: {
       fontFamily: mono,
-      fontWeight: 600,
-      letterSpacing: '0.16em',
-      fontSize: '0.72rem',
+      fontWeight: 500,
+      letterSpacing: '0.08em',
+      fontSize: '0.7rem',
       textTransform: 'uppercase',
-      lineHeight: 1.6,
+      lineHeight: 1.5,
     },
     caption: { fontSize: '0.8125rem', lineHeight: 1.55 },
   },

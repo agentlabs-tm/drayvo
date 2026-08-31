@@ -3,6 +3,7 @@
 import { Box, Stack, Typography } from '@mui/material';
 import Section from '@/components/ui/Section';
 import Reveal from '@/components/motion/Reveal';
+import SectionHeading from '@/components/ui/SectionHeading';
 
 /**
  * The Drayvo Standard - the brand's load-bearing system. Every claim elsewhere
@@ -57,24 +58,12 @@ const STANDARD = [
 export default function Standard() {
   return (
     <Section id="why" tone="contrast">
-      <Reveal>
-        <Box sx={{ maxWidth: 760 }}>
-          <Typography variant="overline" sx={{ color: 'primary.main', display: 'block', mb: 2 }}>
-            The Drayvo Standard
-          </Typography>
-          <Typography variant="h2" sx={{ color: 'text.primary' }}>
-            Seven commitments.{' '}
-            <Box component="span" sx={{ color: 'primary.main' }}>
-              In writing.
-            </Box>
-          </Typography>
-          <Typography sx={{ color: 'text.secondary', mt: 2.5, fontSize: '1.05rem' }}>
-            Any carrier can advertise a rate. These are the operating practices behind ours. They
-            are specific on purpose - each one is something you can check against your own
-            experience within a few weeks of running with us.
-          </Typography>
-        </Box>
-      </Reveal>
+      <SectionHeading
+        index="02"
+        label="The Drayvo Standard"
+        title="Seven commitments, in writing."
+        lead="Any carrier can advertise a rate. These are the operating practices behind ours. They are specific on purpose - each one is something you can check against your own experience within a few weeks of running with us."
+      />
 
       <Reveal>
       <Box

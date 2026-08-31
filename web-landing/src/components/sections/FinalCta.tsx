@@ -18,11 +18,8 @@ export default function FinalCta() {
     >
       <Container maxWidth="lg">
         <Reveal>
-          <Typography variant="h2" sx={{ color: 'text.primary', maxWidth: 860 }}>
-            Trucking should work for the people who{' '}
-            <Box component="span" sx={{ color: 'primary.main' }}>
-              keep it moving.
-            </Box>
+          <Typography variant="h2" sx={{ color: 'text.primary', maxWidth: '18ch' }}>
+            Trucking should work for the people who keep it moving.
           </Typography>
         </Reveal>
         <Reveal delay={0.08}>

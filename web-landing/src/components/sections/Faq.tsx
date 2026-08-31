@@ -22,9 +22,10 @@ export default function Faq() {
   return (
     <Section id="faq" tone="raised" maxWidth="lg">
       <SectionHeading
-        eyebrow="Straight answers"
+        index="08"
+        label="Straight answers"
         title="The questions worth asking"
-        subtitle="Ask any carrier these. Then compare what you hear on the phone with what ends up in the agreement - we say the same thing in both."
+        lead="Ask any carrier these. Then compare what you hear on the phone with what ends up in the agreement - we say the same thing in both."
       />
 
       <Box sx={{ mt: { xs: 4, md: 6 }, borderBottom: 1, borderColor: 'divider' }}>

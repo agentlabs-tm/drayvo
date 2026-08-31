@@ -41,6 +41,9 @@ export default function Section({
     <Box
       component="section"
       id={id}
+      // `surface-tooth` adds the diagonal hatch defined in globals.css to the
+      // dark bands. See the note there.
+      className={tone === 'contrast' ? 'surface-tooth' : undefined}
       sx={{
         position: 'relative',
         /**
@@ -48,7 +51,13 @@ export default function Section({
          * breakpoint left tablets carrying phone-sized section padding at
          * desktop-sized measure, which read as cramped.
          */
-        py: { xs: 7, sm: 9, md: 14 },
+        /**
+         * Tightened from 14 to 10 at `md`. At the old rhythm the desktop page
+         * ran to 11,272px with sections floating in voids large enough that
+         * nothing read as related to anything else. Density is part of the
+         * brand here - this is an operations company, not a product launch.
+         */
+        py: { xs: 6, sm: 7, md: 8 },
         // Clears the fixed header (64 / 80) plus a little air, so an anchored
         // section heading never lands underneath it.
         scrollMarginTop: { xs: 76, md: 96 },

@@ -44,9 +44,10 @@ export default function Fleet() {
   return (
     <Section id="fleet" tone="base">
       <SectionHeading
-        eyebrow="Real people, real operations"
+        index="--"
+        label="Real people, real operations"
         title="No stock photos here"
-        subtitle="We would rather show you an empty frame than a stock image of somebody else's truck. Photographs of our drivers, our dispatchers, and our equipment go here - real people, named, and published with their permission."
+        lead="We would rather show you an empty frame than a stock image of somebody else's truck. Photographs of our drivers, our dispatchers, and our equipment go here - real people, named, and published with their permission."
       />
 
       <Box

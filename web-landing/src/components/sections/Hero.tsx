@@ -78,12 +78,33 @@ export default function Hero() {
         >
           <Box>
             <Reveal>
-              <Typography
-                variant="overline"
-                sx={{ color: 'primary.main', display: 'block', mb: { xs: 1.75, md: 2.5 } }}
+              {/* Ruled marker rather than a coloured badge, matching the
+                  section headers further down the page. */}
+              <Box
+                sx={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 1.5,
+                  mb: { xs: 2, md: 2.5 },
+                  pb: 1,
+                  borderBottom: '2px solid',
+                  borderColor: 'primary.main',
+                }}
               >
-                For drivers and truck owners
-              </Typography>
+                <Typography
+                  component="span"
+                  sx={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '0.72rem',
+                    fontWeight: 500,
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    color: 'text.secondary',
+                  }}
+                >
+                  For drivers and truck owners
+                </Typography>
+              </Box>
             </Reveal>
 
             <Reveal delay={0.06}>

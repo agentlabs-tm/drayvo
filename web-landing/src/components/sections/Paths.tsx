@@ -1,12 +1,11 @@
 'use client';
 
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import { alpha } from '@mui/material/styles';
 import Section from '@/components/ui/Section';
 import SectionHeading from '@/components/ui/SectionHeading';
 import Reveal from '@/components/motion/Reveal';
-import BulletList from '@/components/ui/BulletList';
 import { brand } from '@/theme/tokens';
 
 /**
@@ -48,56 +47,108 @@ export default function Paths() {
   return (
     <Section tone="base">
       <SectionHeading
-        eyebrow="Choose your path"
+        index="03"
+        label="Choose your path"
         title="Where do you fit?"
-        subtitle="Drayvo is built first for the people who drive trucks and the people who own them. Pick the path that matches you."
+        lead="Drayvo is built first for the people who drive trucks and the people who own them. Pick the path that matches you."
       />
 
-      <Box
-        sx={{
-          mt: { xs: 5, md: 8 },
-          display: 'grid',
-          gridTemplateColumns: { xs: '1fr', md: 'repeat(2, minmax(0, 1fr))', lg: '1fr 1fr 0.8fr' },
-          gap: 2.5,
-          alignItems: 'stretch',
-        }}
-      >
+      {/*
+        Was three equal bordered cards with a bullet list and a button in each —
+        the pricing-table layout, and instantly recognisable as such. Rebuilt as
+        a ruled directory: one row per audience, the name large on the left, the
+        detail and points in the middle, the route on the right.
+
+        This also fixes a hierarchy problem the card grid created. The brand
+        platform ranks drivers first, owners second, shippers a deliberate
+        third, but three side-by-side cards of equal width state the opposite —
+        that all three are peers. Stacked rows carry the ranking honestly, and
+        the secondary row is simply set quieter.
+      */}
+      <Box sx={{ mt: { xs: 4, md: 6 }, borderTop: '1px solid', borderColor: 'divider' }}>
         {PATHS.map((p, i) => {
           const lead = p.weight === 'primary';
           return (
-            <Reveal key={p.key} delay={i * 0.06} sx={{ height: '100%' }}>
-              <Stack
-                spacing={2}
+            <Reveal key={p.key} delay={i * 0.05}>
+              <Box
                 sx={{
-                  height: '100%',
-                  p: { xs: 3, md: 4 },
-                  borderRadius: 1.5,
-                  border: '1px solid',
-                  borderColor: lead ? alpha(brand.orange, 0.4) : 'divider',
-                  bgcolor: 'background.paper',
-                  borderTop: '3px solid',
-                  borderTopColor: lead ? brand.orange : 'divider',
+                  display: 'grid',
+                  gridTemplateColumns: { xs: '1fr', md: 'minmax(0, 15rem) 1fr auto' },
+                  columnGap: { md: 5 },
+                  rowGap: { xs: 2, md: 0 },
+                  alignItems: { md: 'center' },
+                  py: { xs: 3.5, md: 4.5 },
+                  borderBottom: '1px solid',
+                  borderColor: 'divider',
+                  transition: 'background-color .2s ease',
+                  '&:hover': { bgcolor: alpha(brand.orange, 0.04) },
                 }}
               >
-                <Typography variant="h4" component="h3" sx={{ color: 'text.primary', fontSize: { xs: '1.4rem', md: '1.6rem' } }}>
-                  {p.title}
-                </Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>{p.body}</Typography>
-
-                <Box sx={{ pt: 0.5 }}>
-                  <BulletList items={p.points} color="text.primary" />
+                <Box>
+                  <Typography
+                    variant="h3"
+                    component="h3"
+                    sx={{
+                      color: lead ? 'text.primary' : 'text.secondary',
+                      fontSize: { xs: '1.4rem', md: lead ? '1.85rem' : '1.5rem' },
+                    }}
+                  >
+                    {p.title}
+                  </Typography>
                 </Box>
 
-                <Box sx={{ flex: 1 }} />
+                <Box sx={{ minWidth: 0 }}>
+                  <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1.5 }}>
+                    {p.body}
+                  </Typography>
+                  {/* Inline and comma-free: a bulleted list inside a row would
+                      rebuild the card. These are attributes, not features. */}
+                  <Box
+                    component="ul"
+                    sx={{
+                      listStyle: 'none',
+                      p: 0,
+                      m: 0,
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      gap: { xs: 1, md: 1.5 },
+                    }}
+                  >
+                    {p.points.map((pt) => (
+                      <Typography
+                        key={pt}
+                        component="li"
+                        sx={{
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: '0.72rem',
+                          letterSpacing: '0.01em',
+                          color: 'text.secondary',
+                          border: '1px solid',
+                          borderColor: 'divider',
+                          px: 1,
+                          py: 0.4,
+                        }}
+                      >
+                        {pt}
+                      </Typography>
+                    ))}
+                  </Box>
+                </Box>
+
                 <Button
                   href={p.href}
-                  variant={lead ? 'contained' : 'outlined'}
                   endIcon={<ArrowForwardRoundedIcon />}
-                  sx={{ alignSelf: 'flex-start', ...(lead ? {} : { color: 'text.primary' }) }}
+                  sx={{
+                    justifySelf: { xs: 'start', md: 'end' },
+                    px: 0,
+                    color: lead ? 'primary.main' : 'text.secondary',
+                    whiteSpace: 'nowrap',
+                    '&:hover': { bgcolor: 'transparent', color: 'primary.main' },
+                  }}
                 >
                   {p.cta}
                 </Button>
-              </Stack>
+              </Box>
             </Reveal>
           );
         })}

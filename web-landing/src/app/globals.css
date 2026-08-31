@@ -134,3 +134,25 @@ video {
   --scenery-canopy: #2b3d43;
   --scenery-trunk: #24303c;
 }
+
+
+/* ------------------------------------------------------------------
+   Surface texture.
+   Flat fills everywhere is part of what made the page read as
+   machine-made: real printed and painted surfaces have tooth. This is
+   a single-pixel diagonal hatch at very low contrast - invisible as a
+   pattern, but it stops the large dark bands looking like empty divs.
+   Kept off the light scheme's paper surfaces, which should stay clean.
+------------------------------------------------------------------- */
+[data-dark] .surface-tooth::before,
+:root:not([data-light]) .surface-tooth::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.014) 0 1px,
+    transparent 1px 4px
+  );
+}

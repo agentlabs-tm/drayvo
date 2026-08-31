@@ -5,6 +5,7 @@ import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import { alpha } from '@mui/material/styles';
 import Section from '@/components/ui/Section';
 import Reveal from '@/components/motion/Reveal';
+import SectionHeading from '@/components/ui/SectionHeading';
 import { brand } from '@/theme/tokens';
 
 /**
@@ -57,39 +58,33 @@ export default function Owners() {
           alignItems: 'start',
         }}
       >
-        <Reveal sx={{ position: { lg: 'sticky' }, top: { lg: 120 } }}>
-          <Typography variant="overline" sx={{ color: 'primary.main', display: 'block', mb: 2 }}>
-            For truck owners
-          </Typography>
-          <Typography variant="h2" sx={{ color: 'text.primary' }}>
-            You own the asset.{' '}
-            <Box component="span" sx={{ color: 'primary.main' }}>
-              We run the operation.
-            </Box>
-          </Typography>
-          <Typography sx={{ color: 'text.secondary', mt: 2.5, fontSize: '1.05rem' }}>
-            Buying a truck is the straightforward part. Everything after it is the work we take on.
-            The title stays in your name, and the reporting comes to you without being asked for.
-          </Typography>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ mt: 4 }}>
+        <Box sx={{ position: { lg: 'sticky' }, top: { lg: 108 } }}>
+          <SectionHeading
+            index="06"
+            label="For truck owners"
+            title="You own the asset. We run the operation."
+            lead="Buying a truck is the straightforward part. Everything after it is the work we take on. The title stays in your name, and the reporting comes to you without being asked for."
+          />
+          <Reveal>
             <Button
               href="#apply"
               variant="contained"
               size="large"
               endIcon={<ArrowForwardRoundedIcon />}
+              sx={{ mt: 3.5 }}
             >
               Partner your truck
             </Button>
-          </Stack>
-          <Typography
-            variant="caption"
-            sx={{ color: 'text.secondary', display: 'block', mt: 3, maxWidth: 420 }}
-          >
-            Drayvo manages trucks owned by their operators and by fleet owners. This is a
-            management arrangement, not an investment product, and terms are set out in a written
-            agreement before any truck goes into service.
-          </Typography>
-        </Reveal>
+            <Typography
+              variant="caption"
+              sx={{ color: 'text.secondary', display: 'block', mt: 3, maxWidth: 420 }}
+            >
+              Drayvo manages trucks owned by their operators and by fleet owners. This is a
+              management arrangement, not an investment product, and terms are set out in a written
+              agreement before any truck goes into service.
+            </Typography>
+          </Reveal>
+        </Box>
 
         {/* One reveal for the panel: the rows are a single ruled list, and
             seven staggered entrances made it read as seven separate objects. */}

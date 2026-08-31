@@ -4,6 +4,7 @@ import { Box, Button, Typography } from '@mui/material';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import Section from '@/components/ui/Section';
 import Reveal from '@/components/motion/Reveal';
+import SectionHeading from '@/components/ui/SectionHeading';
 
 /**
  * Shippers - the secondary audience, given a compact section rather than the
@@ -44,27 +45,24 @@ export default function Shippers() {
           alignItems: 'center',
         }}
       >
-        <Reveal>
-          <Typography variant="overline" sx={{ color: 'primary.main', display: 'block', mb: 2 }}>
-            For shippers
-          </Typography>
-          <Typography variant="h2" sx={{ color: 'text.primary' }}>
-            Capacity from people who answer
-          </Typography>
-          <Typography sx={{ color: 'text.secondary', mt: 2.5 }}>
-            We would rather tell you plainly what we can cover than quote capacity we cannot
-            deliver on. Send us a lane and you will get a straight answer either way - and when we
-            commit to it, it moves.
-          </Typography>
-          <Button
-            href="#apply"
-            variant="outlined"
-            endIcon={<ArrowForwardRoundedIcon />}
-            sx={{ mt: 3.5, color: 'text.primary' }}
-          >
-            Ship with Drayvo
-          </Button>
-        </Reveal>
+        <Box>
+          <SectionHeading
+            index="07"
+            label="For shippers"
+            title="Capacity from people who answer"
+            lead="We would rather tell you plainly what we can cover than quote capacity we cannot deliver on. Send us a lane and you will get a straight answer either way - and when we commit to it, it moves."
+          />
+          <Reveal>
+            <Button
+              href="#apply"
+              variant="outlined"
+              endIcon={<ArrowForwardRoundedIcon />}
+              sx={{ mt: 3, color: 'text.primary' }}
+            >
+              Ship with Drayvo
+            </Button>
+          </Reveal>
+        </Box>
 
         {/* One reveal for the list; the three points are a single ruled column. */}
         <Reveal>
