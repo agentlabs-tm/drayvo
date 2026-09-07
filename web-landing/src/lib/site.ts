@@ -10,15 +10,20 @@ export const site = {
   url: 'https://drayvologistics.com',
 
   /**
-   * TODO(verify): add the number that actually rings a person, in both forms —
-   * `phone` for display, `phoneHref` for the tel: link.
+   * Two forms, and both are load-bearing.
    *
-   * Left empty on purpose rather than filled with a placeholder: every consumer
-   * checks for it and falls back to email, so an empty string hides the phone
-   * everywhere instead of publishing a number that does not connect.
+   * `phone` is for display and is punctuated the way a US reader expects to
+   * read it. `phoneHref` is what goes after `tel:` and must stay E.164 - bare
+   * `+`, country code, no spaces, brackets or dashes - because that is the only
+   * format every dialler, Android intent handler and iOS Safari agree on.
+   *
+   * Every consumer still guards on `site.phone` being truthy (see
+   * MobileActionBar, ApplyForm and Qualify). That is deliberate: emptying these
+   * two strings pulls the number off the whole site in one edit, which is what
+   * you want if the line ever changes or goes out of service.
    */
-  phone: '',
-  phoneHref: '',
+  phone: '(832) 770-0330',
+  phoneHref: '+18327700330',
   email: 'contact@drayvologistics.com',
 
   address: {

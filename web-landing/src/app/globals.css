@@ -100,6 +100,48 @@ video {
 }
 
 /* ------------------------------------------------------------------
+   Photographic grade.
+
+   Every photograph on the site is graded through these, in Media.tsx.
+   They exist as variables rather than as values in the component for
+   one reason: the correct grade is not a property of the photograph,
+   it is a property of the surface it is sitting on.
+
+   The same darkened, desaturated image that reads as integrated on the
+   dark page reads as a black slab punched into the light one - heavy,
+   muddy, and disconnected from everything around it. So the light
+   scheme lifts the image instead of deepening it: shadows are raised
+   with a low-alpha white screen so the photo shares the page's airiness,
+   and saturation is left near neutral rather than pulled back.
+
+   `--img-warm` is the one constant in spirit across both: a trace of
+   the brand orange in the midtones, which is what makes photographs
+   from different sources read as one set.
+
+   Scenes do NOT use these. A full-bleed image carrying white text has
+   to stay dark in both schemes or the text fails - see the `scene`
+   treatment in Media.tsx, which is deliberately fixed.
+------------------------------------------------------------------- */
+:root,
+[data-light] {
+  --img-filter: saturate(1.06) contrast(0.94) brightness(1.09);
+  --img-veil: rgba(255, 255, 255, 0.14);
+  --img-veil-blend: screen;
+  --img-warm: rgba(255, 102, 0, 0.05);
+  /* Hairline around a figure, so a photograph on a pale ground reads as
+     a placed object rather than a hole in the page. */
+  --img-edge: rgba(6, 13, 26, 0.14);
+}
+
+[data-dark] {
+  --img-filter: saturate(0.88) contrast(1.05) brightness(0.95);
+  --img-veil: rgba(6, 13, 26, 0.3);
+  --img-veil-blend: soft-light;
+  --img-warm: rgba(255, 102, 0, 0.08);
+  --img-edge: rgba(255, 255, 255, 0.1);
+}
+
+/* ------------------------------------------------------------------
    Road graphic.
    Asphalt reads as a dark surface in both schemes - a light-grey road
    in light mode looks like a diagram rather than a road - but the

@@ -102,7 +102,9 @@ const RESULTS: Record<
     title: 'Worth a conversation',
     body: 'One of your answers sits outside our standard requirements, which is not the same as a no. These are the cases we look at individually rather than filter out, so get in touch and we will tell you straight where you stand.',
     tone: 'neutral',
-    // Falls back to the form until a real phone number is published.
+    // This is the one outcome where a call beats a form: the reader has been
+    // told their situation is a judgement call, and a form reply cannot make a
+    // judgement. Falls back to the form if the number is ever cleared.
     cta: site.phone
       ? {
           label: `Call ${site.phone}`,

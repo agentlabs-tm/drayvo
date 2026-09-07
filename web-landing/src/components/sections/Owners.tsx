@@ -5,6 +5,7 @@ import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import { alpha } from '@mui/material/styles';
 import Section from '@/components/ui/Section';
 import Reveal from '@/components/motion/Reveal';
+import SectionFigure from '@/components/ui/SectionFigure';
 import SectionHeading from '@/components/ui/SectionHeading';
 import { brand } from '@/theme/tokens';
 
@@ -50,6 +51,7 @@ const OPERATIONS = [
 export default function Owners() {
   return (
     <Section id="owners" tone="contrast">
+      <SectionFigure asset="fleetAerial" />
       <Box
         sx={{
           display: 'grid',

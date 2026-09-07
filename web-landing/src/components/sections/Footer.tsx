@@ -67,6 +67,52 @@ export default function Footer() {
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
               {brandVoice.positioning}
             </Typography>
+
+            {/*
+              The footer is where people look for a way to reach a company once
+              they have decided to, and until now it offered neither number nor
+              address line - only anchors back up the page. Both channels are
+              guarded on the values in lib/site.ts, so clearing one there
+              removes it here rather than leaving a dead link.
+            */}
+            <Stack spacing={0.5} sx={{ pt: 0.5 }}>
+              {site.phone && (
+                <Link
+                  href={`tel:${site.phoneHref}`}
+                  underline="none"
+                  sx={{
+                    color: 'text.primary',
+                    fontFamily: 'var(--font-display)',
+                    fontWeight: 700,
+                    fontSize: '1.05rem',
+                    width: 'fit-content',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    minHeight: 44,
+                    '&:hover': { color: 'primary.main' },
+                  }}
+                >
+                  {site.phone}
+                </Link>
+              )}
+              {site.email && (
+                <Link
+                  href={`mailto:${site.email}`}
+                  underline="none"
+                  variant="body2"
+                  sx={{
+                    color: 'text.secondary',
+                    width: 'fit-content',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    minHeight: 44,
+                    '&:hover': { color: 'primary.main' },
+                  }}
+                >
+                  {site.email}
+                </Link>
+              )}
+            </Stack>
           </Stack>
 
           {COLUMNS.map((col) => (
@@ -83,9 +129,11 @@ export default function Footer() {
                     width: 'fit-content',
                     // Comfortable tap target without visibly loosening the
                     // column: the extra height is padding on an inline-flex box.
+                    // 44 is the floor in both the WCAG target-size guidance and
+                    // Apple's HIG; 40 left these the smallest targets on the page.
                     display: 'inline-flex',
                     alignItems: 'center',
-                    minHeight: 40,
+                    minHeight: 44,
                     '&:hover': { color: 'primary.main' },
                   }}
                 >

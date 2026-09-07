@@ -61,8 +61,8 @@ export default function Standard() {
       <SectionHeading
         index="02"
         label="The Drayvo Standard"
-        title="Seven commitments, in writing."
-        lead="Any carrier can advertise a rate. These are the operating practices behind ours. They are specific on purpose - each one is something you can check against your own experience within a few weeks of running with us."
+        title="What we hold ourselves to."
+        lead="Any carrier can advertise a rate. These are the operating practices behind ours - each one specific enough that you can check it against your own experience within a few weeks of running with us."
       />
 
       <Reveal>
@@ -128,6 +128,35 @@ export default function Standard() {
         <Box sx={{ bgcolor: 'var(--surface-contrast)', display: { xs: 'none', md: 'block' } }} />
         <Box sx={{ bgcolor: 'var(--surface-contrast)', display: { xs: 'none', xl: 'block' } }} />
       </Box>
+      </Reveal>
+
+      {/*
+        Inherited from the deleted `Commitments` section, which was otherwise a
+        shorter restatement of the seven above. This passage was the only part
+        of it that argued something new - why there are commitments here rather
+        than the statistics a carrier's site normally opens with - and it reads
+        better as a closing note under the list it describes than as a preamble
+        two sections earlier.
+      */}
+      <Reveal>
+        <Typography
+          variant="caption"
+          sx={{
+            display: 'block',
+            mt: { xs: 4, md: 5 },
+            pt: 2.5,
+            borderTop: '1px solid',
+            borderColor: 'divider',
+            color: 'text.secondary',
+            maxWidth: '78ch',
+          }}
+        >
+          Drayvo publishes commitments it can keep rather than statistics it cannot substantiate.
+          Every claim on this page is something you can hold us to —{' '}
+          <Box component="span" sx={{ color: 'primary.main', fontWeight: 700 }}>
+            ask about any of them and you will get a direct answer.
+          </Box>
+        </Typography>
       </Reveal>
     </Section>
   );

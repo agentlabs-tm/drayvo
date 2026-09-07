@@ -17,11 +17,12 @@ import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { useColorScheme } from '@mui/material/styles';
 import Logo from '@/components/brand/Logo';
 import { nav, site } from '@/lib/site';
 import { useAppTheme } from '@/theme/useAppTheme';
-import { WEBVIEW_ATTR } from '@/lib/inAppWebview';
+import { WEBVIEW_ATTR, isAffectedWebview } from '@/lib/inAppWebview';
 
 export default function Header() {
   const theme = useAppTheme();
@@ -29,6 +30,8 @@ export default function Header() {
   const resolved = mode === 'system' ? systemMode : mode;
   const [open, setOpen] = React.useState(false);
   const [solid, setSolid] = React.useState(false);
+  const unpinned = useIsUnpinnedWebview();
+  const narrow = useMediaQuery(theme.breakpoints.down('md'));
 
   React.useEffect(() => {
     const onScroll = () => setSolid(window.scrollY > 16);
@@ -36,6 +39,12 @@ export default function Header() {
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  /**
+   * True when the bar is transparent over the hero photograph, and therefore
+   * has to be light-on-dark irrespective of the active colour scheme.
+   */
+  const overHero = !solid && !(unpinned && narrow);
 
   return (
     <>
@@ -79,6 +88,23 @@ export default function Header() {
           },
           transition: 'background-color .25s ease, border-color .25s ease',
           color: 'text.primary',
+
+          /**
+           * OVER-HERO TREATMENT
+           * The hero is a full-bleed photograph under a dark scrim in BOTH
+           * colour schemes, so a transparent header cannot use palette colours:
+           * in light mode `text.primary` is near-black and the nav, the icons
+           * and the dark-artwork logo all disappear into the photograph.
+           *
+           * While over the hero the bar is pinned to light-on-dark regardless
+           * of scheme, and reverts to the palette as soon as it goes solid.
+           */
+          ...(overHero && {
+            color: '#FFFFFF',
+            '& .MuiButton-text': { color: 'rgba(255,255,255,0.82)' },
+            '& .MuiButton-text:hover': { color: '#FFFFFF' },
+            '& .MuiIconButton-root': { color: '#FFFFFF', borderColor: 'rgba(255,255,255,0.35)' },
+          }),
           /**
            * Deliberately NO `env(safe-area-inset-top)` padding here.
            *
@@ -105,15 +131,18 @@ export default function Header() {
               href="#top"
               underline="none"
               aria-label={`${site.name} - home`}
-              sx={{ display: 'flex', minWidth: 0 }}
+              // The lockup is 30-36px tall, so the link needs its own floor to
+              // reach a 44px target - it is the one control in the bar that is
+              // not a Button or IconButton and does not get one for free.
+              sx={{ display: 'flex', alignItems: 'center', minHeight: 44, minWidth: 0 }}
             >
               {/* 30px on phones: the lockup is 4.6:1, so every pixel of height
                   costs 4.6 of the width the header has to share. */}
               <Box sx={{ display: { xs: 'flex', sm: 'none' } }}>
-                <Logo height={30} />
+                <Logo height={30} onDark={overHero} />
               </Box>
               <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
-                <Logo height={36} />
+                <Logo height={36} onDark={overHero} />
               </Box>
             </MLink>
 
@@ -299,5 +328,34 @@ export default function Header() {
         </Stack>
       </Drawer>
     </>
+  );
+}
+
+/**
+ * True in an in-app webview, where the header is taken out of `fixed` and sits
+ * in normal flow ABOVE the hero (see the position rule in the AppBar's `sx`).
+ * It is then never over the photograph, so it must keep its palette colours
+ * rather than the light-on-dark over-hero treatment.
+ *
+ * Subscribed rather than sampled in an effect, for two reasons. The server and
+ * the first client paint must both produce `false` - `isAffectedWebview` reads
+ * `navigator`, and disagreeing here would hydrate the header with a different
+ * colour treatment than it rendered. And `InAppWebviewFlag` stamps the same
+ * flag on <html> after mount, so the observer keeps this in step with it
+ * instead of racing it.
+ */
+function useIsUnpinnedWebview(): boolean {
+  return React.useSyncExternalStore(
+    React.useCallback((onChange) => {
+      const el = document.documentElement;
+      const mo = new MutationObserver(onChange);
+      mo.observe(el, { attributes: true, attributeFilter: [WEBVIEW_ATTR] });
+      // The attribute may not be stamped yet on the first pass, so the
+      // heuristic is also consulted directly once the client is running.
+      onChange();
+      return () => mo.disconnect();
+    }, []),
+    () => document.documentElement.hasAttribute(WEBVIEW_ATTR) || isAffectedWebview(),
+    () => false,
   );
 }

@@ -33,9 +33,16 @@ const ASSETS = {
 export default function Logo({
   height = 38,
   variant = 'horizontal',
+  onDark = false,
 }: {
   height?: number;
   variant?: Variant;
+  /**
+   * Force the reversed lockup regardless of colour scheme, for a surface that
+   * is dark in both - the header while it floats over the hero photograph.
+   * Leave unset anywhere the lockup sits on a palette-driven background.
+   */
+  onDark?: boolean;
 }) {
   const theme = useAppTheme();
   const asset = ASSETS[variant];
@@ -50,25 +57,33 @@ export default function Logo({
         width,
         flexShrink: 0,
 
-        // 1. Baseline follows the OS preference, so the mark is already correct
-        //    before any attribute is on the document (first paint, JS disabled).
-        '& .logo-light': { display: 'block' },
-        '& .logo-dark': { display: 'none' },
-        '@media (prefers-color-scheme: dark)': {
-          '& .logo-light': { display: 'none' },
-          '& .logo-dark': { display: 'block' },
-        },
+        // `onDark` short-circuits the whole cascade: the surface is dark in
+        // both schemes, so the scheme has no say in which artwork is correct.
+        ...(onDark
+          ? { '& .logo-light': { display: 'none' }, '& .logo-dark': { display: 'block' } }
+          : {
+              // 1. Baseline follows the OS preference, so the mark is already
+              //    correct before any attribute is on the document (first
+              //    paint, JS disabled).
+              '& .logo-light': { display: 'block' },
+              '& .logo-dark': { display: 'none' },
+              '@media (prefers-color-scheme: dark)': {
+                '& .logo-light': { display: 'none' },
+                '& .logo-dark': { display: 'block' },
+              },
 
-        // 2. An explicit choice in the header overrides the OS preference.
-        //    applyStyles emits whatever selector the theme is configured for.
-        ...theme.applyStyles('light', {
-          '& .logo-light': { display: 'block' },
-          '& .logo-dark': { display: 'none' },
-        }),
-        ...theme.applyStyles('dark', {
-          '& .logo-light': { display: 'none' },
-          '& .logo-dark': { display: 'block' },
-        }),
+              // 2. An explicit choice in the header overrides the OS
+              //    preference. applyStyles emits whatever selector the theme
+              //    is configured for.
+              ...theme.applyStyles('light', {
+                '& .logo-light': { display: 'block' },
+                '& .logo-dark': { display: 'none' },
+              }),
+              ...theme.applyStyles('dark', {
+                '& .logo-light': { display: 'none' },
+                '& .logo-dark': { display: 'block' },
+              }),
+            }),
       }}
     >
       <Image

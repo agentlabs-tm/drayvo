@@ -18,6 +18,11 @@ import SectionHeading from '@/components/ui/SectionHeading';
  * TODO(verify): list the equipment types and lanes Drayvo can actually cover
  * today, plus insurance limits and any authority scope. Add a coverage map only
  * when the lanes behind it are real.
+ *
+ * Deliberately the only audience section with no photograph. Drivers and truck
+ * owners get a `SectionFigure`; giving one to shippers too made all three read
+ * as equal-weight offerings, which is the opposite of the ranking in the brand
+ * platform. The hierarchy has to be visible, not just stated.
  */
 const POINTS = [
   {

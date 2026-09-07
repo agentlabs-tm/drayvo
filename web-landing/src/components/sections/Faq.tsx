@@ -34,6 +34,13 @@ export default function Faq() {
           onChange={(_, v: number) => setTab(v)}
           variant="scrollable"
           scrollButtons="auto"
+          /**
+           * MUI hides the scroll arrows on touch pointers by default, which is
+           * exactly where they are needed: below ~480px the four audience tabs
+           * are ~450px wide inside a ~250px strip, and without an arrow there
+           * is nothing telling a reader that "Fleet owners" and "Shippers"
+           * exist off the right edge.
+           */
           allowScrollButtonsMobile
           aria-label="Questions by audience"
         >

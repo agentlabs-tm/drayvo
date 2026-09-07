@@ -5,6 +5,7 @@ import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import Section from '@/components/ui/Section';
 import SectionHeading from '@/components/ui/SectionHeading';
 import Reveal from '@/components/motion/Reveal';
+import SectionFigure from '@/components/ui/SectionFigure';
 import BulletList from '@/components/ui/BulletList';
 
 /**
@@ -19,6 +20,12 @@ import BulletList from '@/components/ui/BulletList';
  * TODO(verify): supply confirmed pay structure, benefit eligibility, and
  * equipment details. Where a figure is added it must be accompanied by its
  * conditions (lane, experience, tenure) in the same sentence.
+ *
+ * This section used to end with a "What we ask of you" panel listing the five
+ * hiring requirements. `Qualify` - the section immediately below - asks the
+ * reader those same questions interactively and tells them where they stand,
+ * so the list was answering a question the page was about to ask properly. The
+ * link into `Qualify` was kept; the list was not.
  */
 const PATHS = [
   {
@@ -50,17 +57,10 @@ const PATHS = [
   },
 ];
 
-const REQUIREMENTS = [
-  'Valid Class A CDL',
-  'Verifiable OTR experience',
-  'Motor vehicle record we can review with you',
-  'Able to pass a DOT physical and drug screen',
-  'At least 21 years old for interstate work',
-];
-
 export default function Drivers() {
   return (
     <Section id="drivers" tone="base">
+      <SectionFigure asset="driverCab" />
       <SectionHeading
         index="04"
         label="For drivers"
@@ -137,33 +137,17 @@ export default function Drivers() {
         ))}
       </Box>
 
+      {/* The one part of the removed requirements panel worth keeping: a route
+          into the section that now owns eligibility. */}
       <Reveal delay={0.1}>
-        <Box
-          sx={{
-            mt: { xs: 5, md: 7 },
-            pt: { xs: 3, md: 4 },
-            borderTop: '1px solid',
-            borderColor: 'divider',
-            display: 'grid',
-            // `minmax` rather than a fixed 300px: the intro column may shrink
-            // when the requirement list needs the room, and never has to.
-            gridTemplateColumns: { xs: '1fr', lg: 'minmax(240px, 300px) 1fr' },
-            gap: { xs: 2.5, lg: 5 },
-            alignItems: { lg: 'center' },
-          }}
-        >
-          <Box>
-            <Typography variant="h5" component="h3" sx={{ color: 'text.primary' }}>
-              What we ask of you
-            </Typography>
-            <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }}>
-              Close but not exact? Call anyway. A person reads every application.
-            </Typography>
-            <Button href="#qualify" endIcon={<ArrowForwardRoundedIcon />} sx={{ mt: 1, px: 0 }}>
-              Check where you stand
-            </Button>
-          </Box>
-          <BulletList items={REQUIREMENTS} columns={{ xs: 1, sm: 2 }} />
+        <Box sx={{ mt: { xs: 4, md: 5 }, pt: 3, borderTop: '1px solid', borderColor: 'divider' }}>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            Not sure you meet the requirements? Close but not exact is worth a call - a person
+            reads every application.
+          </Typography>
+          <Button href="#qualify" endIcon={<ArrowForwardRoundedIcon />} sx={{ mt: 1, px: 0 }}>
+            Check where you stand
+          </Button>
         </Box>
       </Reveal>
     </Section>

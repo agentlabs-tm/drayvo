@@ -399,7 +399,18 @@ export default function ApplyForm() {
                               any time.
                             </Typography>
                           }
-                          sx={{ alignItems: 'flex-start', m: 0, '& .MuiCheckbox-root': { pt: 0 } }}
+                          /**
+                           * `pt: 0` aligns the box with the first line of the
+                           * consent text, but zeroing only the top padding left
+                           * the control 42x33 - under any touch-target floor.
+                           * The height is put back as a minimum on the control
+                           * itself, which keeps the alignment and the target.
+                           */
+                          sx={{
+                            alignItems: 'flex-start',
+                            m: 0,
+                            '& .MuiCheckbox-root': { pt: 0, minHeight: 44, alignItems: 'flex-start' },
+                          }}
                         />
                         {fieldState.error && (
                           <Typography
