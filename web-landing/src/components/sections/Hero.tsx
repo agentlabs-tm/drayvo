@@ -191,21 +191,24 @@ export default function Hero() {
                   // Fixed light values, not palette tokens: this button sits on
                   // a dark scrim in both colour schemes, so `text.primary`
                   // would turn it invisible in light mode.
-                  color: '#FFFFFF',
                   /**
-                   * Heavier than a normal outlined button. This one lands on
-                   * whatever the photograph happens to put behind it - on a
-                   * phone that is the tractor's windscreen and grille - and a
-                   * hairline border at 45% disappears into detail like that.
-                   * The blur plus a denser fill give it its own ground, so it
-                   * stays a button whatever the image is swapped for.
+                   * A solid button, not an outline. This control lands on
+                   * whatever the photograph puts behind it - sky in one crop,
+                   * the white truck in another - and an outlined button has to
+                   * survive both. It could not: against the tractor it lost its
+                   * border and read as loose text.
+                   *
+                   * Brand ink rather than white, because white is the truck.
+                   * Paired with the orange primary it also states the hierarchy
+                   * plainly instead of relying on a hairline to do it.
                    */
-                  borderColor: 'rgba(255,255,255,0.7)',
-                  backdropFilter: 'blur(10px)',
-                  backgroundColor: 'rgba(6,13,26,0.28)',
+                  color: '#FFFFFF',
+                  backgroundColor: 'rgba(6,13,26,0.82)',
+                  borderColor: 'rgba(255,255,255,0.28)',
+                  backdropFilter: 'blur(8px)',
                   '&:hover': {
-                    borderColor: '#FFFFFF',
-                    backgroundColor: 'rgba(6,13,26,0.45)',
+                    backgroundColor: 'rgba(6,13,26,0.95)',
+                    borderColor: 'rgba(255,255,255,0.5)',
                   },
                 }}
               >

@@ -27,11 +27,12 @@ export const site = {
   email: 'contact@drayvologistics.com',
 
   address: {
-    street: '17350 State Hwy 249',
-    suite: 'Ste 220',
+    street: '2950 Fondren Rd',
+    /** Empty when the address has no unit. Never rendered on its own - see `streetLine`. */
+    suite: '',
     city: 'Houston',
     state: 'TX',
-    postalCode: '77064',
+    postalCode: '77063',
     country: 'US',
   },
 
@@ -52,6 +53,18 @@ export const site = {
     linkedin: '',
   },
 } as const;
+
+/**
+ * Street line, with the unit appended only when there is one.
+ *
+ * Both consumers - the footer and the Organization schema - used to join
+ * `street` and `suite` with a comma directly. The current address has no unit,
+ * which rendered as "2950 Fondren Rd, , Houston". Derive it here so an address
+ * with or without a suite is correct in both places.
+ */
+export const streetLine = [site.address.street, site.address.suite]
+  .filter(Boolean)
+  .join(', ');
 
 export const nav = [
   { label: 'Why Drayvo', href: '#why' },

@@ -36,13 +36,17 @@ export default function FinalCta() {
         variant="outlined"
         size="large"
         sx={{
-          // Fixed light values: this sits on a dark scrim in both colour
-          // schemes, so palette-driven text would vanish in light mode.
+          // Same solid treatment as the hero's secondary: this sits over a
+          // photograph in both colour schemes, so it needs its own ground
+          // rather than a hairline border that the image can swallow.
           color: '#FFFFFF',
-          borderColor: 'rgba(255,255,255,0.45)',
-          backdropFilter: 'blur(6px)',
-          backgroundColor: 'rgba(255,255,255,0.06)',
-          '&:hover': { borderColor: '#FFFFFF', backgroundColor: 'rgba(255,255,255,0.14)' },
+          backgroundColor: 'rgba(6,13,26,0.82)',
+          borderColor: 'rgba(255,255,255,0.28)',
+          backdropFilter: 'blur(8px)',
+          '&:hover': {
+            backgroundColor: 'rgba(6,13,26,0.95)',
+            borderColor: 'rgba(255,255,255,0.5)',
+          },
         }}
       >
         Partner your truck with Drayvo
