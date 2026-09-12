@@ -23,6 +23,8 @@ import PhoneInTalkOutlinedIcon from '@mui/icons-material/PhoneInTalkOutlined';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import { alpha } from '@mui/material/styles';
 import { useForm, Controller } from 'react-hook-form';
+import HCaptcha from '@hcaptcha/react-hcaptcha';
+import { useColorScheme } from '@mui/material/styles';
 import Reveal from '@/components/motion/Reveal';
 import { site } from '@/lib/site';
 import { onQualifySummary } from '@/lib/qualifyHandoff';
@@ -49,10 +51,70 @@ const AUDIENCES: { value: Audience; label: string }[] = [
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const PHONE_RE = /^[\d\s()+.-]{10,20}$/;
 
+const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
+
+/**
+ * Web3Forms access key.
+ *
+ * WHY THIS IS A PUBLIC ENV VAR
+ * This site is a static export - `output: 'export'` in next.config.ts - so
+ * there is no server at runtime to keep a secret on. The form posts straight
+ * from the browser to Web3Forms, which is the whole point of the service, and
+ * the access key is designed for that: it names a destination inbox and grants
+ * no access to the account. Anything genuinely secret must never be given the
+ * NEXT_PUBLIC_ prefix, because that inlines it into the client bundle.
+ *
+ * Read at module scope rather than inside the handler: Next replaces
+ * `process.env.NEXT_PUBLIC_*` at build time by literal text substitution, so
+ * the full expression has to appear in the source exactly like this.
+ */
+const WEB3FORMS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
+
+/**
+ * hCaptcha site key.
+ *
+ * Web3Forms publishes a shared key for accounts on the free plan; a paid plan
+ * can register its own. It is public by definition - it is read out of the
+ * markup by hCaptcha's own script - so the env var is only here so a paid key
+ * can replace it without a code change.
+ *
+ * The captcha must ALSO be switched on for this form in the Web3Forms
+ * dashboard. Without that, Web3Forms ignores the token rather than rejecting
+ * submissions that lack one, and the widget becomes decoration.
+ */
+const HCAPTCHA_SITEKEY =
+  process.env.NEXT_PUBLIC_HCAPTCHA_SITEKEY ?? '50b2fe65-b00b-4b9e-ad62-3ba471098be2';
+
+/** The field name Web3Forms reads the captcha token from. Not arbitrary. */
+const HCAPTCHA_FIELD = 'h-captcha-response';
+
+/** The reader's own words for who they are, for the notification email. */
+const audienceLabel = (v: Audience) => AUDIENCES.find((a) => a.value === v)?.label ?? v;
+
 export default function ApplyForm() {
   const [status, setStatus] = React.useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 
   const [fromCheck, setFromCheck] = React.useState(false);
+
+  /**
+   * hCaptcha token, plus a handle on the widget so it can be reset.
+   *
+   * The token is single-use and expires after a couple of minutes, so it is
+   * held in state rather than read out of the DOM at submit time, and the
+   * widget is reset after every attempt - including failures. Reusing a spent
+   * token makes the second attempt fail with a confusing "that didn't send"
+   * when the form itself was fine.
+   */
+  const captchaRef = React.useRef<HCaptcha>(null);
+  const [captchaToken, setCaptchaToken] = React.useState('');
+  const [captchaError, setCaptchaError] = React.useState(false);
+  const scheme = useColorScheme();
+  const captchaTheme = (scheme.mode === 'system' ? scheme.systemMode : scheme.mode) ?? 'light';
+
+  const resetCaptcha = React.useCallback(() => {
+    setCaptchaToken('');
+    captchaRef.current?.resetCaptcha();
+  }, []);
 
   const {
     register,
@@ -108,22 +170,86 @@ export default function ApplyForm() {
   );
 
   const onSubmit = async (values: ApplyValues) => {
+    if (!WEB3FORMS_KEY) {
+      // Nothing to post to. Fail loudly rather than showing a success screen
+      // for a submission that went nowhere - a recruiting form that silently
+      // drops applications is worse than one that is visibly broken.
+      console.error(
+        'NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY is not set - the application form cannot submit. ' +
+          'See web-landing/.env.example.',
+      );
+      setStatus('error');
+      return;
+    }
+
+    if (!captchaToken) {
+      // Stop here rather than letting Web3Forms reject it: a server-side
+      // rejection surfaces as the generic "that didn't send", which sends the
+      // reader to the phone instead of to the one control they had not touched.
+      setCaptchaError(true);
+      return;
+    }
+
     setStatus('sending');
     try {
-      const res = await fetch('/api/apply', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(values),
-      });
-      if (!res.ok) throw new Error('Request failed');
+      /**
+       * FormData, not JSON, and deliberately so.
+       *
+       * A JSON body needs a `Content-Type: application/json` header, which
+       * makes the request non-simple and triggers a CORS preflight. Web3Forms
+       * does not answer the preflight, so the POST is blocked in the browser
+       * before it is ever sent and the form fails for every visitor.
+       *
+       * FormData sends multipart/form-data with no custom headers - a simple
+       * request, no preflight. Do not "tidy" this into fetch + JSON.
+       */
+      const body = new FormData();
+      body.append('access_key', WEB3FORMS_KEY);
+      /**
+       * The subject is what the recruiter sees in their inbox list, so it
+       * carries the two things that decide whether to open it now: who is
+       * writing and what they are. Without this every application arrives
+       * titled "New Submission".
+       */
+      body.append('subject', `${audienceLabel(values.audience)} enquiry - ${values.name}`);
+      body.append('from_name', site.name);
+      /** Lets the recruiter hit reply and reach the applicant directly. */
+      if (values.email) body.append('replyto', values.email);
+      // Flat, human-readable field names: these become the email's labels.
+      body.append('name', values.name);
+      body.append('phone', values.phone);
+      if (values.email) body.append('email', values.email);
+      body.append('I am a', audienceLabel(values.audience));
+      if (values.message) body.append('message', values.message);
+      body.append('consent', values.consent ? 'Yes - agreed to be contacted' : 'No');
+      // Web3Forms' honeypot: a bot that fills every field trips it.
+      body.append('botcheck', '');
+      body.append(HCAPTCHA_FIELD, captchaToken);
+
+      const res = await fetch(WEB3FORMS_ENDPOINT, { method: 'POST', body });
+
+      // Web3Forms answers 200 with `{ success: false }` for a rejected
+      // submission - a bad key, a disabled form - so the status code alone is
+      // not enough to call this sent.
+      const data: { success?: boolean; message?: string } = await res.json().catch(() => ({}));
+      if (!res.ok || !data.success) {
+        throw new Error(data.message ?? `Web3Forms rejected the submission (${res.status})`);
+      }
+
       setStatus('sent');
       reset();
       // The carried-over answers are gone with the reset, so the notice about
       // them must go too - otherwise "Send another" starts on an empty field
       // that still claims to hold the check's results.
       setFromCheck(false);
-    } catch {
+    } catch (err) {
+      console.error('Application submission failed:', err);
       setStatus('error');
+    } finally {
+      // Always, on both paths. The token is spent the moment Web3Forms
+      // verifies it, so leaving it in state would make a retry after a failure
+      // fail again for a different reason than the first attempt did.
+      resetCaptcha();
     }
   };
 
@@ -424,6 +550,37 @@ export default function ApplyForm() {
                       </Box>
                     )}
                   />
+
+                  {/*
+                    Sits immediately above the send button, which is where a
+                    reader looks last. `key` on the theme forces a remount when
+                    the colour scheme flips - hCaptcha reads its theme once at
+                    render and will not restyle an existing widget, so without
+                    this a light widget stays behind on the dark page.
+                  */}
+                  <Box sx={{ '& iframe': { colorScheme: 'normal' } }}>
+                    <HCaptcha
+                      key={captchaTheme}
+                      ref={captchaRef}
+                      sitekey={HCAPTCHA_SITEKEY}
+                      theme={captchaTheme}
+                      onVerify={(token) => {
+                        setCaptchaToken(token);
+                        setCaptchaError(false);
+                      }}
+                      onExpire={resetCaptcha}
+                      onError={resetCaptcha}
+                    />
+                    {captchaError && (
+                      <Typography
+                        variant="caption"
+                        role="alert"
+                        sx={{ color: 'error.main', display: 'block', mt: 1 }}
+                      >
+                        Please complete the captcha so we know you are a person.
+                      </Typography>
+                    )}
+                  </Box>
 
                   {status === 'error' && (
                     <Alert severity="error" sx={{ borderRadius: 1 }}>

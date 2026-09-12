@@ -2,7 +2,7 @@
 
 import { Box, Container, Divider, Link, Stack, Typography } from '@mui/material';
 import Logo from '@/components/brand/Logo';
-import { nav, site } from '@/lib/site';
+import { nav, site, streetLine } from '@/lib/site';
 import { brandVoice } from '@/lib/brand';
 
 const COLUMNS = [
@@ -160,8 +160,8 @@ export default function Footer() {
             </Typography>
             {site.address.street && (
               <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                {site.address.street}, {site.address.suite}, {site.address.city}{' '}
-                {site.address.state} {site.address.postalCode}
+                {streetLine}, {site.address.city} {site.address.state}{' '}
+                {site.address.postalCode}
               </Typography>
             )}
           </Stack>
