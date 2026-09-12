@@ -1,0 +1,12 @@
+# Repo-root ignores.
+#
+# web-landing/.gitignore also lists `.env*`, but a .gitignore only governs its
+# own directory and below - it never covered a file at the repo root. That gap
+# is how /.env came to be committed in 6224aad. This file closes it for the
+# root and for any sibling app added later.
+.env
+.env.*
+!.env.example
+
+# OS noise
+.DS_Store
