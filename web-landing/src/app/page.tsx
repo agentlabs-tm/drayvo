@@ -14,7 +14,7 @@ import ApplyForm from '@/components/sections/ApplyForm';
 import Footer from '@/components/sections/Footer';
 import MobileActionBar from '@/components/ui/MobileActionBar';
 import Scene from '@/components/ui/Scene';
-import { site } from '@/lib/site';
+import { site, streetLine } from '@/lib/site';
 import { brandVoice } from '@/lib/brand';
 import { FAQS } from '@/lib/faqs';
 
@@ -62,7 +62,7 @@ const jsonLd = {
       },
       address: {
         '@type': 'PostalAddress',
-        streetAddress: `${site.address.street}, ${site.address.suite}`,
+        streetAddress: streetLine,
         addressLocality: site.address.city,
         addressRegion: site.address.state,
         postalCode: site.address.postalCode,

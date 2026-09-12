@@ -51,7 +51,14 @@ const OPERATIONS = [
 export default function Owners() {
   return (
     <Section id="owners" tone="contrast">
-      <SectionFigure asset="fleetAerial" />
+      {/*
+        The figure sits in the right-hand column rather than above the grid.
+        `#owners` is a nav target and the hero's second CTA points straight at
+        it, so whatever is at the top of this section is what a reader lands on.
+        With the photograph first they arrived at an unlabelled 600px image with
+        "For truck owners" a full screen below it - no title, no context, and no
+        sign the link had done anything. Heading first, picture after.
+      */}
       <Box
         sx={{
           display: 'grid',
@@ -87,6 +94,9 @@ export default function Owners() {
             </Typography>
           </Reveal>
         </Box>
+
+        <Box sx={{ minWidth: 0 }}>
+          <SectionFigure asset="fleetAerial" />
 
         {/* One reveal for the panel: the rows are a single ruled list, and
             seven staggered entrances made it read as seven separate objects. */}
@@ -140,6 +150,7 @@ export default function Owners() {
             </Stack>
           ))}
         </Reveal>
+        </Box>
       </Box>
     </Section>
   );

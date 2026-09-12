@@ -60,13 +60,20 @@ const PATHS = [
 export default function Drivers() {
   return (
     <Section id="drivers" tone="base">
-      <SectionFigure asset="driverCab" />
+      {/*
+        Heading before figure, not after. `#drivers` is a nav target and the
+        hero links straight to it, so whatever sits at the top of this section
+        is what a reader lands on. With the photograph first they arrived at an
+        unlabelled 600px image with the heading a full screen below it - no
+        title, no context, no idea the link had worked.
+      */}
       <SectionHeading
         index="04"
         label="For drivers"
         title="Your truck. Your miles. Your money."
         lead="Two ways to run with Drayvo. Both work the same way: you see the number before you commit, and the settlement shows how it was reached."
       />
+      <SectionFigure asset="driverCab" />
 
       {/*
         Two columns divided by a rule rather than two bordered cards. The card

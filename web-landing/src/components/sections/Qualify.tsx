@@ -167,24 +167,46 @@ export default function Qualify() {
 
   return (
     <Section id="qualify" tone="contrast">
-      <SectionHeading
-        index="05"
-        label="Two-minute check"
-        title="Find out where you stand before you apply."
-        lead="Four questions, an honest answer, and nothing recorded. We would rather you know now than wait a week to hear it."
-      />
+      {/*
+        Two columns, not one.
+        The heading and the card were both left-aligned inside a 1440px
+        container - the heading capped at 780 and the card at 720 - so the
+        entire right half of the section was empty. It read as a layout that
+        had lost something rather than one with room to breathe.
 
+        The left column now carries the heading and a rail listing what the
+        check actually covers, which is real content rather than filler: the
+        four items are the four questions, and they mark off as they are
+        answered. A reader can see the whole scope before starting, and see
+        their own answers without scrolling back.
+      */}
       <Box
         sx={{
-          mt: { xs: 5, md: 8 },
-          maxWidth: 720,
-          border: '1px solid',
-          borderColor: 'var(--hairline)',
-          borderRadius: 1.5,
-          bgcolor: 'var(--surface-panel)',
-          overflow: 'hidden',
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', lg: '0.85fr 1.15fr' },
+          gap: { xs: 5, lg: 10 },
+          alignItems: 'start',
         }}
       >
+        <Box sx={{ position: { lg: 'sticky' }, top: { lg: 108 } }}>
+          <SectionHeading
+            index="05"
+            label="Two-minute check"
+            title="Find out where you stand before you apply."
+            lead="Four questions, an honest answer, and nothing recorded. We would rather you know now than wait a week to hear it."
+          />
+          <QualifyRail step={step} answers={answers} done={done} />
+        </Box>
+
+        <Box
+          sx={{
+            border: '1px solid',
+            borderColor: 'var(--hairline)',
+            borderRadius: 1.5,
+            bgcolor: 'var(--surface-panel)',
+            overflow: 'hidden',
+          }}
+        >
         <Box sx={{ px: { xs: 2.5, md: 4 }, pt: { xs: 2.5, md: 3 } }}>
           <Stack direction="row" sx={{ justifyContent: 'space-between', mb: 1 }}>
             <Typography variant="overline" sx={{ color: 'text.secondary' }}>
@@ -354,7 +376,81 @@ export default function Qualify() {
         >
           This runs entirely in your browser. Nothing is submitted, stored, or sent to us.
         </Typography>
+        </Box>
       </Box>
     </Section>
+  );
+}
+
+/**
+ * The scope of the check, listed beside it.
+ *
+ * Desktop only. On a phone the card is the full width of the column and
+ * carries its own "Question 2 of 4" and progress bar, so a second progress
+ * indicator underneath the heading would be saying the same thing twice. The
+ * rail exists because the wide layout has a column to fill and this is the
+ * most useful thing that can go in it - not as decoration.
+ */
+function QualifyRail({
+  step,
+  answers,
+  done,
+}: {
+  step: number;
+  answers: { label: string; outcome: Outcome }[];
+  done: boolean;
+}) {
+  return (
+    <Box
+      aria-hidden
+      sx={{ display: { xs: 'none', lg: 'block' }, mt: 5, borderTop: '1px solid', borderColor: 'var(--hairline)' }}
+    >
+      {QUESTIONS.map((q, i) => {
+        const answer = answers[i];
+        const current = !done && i === step;
+        return (
+          <Stack
+            key={q.id}
+            direction="row"
+            spacing={2}
+            sx={{
+              py: 1.75,
+              alignItems: 'baseline',
+              borderBottom: '1px solid',
+              borderColor: 'var(--hairline)',
+              // Answered items recede; the current one is the only thing at
+              // full strength, so the eye lands on where the reader is.
+              opacity: answer ? 0.85 : current ? 1 : 0.45,
+              transition: 'opacity .25s ease',
+            }}
+          >
+            <Typography
+              sx={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.72rem',
+                fontWeight: 600,
+                color: answer || current ? 'primary.main' : 'text.secondary',
+                minWidth: 22,
+              }}
+            >
+              {String(i + 1).padStart(2, '0')}
+            </Typography>
+            <Box sx={{ minWidth: 0, flex: 1 }}>
+              <Typography
+                variant="body2"
+                sx={{ color: 'text.primary', fontWeight: current ? 700 : 500 }}
+              >
+                {q.short}
+              </Typography>
+              {answer && (
+                <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block' }}>
+                  {answer.label}
+                </Typography>
+              )}
+            </Box>
+          </Stack>
+        );
+      })}
+    </Box>
   );
 }
